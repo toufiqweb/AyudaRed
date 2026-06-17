@@ -1,24 +1,51 @@
 // Required for client-side interactivity (useState)
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
+import {
+  Menu,
+  X,
+  ArrowRight,
+  Sun,
+  Moon,
+  User,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+} from "lucide-react";
 import { useTheme } from "next-themes";
-import { getUserClientSession } from "@/lib/core/sessionClient";
+import { useUserClientSession } from "@/lib/core/sessionClient";
+import Image from "next/image";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const user = getUserClientSession();
-  console.log(user);
+  // 1. Call the hook at the TOP LEVEL (Strictly obeying the Rules of Hooks)
+  const { user } = useUserClientSession();
 
   useEffect(() => {
     setMounted(true);
+
+    // Close user dropdown if clicking outside of it
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Centralized navigation array to keep code clean and maintainable
+  const handleLogout = () => {
+    // Add your logout functionality here
+    console.log("Logging out...");
+  };
+  console.log(user?.role);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Features", href: "/features" },
@@ -67,18 +94,82 @@ const Navbar = () => {
               </button>
             )}
 
-            {/* Call to Action Button */}
-            <Link
-              href="/sign-up"
-              className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-lg shadow-sm transition-all duration-200 group"
-            >
-              Get Started
-              <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            {/* 2. Guard the UI rendering using 'mounted' to prevent hydration shifts */}
+            {mounted && user ? (
+              /* User Profile Dropdown Container */
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-muted border border-border text-foreground hover:text-primary hover:border-primary transition-all focus:outline-none"
+                  aria-label="User menu"
+                >
+                  {user.image ? (
+                    <Image
+                      width={32}
+                      height={32}
+                      src={user.image}
+                      alt={user.name || "User"}
+                      className="w-full h-full rounded-full object-cover"
+                    />
+                  ) : (
+                    <User className="w-5 h-5" />
+                  )}
+                </button>
+
+                {/* Dropdown Menu */}
+                {isProfileOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-lg py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-4 py-2 border-b border-border">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {user.name || "User"}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                    <Link
+                      href={`/dashboard/${user?.role}`}
+                      onClick={() => setIsProfileOpen(false)}
+                      className="flex items-center px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                    >
+                      <LayoutDashboard className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/profile"
+                      onClick={() => setIsProfileOpen(false)}
+                      className="flex items-center px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                    >
+                      <Settings className="w-4 h-4 mr-2" />
+                      Profile
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setIsProfileOpen(false);
+                        handleLogout();
+                      }}
+                      className="w-full flex items-center px-4 py-2 text-sm text-destructive hover:bg-destructive/10 transition-colors border-t border-border mt-1 text-left"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Log out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              /* Call to Action Button */
+              <Link
+                href="/sign-up"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-lg shadow-sm transition-all duration-200 group"
+              >
+                Get Started
+                <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            )}
           </div>
 
-          {/* Hamburger Menu Icon (Mobile Only) */}
-          <div className="md:hidden flex items-center space-x-4">
+          {/* Mobile Right Actions Bar */}
+          <div className="md:hidden flex items-center space-x-2">
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -118,22 +209,78 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                onClick={() => setIsOpen(false)} // Closes menu when a link is clicked
+                onClick={() => setIsOpen(false)}
                 className="block px-3 py-2.5 rounded-lg text-base font-medium text-foreground hover:bg-muted hover:text-primary transition-all"
               >
                 {link.name}
               </Link>
             ))}
 
-            {/* Mobile Call to Action */}
+            {/* Mobile Auth Management Section */}
             <div className="pt-4 border-t border-border mt-2">
-              <Link
-                href="/sign-up"
-                onClick={() => setIsOpen(false)}
-                className="w-full inline-flex items-center justify-center px-4 py-2.5 text-base font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-lg shadow-sm text-center"
-              >
-                Get Started
-              </Link>
+              {mounted && user ? (
+                <div className="space-y-1">
+                  <div className="px-3 py-2 flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 rounded-full bg-muted border border-border flex items-center justify-center overflow-hidden">
+                      {user.image ? (
+                        <Image
+                          width={32}
+                          height={32}
+                          src={user.image}
+                          alt="User"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <User className="w-5 h-5" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        {user.name || "User"}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate max-w-[200px]">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/dashboard/${user?.role}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center px-3 py-2.5 rounded-lg text-base font-medium text-foreground hover:bg-muted hover:text-primary transition-all"
+                  >
+                    <LayoutDashboard className="w-5 h-5 mr-3 text-muted-foreground" />
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center px-3 py-2.5 rounded-lg text-base font-medium text-foreground hover:bg-muted hover:text-primary transition-all"
+                  >
+                    <Settings className="w-5 h-5 mr-3 text-muted-foreground" />
+                    Profile
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      handleLogout();
+                    }}
+                    className="w-full flex items-center px-3 py-2.5 rounded-lg text-base font-medium text-destructive hover:bg-destructive/10 transition-all text-left"
+                  >
+                    <LogOut className="w-5 h-5 mr-3" />
+                    Log out
+                  </button>
+                </div>
+              ) : (
+                /* Mobile Call to Action */
+                <Link
+                  href="/sign-up"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full inline-flex items-center justify-center px-4 py-2.5 text-base font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-lg shadow-sm text-center"
+                >
+                  Get Started
+                </Link>
+              )}
             </div>
           </div>
         </div>

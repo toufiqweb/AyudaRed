@@ -1,6 +1,6 @@
 import { authClient } from "../auth-client";
 
-export const getUserClientSession = () => {
+export const useUserClientSession = () => {
   const {
     data: session,
     isPending, //loading state

@@ -1,7 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client"; // Adjust path to your better-auth client instance
 import { useRouter } from "next/navigation";
 import {
   Eye,
@@ -15,6 +13,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { imageUpload } from "@/lib/imageUpload";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignUpForm() {
   const router = useRouter();
@@ -36,39 +36,35 @@ export default function SignUpForm() {
     setLoading(true);
     setError("");
 
-    // 1. Gather values using native FormData directly from the DOM elements
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
     const role = formData.get("role");
-    const profileImage = formData.get("profileImage"); // This holds the File object
+    const profileImage = formData.get("image");
+    console.log(profileImage);
 
+    let uploadedImage = await imageUpload(profileImage);
+    console.log(uploadedImage);
     try {
-      // 2. Process image upload if your server / cloud bucket needs it first,
-      // or pass a base64 string/URL directly to better-auth if configured.
-      let imageString = "";
-      if (profileImage && profileImage.size > 0) {
-        // Simple conversion example if passing string data directly:
-        // imageString = await convertToBase64(profileImage);
-      }
-
-      // 3. Submit data to better-auth
+      // 1. Upload image only if a file was actually selected
+      // 2. Submit data to better-auth
       await authClient.signUp.email({
         email,
         password,
         name,
-        image: imageString || undefined, // Populates better-auth core image property
+        // If uploadedImage is null, it gracefully sets fallback or undefined
+        image: uploadedImage?.url || undefined,
         data: {
-          role, // Maps customized schema parameters into metadata profiles
+          role,
         },
-        callbackURL: "/",
       });
-
-      console.log("Done successfully connected to MongoDB");
+      router.push("/");
+      router.refresh();
     } catch (err) {
+      // Ensure the user-friendly custom error from your imageUpload function is caught here
       setError(err?.message || "Something went wrong. Please try again.");
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -115,8 +111,7 @@ export default function SignUpForm() {
               Choose File
               <input
                 type="file"
-                name="profileImage"
-                accept="image/*"
+                name="image"
                 onChange={handleImageChange}
                 className="hidden"
                 disabled={loading}

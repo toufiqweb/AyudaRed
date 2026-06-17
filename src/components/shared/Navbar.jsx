@@ -16,6 +16,7 @@ import {
 import { useTheme } from "next-themes";
 import { useUserClientSession } from "@/lib/core/sessionClient";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,8 +41,9 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Add your logout functionality here
+    await authClient.signOut();
     console.log("Logging out...");
   };
   console.log(user?.role);

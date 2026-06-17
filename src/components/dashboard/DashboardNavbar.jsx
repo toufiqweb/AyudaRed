@@ -14,6 +14,8 @@ import {
   Plus,
 } from "lucide-react";
 import { useUserClientSession } from "@/lib/core/sessionClient";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 const DashboardNavbar = ({ onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -22,6 +24,8 @@ const DashboardNavbar = ({ onMenuClick }) => {
 
   const profileRef = useRef(null);
   const notifyRef = useRef(null);
+
+  const router = useRouter();
 
   const { user } = useUserClientSession();
 
@@ -42,7 +46,10 @@ const DashboardNavbar = ({ onMenuClick }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/");
+    router.refresh();
     console.log("Logging out from dashboard...");
   };
 

@@ -1,6 +1,6 @@
 // app/dashboard/layout.jsx
 
-import DashboardClientWrapper from "@/components/dashboard/DashboardClientWrapper";
+import DashboardClientWrapper from "@/components/shared/DashboardClientWrapper";
 
 export default function DashboardLayout({ children }) {
   return (

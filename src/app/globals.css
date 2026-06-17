@@ -5,36 +5,68 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
   --color-muted: var(--muted);
   --color-border: var(--border);
+
+  --color-danger: var(--danger);
 }
 
+/* ================= LIGHT MODE ================= */
 @layer base {
   :root,
   .light {
-    --background: #f8f7f4;
-    --foreground: #303030;
+    --background: #fff5f5; /* very soft pink */
+    --foreground: #2b1b1b; /* dark warm text */
 
-    --primary: #6b7c6f;
+    --primary: #e63946; /* strong blood red */
     --primary-foreground: #ffffff;
 
-    --muted: #ece9e3;
-    --border: #d9d5cf;
-  }
+    --secondary: #ff8fa3; /* soft pink */
+    --secondary-foreground: #2b1b1b;
 
-  .dark {
-    --background: #181a19;
-    --foreground: #f1eee8;
+    --accent: #ff4d6d; /* highlight red-pink */
+    --accent-foreground: #ffffff;
 
-    --primary: #849787;
-    --primary-foreground: #181a19;
+    --muted: #ffe3e3; /* light card bg */
+    --border: #f1c0c0; /* soft border */
 
-    --muted: #242826;
-    --border: #323735;
+    --danger: #c1121f; /* alert / urgent */
   }
 }
+
+/* ================= DARK MODE ================= */
+@layer base {
+  .dark {
+    --background: #0f0a0a; /* deep black-red */
+    --foreground: #f8e9e9; /* soft white */
+
+    --primary: #ff4d6d; /* neon red accent */
+    --primary-foreground: #0f0a0a;
+
+    --secondary: #7a1f2b; /* dark red */
+    --secondary-foreground: #ffffff;
+
+    --accent: #ff8fa3; /* glowing pink */
+    --accent-foreground: #0f0a0a;
+
+    --muted: #1c1212; /* card dark */
+    --border: #2a1a1a;
+
+    --danger: #ff1f3d; /* strong alert */
+  }
+}
+
+/* ================= BASE ================= */
 @layer base {
   * {
     border-color: var(--border);

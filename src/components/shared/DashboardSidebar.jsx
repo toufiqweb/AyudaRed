@@ -50,8 +50,8 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
     ],
     volunteer: [
       {
-        name: "Review Requests",
-        href: "/dashboard/volunteer/requests",
+        name: "Donation Requests",
+        href: "/dashboard/all-blood-donation-request",
         icon: HeartHandshake,
       },
       {
@@ -72,8 +72,8 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
         icon: Users,
       },
       {
-        name: "Blood Stock Control",
-        href: "/dashboard/admin/blood-stock",
+        name: "Donation Requests",
+        href: "/dashboard/all-blood-donation-request",
         icon: Droplet,
       },
       {

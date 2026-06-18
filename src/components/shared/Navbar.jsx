@@ -50,9 +50,8 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Features", href: "/features" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "About", href: "/about" },
+    { name: "Donation Requests", href: "/donation-requests" },
+    { name: "Search Donor", href: "/search-donor" },
   ];
 
   return (
@@ -130,7 +129,7 @@ const Navbar = () => {
                       </p>
                     </div>
                     <Link
-                      href={`/dashboard/${user?.role}`}
+                      href={`/dashboard`}
                       onClick={() => setIsProfileOpen(false)}
                       className="flex items-center px-4 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
                     >
@@ -247,7 +246,7 @@ const Navbar = () => {
                   </div>
 
                   <Link
-                    href={`/dashboard/${user?.role}`}
+                    href={`/dashboard`}
                     onClick={() => setIsOpen(false)}
                     className="flex items-center px-3 py-2.5 rounded-lg text-base font-medium text-foreground hover:bg-muted hover:text-primary transition-all"
                   >

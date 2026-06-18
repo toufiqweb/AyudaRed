@@ -31,6 +31,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
   const sharedLinks = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
+    { name: "Profile", href: "/dashboard/profile", icon: Settings },
   ];
 
   // 2. Define role-specific navigation menus
@@ -61,7 +62,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
   };
 
   // Safely grab the current user's links or default to empty array
-  const currentUserRole = user?.role?.toLowerCase() || "buyer";
+  const currentUserRole = user?.role?.toLowerCase() || "donor";
   const currentRoleLinks = roleLinks[currentUserRole] || [];
 
   // Helper component to render single links cleanly

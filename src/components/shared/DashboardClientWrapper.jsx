@@ -4,18 +4,23 @@ import { useState } from "react";
 import DashboardSidebar from "./DashboardSidebar";
 import DashboardNavbar from "./DashboardNavbar";
 
-export default function DashboardClientWrapper() {
+export default function DashboardClientWrapper({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <>
-      {/* Sidebar handles its own mobile translation based on sidebarOpen */}
+      {/* Left Column: Sidebar */}
       <DashboardSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
       />
-      {/* Navbar triggers the state change */}
-      <DashboardNavbar onMenuClick={() => setSidebarOpen(true)} />
+
+      {/* Right Column: Navbar on top, page content below */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <DashboardNavbar onMenuClick={() => setSidebarOpen(true)} />
+        {children}
+      </div>
     </>
   );
 }
+

@@ -9,10 +9,8 @@ import {
   Clock,
   Eye,
   Loader2,
-  ArrowLeft,
-  ArrowRight,
-  ChevronDown,
 } from "lucide-react";
+import Pagination from "@/components/ui/Pagination";
 
 export default function DonationRequestsPage() {
   const [requests, setRequests] = useState([]);
@@ -217,45 +215,14 @@ export default function DonationRequestsPage() {
         )}
       </div>
 
-      {/* Pagination UI Controls */}
-      {!loading && requests.length > 0 && (
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-4 w-full">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            disabled={currentPage === 1}
-            className="inline-flex items-center gap-2 bg-rose-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-rose-700 disabled:opacity-40 transition shadow-sm focus:outline-none"
-          >
-            <ArrowLeft className="w-4 h-4" /> Previous
-          </button>
-
-          <div className="flex items-center gap-1 border border-slate-200 bg-white px-3 py-1 rounded-full shadow-sm">
-            {renderPageNumbers()}
-          </div>
-
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            disabled={currentPage === totalPages}
-            className="inline-flex items-center gap-2 bg-rose-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-rose-700 disabled:opacity-40 transition shadow-sm focus:outline-none"
-          >
-            Next <ArrowRight className="w-4 h-4" />
-          </button>
-
-          <div className="relative inline-flex items-center border border-slate-200 bg-white pl-4 pr-3 py-2.5 rounded-full shadow-sm text-sm font-semibold text-slate-700">
-            <select
-              value={itemsPerPage}
-              onChange={(e) => {
-                setItemsPerPage(parseInt(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="appearance-none bg-transparent pr-7 focus:outline-none cursor-pointer"
-            >
-              <option value={5}>5 Items</option>
-              <option value={10}>10 Items</option>
-              <option value={15}>15 Items</option>
-              <option value={20}>20 Items</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-slate-500 absolute right-3 pointer-events-none" />
-          </div>
+      {/* Pagination */}
+      {!loading && requests.length > 0 && totalPages > 1 && (
+        <div className="mt-8 flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       )}
     </div>

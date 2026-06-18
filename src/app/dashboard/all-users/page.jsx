@@ -6,14 +6,13 @@ import {
   Loader2,
   Filter,
   MoreVertical,
-  ChevronLeft,
-  ChevronRight,
   ShieldCheck,
   UserCheck,
   Ban,
   Unlock,
 } from "lucide-react";
 import { getAllUsers, updateUser } from "@/lib/actions/admin";
+import Pagination from "@/components/ui/Pagination";
 
 export default function AllUsersPage() {
   const [users, setUsers] = useState([]);
@@ -317,43 +316,18 @@ export default function AllUsersPage() {
             </table>
           </div>
         )}
-
-        {/* Pagination Controls Section Footer */}
-        {!loading && users.length > 0 && (
-          <div className="px-6 py-4 border-t border-border bg-muted/20 flex items-center justify-between gap-4">
-            <p className="text-xs text-muted-foreground font-medium">
-              Page{" "}
-              <span className="text-foreground font-semibold">
-                {currentPage}
-              </span>{" "}
-              of{" "}
-              <span className="text-foreground font-semibold">
-                {totalPages}
-              </span>
-            </p>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="inline-flex items-center justify-center p-1.5 border border-border rounded-lg bg-background hover:bg-muted text-muted-foreground disabled:opacity-40 disabled:cursor-not-allowed transition"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-
-              <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
-                disabled={currentPage === totalPages}
-                className="inline-flex items-center justify-center p-1.5 border border-border rounded-lg bg-background hover:bg-muted text-muted-foreground disabled:opacity-40 disabled:cursor-not-allowed transition"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Pagination */}
+      {!loading && users.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center py-4">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Eye,
   Edit,
   Trash2,
-  CheckCircle,
+  CheckCircle2,
   XCircle,
   AlertTriangle,
   Loader2,
@@ -16,82 +16,91 @@ import {
   MapPin,
   ChevronRight,
   Heart,
+  MoreVertical,
 } from "lucide-react";
 import {
   getUserDonationRequests,
   updateDonationRequestStatus,
   deleteDonationRequest,
 } from "@/lib/actions/requests";
+import { useToast, ToastContainer } from "@/components/ui/Toast";
 
 export default function DonorDashboard({ user }) {
+  const { toasts, showToast, removeToast } = useToast();
   const router = useRouter();
+
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
-
-  // Modal configuration states
+  const [openMenuId, setOpenMenuId] = useState(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [targetRequestId, setTargetRequestId] = useState(null);
 
-  // Fetch recent 3 donation entries created by the current user
-  const fetchRecentRequests = async () => {
+  // Close menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest(".donor-menu-container")) setOpenMenuId(null);
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  const fetchRecentRequests = useCallback(async () => {
     try {
       const result = await getUserDonationRequests("all", 1, 3);
-      if (result.success) {
-        setRequests(result.data || []);
-      }
+      if (result.success) setRequests(result.data || []);
     } catch (err) {
-      console.error("Error loading recent donor workspace entries:", err);
+      console.error("Error loading recent requests:", err);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    if (user?.email) {
-      fetchRecentRequests();
-    }
-  }, [user?.email]);
+    if (user?.email) fetchRecentRequests();
+  }, [user?.email, fetchRecentRequests]);
 
-  // Handle status updating transitions (inprogress -> done / canceled)
   const handleUpdateStatus = async (id, nextStatus) => {
     setActionLoading(id);
+    setOpenMenuId(null);
     try {
       await updateDonationRequestStatus(id, nextStatus);
+      showToast(
+        nextStatus === "done"
+          ? "Request marked as Done! ✅"
+          : "Donation cancelled successfully.",
+        "success"
+      );
       fetchRecentRequests();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to update execution process status flags.");
+    } catch (err) {
+      showToast(err.message || "Failed to update status.", "error");
     } finally {
       setActionLoading(null);
     }
   };
 
-  // Trigger modal confirmation tracking state pointers
   const openDeleteModal = (id) => {
     setTargetRequestId(id);
     setDeleteModalOpen(true);
+    setOpenMenuId(null);
   };
 
-  // Process delete execution context action
   const handleConfirmDelete = async () => {
     if (!targetRequestId) return;
     setActionLoading(targetRequestId);
-
     try {
       await deleteDonationRequest(targetRequestId);
+      showToast("Request deleted successfully.", "success");
       fetchRecentRequests();
       setDeleteModalOpen(false);
-    } catch (error) {
-      console.error(error);
-      alert("Error securely deleting structural component.");
+    } catch (err) {
+      showToast(err.message || "Failed to delete.", "error");
     } finally {
       setActionLoading(null);
       setTargetRequestId(null);
     }
   };
 
-  // Helper utility mapping status tags styling variables
   const getStatusBadge = (status) => {
     const config = {
       pending: "bg-amber-50 text-amber-700 border-amber-200",
@@ -100,9 +109,7 @@ export default function DonorDashboard({ user }) {
       canceled: "bg-stone-50 text-stone-600 border-stone-200",
     };
     return (
-      <span
-        className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${config[status] || "bg-muted"}`}
-      >
+      <span className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${config[status] || "bg-muted"}`}>
         {status}
       </span>
     );
@@ -117,68 +124,50 @@ export default function DonorDashboard({ user }) {
   }
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto p-2">
-      {/* Welcome Block Section Header */}
-      <div className="bg-background border border-border p-6 rounded-2xl shadow-sm">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          Welcome back, {user?.name || "Donor"}! 👋
-        </h1>
-        <p className="text-xs text-muted-foreground mt-1">
-          Thank you for being part of the life-saving network. Monitor your
-          emergency requests below.
-        </p>
-      </div>
-
-      {/* Recent Donation Requests (Hidden automatically if requests length is 0) */}
+    <div className="space-y-6 max-w-6xl mx-auto p-2">
+      {/* Recent Donation Requests (hidden if none) */}
       {requests.length > 0 && (
         <div className="space-y-4">
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-foreground">
+            <h2 className="text-lg font-bold tracking-tight text-foreground">
               Recent Donation Requests
             </h2>
             <p className="text-xs text-muted-foreground">
-              Quick management view for your 3 most recent entries
+              Quick view of your 3 most recent entries
             </p>
           </div>
 
-          <div className="bg-background border border-border rounded-xl shadow-sm overflow-hidden">
+          <div className="bg-background border border-border rounded-2xl shadow-sm overflow-visible">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-muted/50 border-b border-border text-xs font-bold tracking-wider text-muted-foreground uppercase">
-                    <th className="p-4">Recipient</th>
-                    <th className="p-4">Location</th>
-                    <th className="p-4">Schedule Details</th>
-                    <th className="p-4 text-center">Blood</th>
-                    <th className="p-4">Status</th>
-                    <th className="p-4">Donor Information</th>
-                    <th className="p-4 text-right">Actions</th>
+                  <tr className="bg-muted/50 border-b border-border text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
+                    <th className="px-5 py-3.5">Recipient</th>
+                    <th className="px-5 py-3.5">Location</th>
+                    <th className="px-5 py-3.5">Schedule</th>
+                    <th className="px-5 py-3.5 text-center">Blood</th>
+                    <th className="px-5 py-3.5">Status</th>
+                    <th className="px-5 py-3.5">Donor Info</th>
+                    <th className="px-5 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border text-sm">
                   {requests.map((request) => (
-                    <tr
-                      key={request._id}
-                      className="hover:bg-muted/20 transition"
-                    >
-                      {/* Recipient Field */}
-                      <td className="p-4 font-medium text-foreground">
+                    <tr key={request._id} className="hover:bg-muted/20 transition">
+                      <td className="px-5 py-4 font-medium text-foreground">
                         {request.recipientName}
                       </td>
 
-                      {/* Location Field (District and Upazila only) */}
-                      <td className="p-4 text-muted-foreground">
+                      <td className="px-5 py-4 text-muted-foreground">
                         <div className="flex items-center gap-1 text-xs">
                           <MapPin className="w-3.5 h-3.5 shrink-0 opacity-60 text-primary" />
                           <span>
-                            {request.recipientUpazila},{" "}
-                            {request.recipientDistrict}
+                            {request.recipientUpazila}, {request.recipientDistrict}
                           </span>
                         </div>
                       </td>
 
-                      {/* Schedule Field */}
-                      <td className="p-4 text-xs space-y-1 text-muted-foreground">
+                      <td className="px-5 py-4 text-xs space-y-1 text-muted-foreground">
                         <div className="flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 opacity-60" />
                           <span>{request.donationDate}</span>
@@ -189,92 +178,89 @@ export default function DonorDashboard({ user }) {
                         </div>
                       </td>
 
-                      {/* Blood Group Selector Badge */}
-                      <td className="p-4 text-center">
+                      <td className="px-5 py-4 text-center">
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-bold bg-red-50 text-red-700 border border-red-100 rounded">
                           <Heart className="w-3 h-3 fill-red-500 text-red-500" />
                           {request.bloodGroup}
                         </span>
                       </td>
 
-                      {/* Status + Done / Cancel Action triggers toggled by "inprogress" state constraint */}
-                      <td className="p-4">
-                        <div className="space-y-2">
-                          {getStatusBadge(request.donationStatus)}
-
-                          {request.donationStatus === "inprogress" && (
-                            <div className="flex gap-1.5 items-center mt-1.5">
-                              <button
-                                onClick={() =>
-                                  handleUpdateStatus(request._id, "done")
-                                }
-                                disabled={actionLoading !== null}
-                                className="p-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-600 hover:bg-emerald-100 transition shadow-sm"
-                                title="Mark as Done"
-                              >
-                                <CheckCircle className="w-3.5 h-3.5" />
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleUpdateStatus(request._id, "canceled")
-                                }
-                                disabled={actionLoading !== null}
-                                className="p-1 rounded bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100 transition shadow-sm"
-                                title="Cancel Request"
-                              >
-                                <XCircle className="w-3.5 h-3.5" />
-                              </button>
-                            </div>
-                          )}
-                        </div>
+                      <td className="px-5 py-4">
+                        {getStatusBadge(request.donationStatus)}
                       </td>
 
-                      {/* Donor Metadata - Visible with assigned values only when inprogress */}
-                      <td className="p-4 text-xs max-w-[160px] truncate">
-                        {request.donationStatus === "inprogress" &&
-                        request.donorName ? (
+                      <td className="px-5 py-4 text-xs max-w-[140px]">
+                        {request.donationStatus === "inprogress" && request.donorName ? (
                           <div className="space-y-0.5 text-muted-foreground">
-                            <p className="font-semibold text-foreground">
-                              {request.donorName}
-                            </p>
-                            <p className="text-[11px] opacity-80">
-                              {request.donorEmail}
-                            </p>
+                            <p className="font-semibold text-foreground truncate">{request.donorName}</p>
+                            <p className="text-[11px] opacity-80 truncate">{request.donorEmail}</p>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground/40 italic text-xs">
-                            Unassigned
-                          </span>
+                          <span className="text-muted-foreground/40 italic">—</span>
                         )}
                       </td>
 
-                      {/* Action buttons mapping routing handlers */}
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <Link
-                            href={`/dashboard/donation-requests/view/${request._id}`}
-                            className="p-1.5 rounded-lg border border-border text-muted-foreground hover:bg-muted hover:text-foreground transition"
-                            title="View Details"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Link>
+                      {/* 3-dot dropdown with status-based actions */}
+                      <td className="px-5 py-4 text-right relative donor-menu-container">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuId((prev) => prev === request._id ? null : request._id);
+                          }}
+                          disabled={actionLoading === request._id}
+                          className="p-1.5 rounded-lg border border-transparent hover:bg-muted text-muted-foreground transition focus:outline-none inline-flex items-center justify-center disabled:opacity-40"
+                        >
+                          {actionLoading === request._id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <MoreVertical className="w-4 h-4" />
+                          )}
+                        </button>
 
-                          <Link
-                            href={`/dashboard/donation-requests/edit/${request._id}`}
-                            className="p-1.5 rounded-lg border border-border text-blue-600 hover:bg-blue-50/50 transition"
-                            title="Edit Request"
+                        {openMenuId === request._id && (
+                          <div
+                            onClick={(e) => e.stopPropagation()}
+                            className="absolute right-5 top-12 w-52 bg-background border border-border rounded-xl shadow-xl z-50 py-1.5 text-left origin-top-right animate-in fade-in zoom-in-95 duration-100"
                           >
-                            <Edit className="w-4 h-4" />
-                          </Link>
+                            <Link
+                              href={`/dashboard/donation-requests/view/${request._id}`}
+                              onClick={() => setOpenMenuId(null)}
+                              className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
+                            >
+                              <Eye className="w-3.5 h-3.5 text-muted-foreground" /> View Details
+                            </Link>
+                            <Link
+                              href={`/dashboard/donation-requests/edit/${request._id}`}
+                              onClick={() => setOpenMenuId(null)}
+                              className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
+                            >
+                              <Edit className="w-3.5 h-3.5 text-blue-500" /> Edit Request
+                            </Link>
+                            <button
+                              onClick={() => openDeleteModal(request._id)}
+                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50 transition border-t border-border/40"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" /> Delete Request
+                            </button>
 
-                          <button
-                            onClick={() => openDeleteModal(request._id)}
-                            className="p-1.5 rounded-lg border border-border text-rose-600 hover:bg-rose-50/50 transition"
-                            title="Delete Request"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
+                            {request.donationStatus === "inprogress" && (
+                              <>
+                                <button
+                                  onClick={() => handleUpdateStatus(request._id, "done")}
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-emerald-700 hover:bg-emerald-50 transition border-t border-border/40"
+                                >
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Mark as Done
+                                </button>
+                                <button
+                                  onClick={() => handleUpdateStatus(request._id, "canceled")}
+                                  className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-600 hover:bg-stone-50 transition"
+                                >
+                                  <XCircle className="w-3.5 h-3.5 text-stone-500" /> Cancel Donation
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -283,7 +269,7 @@ export default function DonorDashboard({ user }) {
             </div>
           </div>
 
-          {/* Redirection Router Control to Complete History Index */}
+          {/* View All Requests Button */}
           <div className="flex justify-center pt-2">
             <Link
               href="/dashboard/my-donation-requests"
@@ -296,41 +282,39 @@ export default function DonorDashboard({ user }) {
         </div>
       )}
 
-      {/* Delete Confirmation Modal Overlay */}
+      {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-all">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-background border border-border rounded-2xl max-w-sm w-full p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center gap-3 text-rose-600 mb-3">
               <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl">
-                <AlertTriangle className="w-6 h-6" />
+                <AlertTriangle className="w-5 h-5" />
               </div>
-              <h3 className="text-lg font-bold text-foreground">
-                Confirm Deletion
-              </h3>
+              <h3 className="text-base font-bold text-foreground">Confirm Deletion</h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Are you sure you want to permanently erase this donation request
-              entry from database logs? This action cannot be reverted.
+              Are you sure you want to permanently delete this donation request? This cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-2 mt-5 border-t border-border pt-4">
               <button
-                type="button"
                 onClick={() => setDeleteModalOpen(false)}
                 className="px-4 py-2 text-sm font-medium bg-muted border border-border rounded-xl hover:bg-muted/80 transition"
               >
                 Cancel
               </button>
               <button
-                type="button"
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 text-sm font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition shadow-sm"
+                disabled={actionLoading !== null}
+                className="px-4 py-2 text-sm font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition disabled:opacity-50 min-w-[120px] flex items-center justify-center"
               >
-                Confirm Delete
+                {actionLoading !== null ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm Delete"}
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
     </div>
   );
 }

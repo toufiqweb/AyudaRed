@@ -68,7 +68,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
     admin: [
       {
         name: "Manage Users",
-        href: "/dashboard/admin/users",
+        href: "/dashboard/all-users",
         icon: Users,
       },
       {
@@ -86,6 +86,9 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
 
   // Safely grab the current user's links or default to empty array
   const currentUserRole = user?.role?.toLowerCase() || "donor";
+  // console.log(currentUserRole);
+
+  // console.log("user :>> ", user);
   const currentRoleLinks = roleLinks[currentUserRole] || [];
 
   // Helper component to render single links cleanly

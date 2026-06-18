@@ -30,9 +30,14 @@ export const protectedServerFetch = async (path, token) => {
   return handleStatus(res);
 };
 
-const handleStatus = (res) => {
+const handleStatus = async (res) => {
   if (!res.ok) {
-    throw new Error("Server error");
+    let message = `Server error (${res.status})`;
+    try {
+      const body = await res.json();
+      message = body?.message || body?.msg || message;
+    } catch (_) {}
+    throw new Error(message);
   }
   return res.json();
 };

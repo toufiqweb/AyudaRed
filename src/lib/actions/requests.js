@@ -6,12 +6,12 @@ import { auth } from "../auth";
 import { serverMutation } from "../core/server";
 import { getTokenServer } from "../core/getTokenServer";
 
-export const updateUserProfile = async (formData) => {
-  // Get the current session to securely identify the user
+export const createDonationRequest = async (formData) => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
   const token = await getTokenServer();
+  
   if (!token) {
     throw new Error("Unauthorized: No token found.");
   }
@@ -19,19 +19,16 @@ export const updateUserProfile = async (formData) => {
     throw new Error("Unauthorized: No active session found.");
   }
 
-  // Call the Express backend PATCH /api/users/profile
+  // Call the Express backend POST /api/donation-requests
   const data = await serverMutation(
-    "/api/users/profile",
-    {
-      email: session.user.email, // Backend reads this to find the user
-      ...formData, // name, image, bloodGroup, district, upazila
-    },
-    "PATCH",
+    "/api/donation-requests",
+    formData,
+    "POST",
     token,
   );
 
-  // Revalidate the profile page so the Server Component re-fetches fresh data
-  revalidatePath("/dashboard/profile");
-
+  // Revalidate relevant pages
+  revalidatePath("/dashboard");
+  
   return data;
 };

@@ -5,16 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  ShoppingBag,
-  Package,
+  PlusCircle,
+  ClipboardList,
   Users,
   Settings,
   X,
-  Store,
-  ShieldAlert,
-  History,
-  BarChart3,
-  CreditCard,
+  Droplet,
+  Shield,
+  HeartHandshake,
+  Calendar,
+  User,
 } from "lucide-react";
 import { useUserClientSession } from "@/lib/core/sessionClient";
 
@@ -30,34 +30,57 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
   // 1. Define base links shared across all authenticated roles
   const sharedLinks = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Profile", href: "/dashboard/profile", icon: User },
     { name: "Settings", href: "/dashboard/settings", icon: Settings },
-    { name: "Profile", href: "/dashboard/profile", icon: Settings },
   ];
 
   // 2. Define role-specific navigation menus
   const roleLinks = {
-    buyer: [
-      { name: "My Orders", href: "/dashboard/orders", icon: ShoppingBag },
-      { name: "Purchase History", href: "/dashboard/history", icon: History },
-      { name: "Billing", href: "/dashboard/billing", icon: CreditCard },
-    ],
-    seller: [
-      { name: "My Shop", href: "/dashboard/shop", icon: Store },
-      { name: "Manage Products", href: "/dashboard/products", icon: Package },
+    donor: [
       {
-        name: "Sales Analytics",
-        href: "/dashboard/analytics",
-        icon: BarChart3,
+        name: "Create Request",
+        href: "/dashboard/create-donation-request",
+        icon: PlusCircle,
+      },
+      {
+        name: "My Donation Requests",
+        href: "/dashboard/my-donation-requests",
+        icon: ClipboardList,
+      },
+    ],
+    volunteer: [
+      {
+        name: "Review Requests",
+        href: "/dashboard/volunteer/requests",
+        icon: HeartHandshake,
+      },
+      {
+        name: "Manage Camps",
+        href: "/dashboard/volunteer/camps",
+        icon: Calendar,
+      },
+      {
+        name: "Donor Directory",
+        href: "/dashboard/volunteer/donors",
+        icon: Users,
       },
     ],
     admin: [
-      { name: "Manage Users", href: "/dashboard/admin/users", icon: Users },
       {
-        name: "Inventory Control",
-        href: "/dashboard/admin/inventory",
-        icon: Package,
+        name: "Manage Users",
+        href: "/dashboard/admin/users",
+        icon: Users,
       },
-      { name: "System Logs", href: "/dashboard/admin/logs", icon: ShieldAlert },
+      {
+        name: "Blood Stock Control",
+        href: "/dashboard/admin/blood-stock",
+        icon: Droplet,
+      },
+      {
+        name: "System Logs",
+        href: "/dashboard/admin/logs",
+        icon: Shield,
+      },
     ],
   };
 
@@ -81,7 +104,11 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
         }`}
       >
         <Icon
-          className={`w-4 h-4 mr-3 shrink-0 ${isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"}`}
+          className={`w-4 h-4 mr-3 shrink-0 ${
+            isActive
+              ? "text-primary"
+              : "text-muted-foreground group-hover:text-foreground"
+          }`}
         />
         {item.name}
         {isActive && (
@@ -113,9 +140,12 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
         <div className="h-16 px-6 flex items-center justify-between border-b border-border shrink-0">
           <Link
             href="/"
-            className="text-xl font-bold tracking-tight text-foreground"
+            className="text-xl font-bold tracking-tight text-foreground flex items-center gap-1.5"
           >
-            Baz<span className="text-primary">aro</span>
+            <Droplet className="w-5 h-5 text-primary fill-primary" />
+            <span>
+              Blood<span className="text-primary">Life</span>
+            </span>
           </Link>
           {/* Close drawer icon button (Mobile only) */}
           <button

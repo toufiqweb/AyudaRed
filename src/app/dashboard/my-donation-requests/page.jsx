@@ -17,10 +17,10 @@ import {
   XCircle,
 } from "lucide-react";
 import {
-  getUserDonationRequests,
   updateDonationRequestStatus,
   deleteDonationRequest,
 } from "@/lib/actions/requests";
+import { getUserDonationRequests } from "@/lib/api/requests";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 

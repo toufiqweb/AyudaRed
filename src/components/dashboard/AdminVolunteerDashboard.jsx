@@ -19,7 +19,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { getDashboardStats } from "@/lib/actions/admin";
+import { getDashboardStats } from "@/lib/api/admin";
 
 const VIEWS = [
   { key: "daily", label: "Daily", icon: CalendarDays },

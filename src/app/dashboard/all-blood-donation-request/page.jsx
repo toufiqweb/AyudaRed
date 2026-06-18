@@ -18,11 +18,13 @@ import {
   Filter,
 } from "lucide-react";
 import {
-  getAllDonationRequests,
   managementUpdateStatus,
   adminDeleteDonationRequest,
-  getCurrentUserRole,
 } from "@/lib/actions/admin";
+import {
+  getAllDonationRequests,
+  getCurrentUserRole,
+} from "@/lib/api/admin";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 

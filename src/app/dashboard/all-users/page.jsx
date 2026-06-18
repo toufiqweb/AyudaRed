@@ -11,7 +11,8 @@ import {
   Ban,
   Unlock,
 } from "lucide-react";
-import { getAllUsers, updateUser } from "@/lib/actions/admin";
+import { updateUser } from "@/lib/actions/admin";
+import { getAllUsers } from "@/lib/api/admin";
 import Pagination from "@/components/ui/Pagination";
 
 export default function AllUsersPage() {

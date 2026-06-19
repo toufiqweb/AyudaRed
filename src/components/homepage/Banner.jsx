@@ -1,132 +1,102 @@
-import Link from "next/link";
-import {
-  ArrowRight,
-  Sparkles,
-  ShieldCheck,
-  ShoppingBag,
-  ArrowUpRight,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
-const Banner = () => {
+export default function Banner() {
   return (
-    <div className="w-full min-h-[500px] md:h-[600px] bg-background flex items-center relative overflow-hidden transition-colors duration-300">
-      {/* Decorative background accent grids or glows */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary/20 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-primary/10 blur-[100px]" />
-      </div>
+    <div className="relative min-h-screen w-full bg-white font-sans overflow-hidden select-none">
+      {/* ১. স্টাইলিশ গ্লোবাল নেভিগেশন বার */}
+      <header className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8"></header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full grid grid-cols-1 md:grid-cols-12 gap-12 items-center relative z-10 py-12 md:py-0">
-        {/* Left Side: Dynamic Copywriting & Call to Actions */}
-        <div className="md:col-span-7 space-y-6 text-left">
-          {/* Badge alert indicator */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-muted border border-border rounded-full text-xs font-medium text-foreground/90">
-            <Sparkles className="w-3.5 h-3.5 text-primary" />
-            <span>Introducing Bazaro Ecosystem v2.0</span>
-          </div>
+      {/* ২. মেইন হিরো কন্টেন্ট এরিয়া */}
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-24 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* বামপাশের টেক্সট কন্টেন্ট */}
+          <div className="lg:col-span-6 space-y-6 max-w-xl text-left">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-black leading-[1.1]">
+              Mens health and <br />
+              wellness solutions
+            </h1>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.1]">
-            The organic space for{" "}
-            <span className="text-primary italic font-serif font-normal">
-              conscious
-            </span>{" "}
-            commerce.
-          </h1>
+            <p className="text-sm sm:text-base text-gray-400 font-medium leading-relaxed max-w-md">
+              A Geviti membership makes longevity easy and accessible with our
+              wide range of at-home diagnostics, innovative anti-aging
+              therapies, and a dedicated qualified care team.
+            </p>
 
-          <p className="text-base sm:text-lg text-foreground/80 max-w-xl leading-relaxed">
-            Discover a refined marketplace tailored around transparent
-            exchanges. Whether you are listing hand-crafted batches or securing
-            trusted items, Bazaro bridges the path beautifully.
-          </p>
-
-          {/* Dual Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-            <Link
-              href="/marketplace"
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-primary-foreground bg-primary hover:opacity-95 rounded-xl shadow-md shadow-primary/10 transition-all group text-center"
-            >
-              Explore Marketplace
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-
-            <Link
-              href="/about"
-              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-foreground bg-muted border border-border hover:bg-border/40 rounded-xl transition-all text-center"
-            >
-              Learn Our Philosophy
-            </Link>
-          </div>
-
-          {/* Quick trust bullet signals */}
-          <div className="flex items-center gap-6 pt-4 border-t border-border/60 max-w-md">
-            <div className="flex items-center gap-2 text-xs text-foreground/70">
-              <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
-              <span>Verified Accounts Only</span>
+            {/* পিল-শেপড প্রিমিয়াম গেট স্টার্টেড বাটন */}
+            <div className="pt-2">
+              <button className="group flex items-center justify-between min-w-[180px] bg-[#111] hover:bg-black text-white rounded-full p-1.5 pl-6 pr-2 transition-all shadow-md">
+                <span className="text-xs sm:text-sm font-bold tracking-wide">
+                  Get Started
+                </span>
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black group-hover:translate-x-0.5 transition-transform">
+                  <ArrowRight className="w-4 h-4" />
+                </span>
+              </button>
             </div>
-            <div className="flex items-center gap-2 text-xs text-foreground/70">
-              <ShoppingBag className="w-4 h-4 text-primary shrink-0" />
-              <span>Zero-Gas Listing Setup</span>
+          </div>
+
+          {/* ডানপাশের প্রোডাক্ট এবং ওয়াটারমার্ক ইমেজ জোন */}
+          <div className="lg:col-span-6 relative flex items-center justify-center min-h-[400px] sm:min-h-[500px]">
+            {/* ব্যাকগ্রাউন্ড বিগ ওয়াটারমার্ক টেক্সট */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+              <span className="text-[120px] sm:text-[160px] lg:text-[200px] font-black text-sky-100/40 tracking-tight">
+                BLOOD
+              </span>
+            </div>
+
+            {/* থ্রিডি প্রোডাক্ট বোতল (ফ্লোটিং অ্যানিমেশন সহ) */}
+            <div className="relative z-10 animate-[bounce_6s_infinite_ease-in-out] max-w-[280px] sm:max-w-[340px]">
+              <img
+                src="https://i.ibb.co/v4bXwXp/pngwing-com.png" // 💡 এখানে আপনার অরিজিনাল টেস্টোস্টেরন বোতলের ট্রান্সপারেন্ট পিএনজি লিংকটি বসাবেন
+                alt="Geviti Oral Testosterone"
+                className="w-full h-auto object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.12)] rotate-[-12deg]"
+              />
+            </div>
+
+            {/* ডানদিকের নিচের সোশ্যাল প্রুফ কার্ড (HSA/FSA Accepted) */}
+            <div className="absolute bottom-4 right-0 sm:right-4 bg-white/90 backdrop-blur-md border border-gray-100 p-2.5 px-4 rounded-2xl shadow-lg shadow-gray-200/50 flex items-center gap-3 z-20">
+              {/* ছোট ওভারল্যাপিং অ্যাভাটার ট্রিক */}
+              <div className="flex -space-x-2 overflow-hidden">
+                <img
+                  className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100"
+                  alt="User"
+                />
+                <img
+                  className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100"
+                  alt="User"
+                />
+                <img
+                  className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100"
+                  alt="User"
+                />
+              </div>
+              <div className="text-left">
+                <p className="text-[10px] font-bold text-gray-800 uppercase tracking-wider flex items-center gap-1">
+                  ✓ HSA/FSA Accepted
+                </p>
+                {/* ৫ স্টার রেটিং */}
+                <div className="flex gap-0.5 mt-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-amber-500 text-xs">
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </main>
 
-        {/* Right Side: Visual Context Dual Cards (Buyer vs Seller representation) */}
-        <div className="md:col-span-5 relative w-full h-[340px] sm:h-[400px] flex items-center justify-center">
-          {/* Seller Interactive Preview Block */}
-          <div className="absolute top-4 left-4 w-[75%] bg-muted/90 backdrop-blur border border-border p-5 rounded-2xl shadow-xl rotate-[-4deg] hover:rotate-0 hover:scale-[1.02] transition-all duration-300 group z-20">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[10px] font-bold tracking-widest text-primary uppercase bg-primary/10 px-2 py-0.5 rounded">
-                Seller Hub
-              </span>
-              <ArrowUpRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-            <h3 className="font-bold text-lg text-foreground mb-1">
-              Create Your Atelier
-            </h3>
-            <p className="text-xs text-foreground/70 leading-normal mb-4">
-              List digital assets, unique physical items, or subscription
-              options directly into global queries with zero friction.
-            </p>
-            <div className="h-2 w-full bg-border/40 rounded-full overflow-hidden">
-              <div className="h-full w-[85%] bg-primary rounded-full animate-pulse" />
-            </div>
-            <div className="flex justify-between items-center mt-3 text-[10px] font-mono text-foreground/60">
-              <span>Active Listings: 14</span>
-              <span className="font-bold text-foreground">Top 5% Rated</span>
-            </div>
-          </div>
-
-          {/* Buyer Interactive Preview Block */}
-          <div className="absolute bottom-4 right-4 w-[75%] bg-background border border-border p-5 rounded-2xl shadow-2xl rotate-[6deg] hover:rotate-0 hover:scale-[1.02] transition-all duration-300 group z-10">
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[10px] font-bold tracking-widest text-foreground/50 uppercase bg-muted px-2 py-0.5 rounded">
-                Buyer View
-              </span>
-              <ArrowUpRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-            <h3 className="font-bold text-lg text-foreground mb-1">
-              Curate Collections
-            </h3>
-            <p className="text-xs text-foreground/70 leading-normal mb-3">
-              Follow trusted sellers, secure automated bids, and track shipping
-              pipelines cleanly in your unified dashboard.
-            </p>
-            <div className="flex gap-2">
-              <span className="w-6 h-6 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center text-[10px]">
-                ✨
-              </span>
-              <span className="w-6 h-6 rounded-full bg-muted border border-border flex items-center justify-center text-[10px]">
-                📦
-              </span>
-              <span className="w-6 h-6 rounded-full bg-muted border border-border flex items-center justify-center text-[10px]">
-                💳
-              </span>
-            </div>
-          </div>
+      {/* ৩. বামদিকের নিচে থাকা স্ক্রোল মাউস ইন্ডিকেটর */}
+      <div className="absolute bottom-8 left-4 sm:left-8 lg:left-12 z-20 hidden sm:block">
+        <div className="flex h-11 w-7 items-start justify-center rounded-full border-2 border-gray-300 p-1.5 hover:border-gray-500 transition cursor-pointer">
+          <span className="h-2 w-1 rounded-full bg-gray-400 animate-bounce" />
         </div>
       </div>
     </div>
   );
-};
-
-export default Banner;
+}

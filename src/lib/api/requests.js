@@ -23,3 +23,11 @@ export const getDonationRequestById = async (id) => {
   return serverFetch(`/api/donation-requests/${id}`);
 };
 
+// GET: Fetch public pending donation requests with pagination
+export const getPendingDonationRequests = async (currentPage, itemsPerPage) => {
+  return serverFetch(
+    `/api/donation-requests?page=${currentPage}&size=${itemsPerPage}`
+  );
+};
+
+

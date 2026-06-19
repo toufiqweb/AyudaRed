@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   Heart,
@@ -21,10 +21,7 @@ import {
   managementUpdateStatus,
   adminDeleteDonationRequest,
 } from "@/lib/actions/admin";
-import {
-  getAllDonationRequests,
-  getCurrentUserRole,
-} from "@/lib/api/admin";
+import { getAllDonationRequests, getCurrentUserRole } from "@/lib/api/admin";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 
@@ -68,7 +65,7 @@ export default function AllBloodDonationRequestsPage() {
     checkRole();
   }, []);
 
-  const fetchAllRequests = async () => {
+  const fetchAllRequests = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
@@ -86,11 +83,14 @@ export default function AllBloodDonationRequestsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, currentPage, itemsPerPage]);
 
   useEffect(() => {
-    fetchAllRequests();
-  }, [statusFilter, currentPage, itemsPerPage]);
+    const timer = setTimeout(() => {
+      fetchAllRequests();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchAllRequests]);
 
   const handleUpdateStatus = async (id, status) => {
     setActionLoadingId(id);

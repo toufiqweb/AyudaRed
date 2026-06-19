@@ -25,44 +25,52 @@
 @layer base {
   :root,
   .light {
-    --background: #fff5f5; /* very soft pink */
-    --foreground: #2b1b1b; /* dark warm text */
+    --background: #fcfcfc;
+    --foreground: #0d0d0d;
 
-    --primary: #e63946; /* strong blood red */
+    --primary: #dc2626; /* Vibrant crimson base */
     --primary-foreground: #ffffff;
 
-    --secondary: #ff8fa3; /* soft pink */
-    --secondary-foreground: #2b1b1b;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #0d0d0d;
 
-    --accent: #ff4d6d; /* highlight red-pink */
+    --accent: #ef4444;
     --accent-foreground: #ffffff;
 
-    --muted: #ffe3e3; /* light card bg */
-    --border: #f1c0c0; /* soft border */
+    --muted: #e4e4e7;
+    --border: #e4e4e7;
 
-    --danger: #c1121f; /* alert / urgent */
+    --danger: #991b1b;
   }
 }
 
-/* ================= DARK MODE ================= */
+/* ================= DARK MODE (Matched to Image) ================= */
 @layer base {
   .dark {
-    --background: #0f0a0a; /* deep black-red */
-    --foreground: #f8e9e9; /* soft white */
+    /* Main Background - Deep, rich dark UI layout */
+    --background: #09090b;
+    --foreground: #f4f4f5;
 
-    --primary: #ff4d6d; /* neon red accent */
-    --primary-foreground: #0f0a0a;
+    /* Blood Red Brand Color - Punchy crimson from the charts and buttons */
+    --primary: #e11d48;
+    --primary-foreground: #ffffff;
 
-    --secondary: #7a1f2b; /* dark red */
+    /* Cards / Surfaces - Lighter charcoal for the distinct dashboard card panels */
+    --secondary: #121214;
     --secondary-foreground: #ffffff;
 
-    --accent: #ff8fa3; /* glowing pink */
-    --accent-foreground: #0f0a0a;
+    /* Hover Accent / Active States - Bright red glow matching active buttons */
+    --accent: #f43f5e;
+    --accent-foreground: #ffffff;
 
-    --muted: #1c1212; /* card dark */
-    --border: #2a1a1a;
+    /* Muted Surfaces / Subtle fields */
+    --muted: #1c1c1f;
 
-    --danger: #ff1f3d; /* strong alert */
+    /* Borders - Soft definition line color between sections */
+    --border: #222226;
+
+    /* Danger / Critical status indicators */
+    --danger: #f43f5e;
   }
 }
 
@@ -72,8 +80,13 @@
     border-color: var(--border);
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: var(--background);
     color: var(--foreground);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 }

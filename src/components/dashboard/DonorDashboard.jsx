@@ -57,7 +57,12 @@ export default function DonorDashboard({ user }) {
   }, []);
 
   useEffect(() => {
-    if (user?.email) fetchRecentRequests();
+    if (user?.email) {
+      const timer = setTimeout(() => {
+        fetchRecentRequests();
+      }, 0);
+      return () => clearTimeout(timer);
+    }
   }, [user?.email, fetchRecentRequests]);
 
   const handleUpdateStatus = async (id, nextStatus) => {

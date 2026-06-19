@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   Loader2,
@@ -40,11 +40,7 @@ export default function AllUsersPage() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [statusFilter, currentPage]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
@@ -59,7 +55,14 @@ export default function AllUsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, currentPage]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchUsers();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchUsers]);
 
   const handleUpdateUser = async (userId, payload) => {
     setActionLoadingId(userId);

@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useUserServerSession } from "@/lib/core/sessionSever";
+import { getUserByEmail } from "@/lib/api/users";
 import CreateRequestForm from "./CreateRequestForm";
 
 const CreateDonationRequestPage = async () => {
@@ -10,16 +12,8 @@ const CreateDonationRequestPage = async () => {
     user = await useUserServerSession();
 
     if (user?.email) {
-      // Check the user status from your Express backend
-      const res = await fetch(
-        `http://localhost:9000/api/users?email=${user.email}`,
-        {
-          cache: "no-store",
-        },
-      );
-      if (res.ok) {
-        dbUser = await res.json();
-      }
+      // Check the user status from your Express backend using shared API configuration
+      dbUser = await getUserByEmail(user.email);
     }
   } catch (err) {
     console.error("Authorization check failure:", err);

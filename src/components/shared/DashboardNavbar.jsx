@@ -30,7 +30,9 @@ const DashboardNavbar = ({ onMenuClick }) => {
   const { user } = useUserClientSession();
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
 
     // Global click listener to close open dropdowns safely
     const handleClickOutside = (event) => {
@@ -43,7 +45,10 @@ const DashboardNavbar = ({ onMenuClick }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleLogout = async () => {

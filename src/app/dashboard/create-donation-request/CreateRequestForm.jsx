@@ -36,16 +36,11 @@ export default function CreateRequestForm({ user }) {
     requestMessage: "",
   });
 
-  const [availableUpazilas, setAvailableUpazilas] = useState([]);
-
-  // Watch district selections to compute corresponding upazila choices
-  useEffect(() => {
-    if (formData.recipientDistrict && upazilas[formData.recipientDistrict]) {
-      setAvailableUpazilas(upazilas[formData.recipientDistrict]);
-    } else {
-      setAvailableUpazilas([]);
-    }
-  }, [formData.recipientDistrict]);
+  // Watch district selections to compute corresponding upazila choices dynamically
+  const availableUpazilas =
+    formData.recipientDistrict && upazilas[formData.recipientDistrict]
+      ? upazilas[formData.recipientDistrict]
+      : [];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

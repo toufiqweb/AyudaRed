@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useUserServerSession } from "@/lib/core/sessionSever";
 import DonorDashboard from "@/components/dashboard/DonorDashboard";
 import AdminVolunteerDashboard from "@/components/dashboard/AdminVolunteerDashboard";

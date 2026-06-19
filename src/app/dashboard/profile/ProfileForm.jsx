@@ -32,29 +32,27 @@ export default function ProfileForm({ initialData }) {
     upazila: initialData?.upazila || "Nangalkot", // ব্যাকআপ হিসেবে 'Nangalkot' দেওয়া
   });
 
-  const [availableUpazilas, setAvailableUpazilas] = useState([]);
-
   // ২. সার্ভার থেকে ডাটা রি-ভ্যালিডেট হলে স্টেট আপডেট হবে
   useEffect(() => {
     if (initialData) {
-      setFormData({
-        name: initialData.name || "",
-        bloodGroup: initialData.bloodGroup || "A+",
-        district: initialData.district || "Cumilla",
-        upazila: initialData.upazila || "Nangalkot",
-      });
-      setImagePreview(initialData.image || "");
+      const timer = setTimeout(() => {
+        setFormData({
+          name: initialData.name || "",
+          bloodGroup: initialData.bloodGroup || "A+",
+          district: initialData.district || "Cumilla",
+          upazila: initialData.upazila || "Nangalkot",
+        });
+        setImagePreview(initialData.image || "");
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [initialData]);
 
-  // ৩. সিলেক্টেড জেলা অনুযায়ী উপজেলার ড্রপডাউন ডাটা ফিল্টার করা
-  useEffect(() => {
-    if (formData.district && upazilas[formData.district]) {
-      setAvailableUpazilas(upazilas[formData.district]);
-    } else {
-      setAvailableUpazilas([]);
-    }
-  }, [formData.district]);
+  // ৩. সিলেক্টেড জেলা অনুযায়ী উপজেলার ড্রপডাউন ডাটা ফিল্টার করা dynamically
+  const availableUpazilas =
+    formData.district && upazilas[formData.district]
+      ? upazilas[formData.district]
+      : [];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { confirmDonation } from "@/lib/actions/admin";
+import { getDonationRequestById } from "@/lib/api/requests";
 
 export default function DonationRequestsDetails() {
   const router = useRouter();
@@ -39,13 +40,7 @@ export default function DonationRequestsDetails() {
         }
         setUser(session.data.user);
 
-        const res = await fetch(
-          `http://localhost:9000/api/donation-requests/${id}`,
-        );
-        if (!res.ok) {
-          throw new Error("Donation request details not found.");
-        }
-        const data = await res.json();
+        const data = await getDonationRequestById(id);
         setRequest(data);
       } catch (err) {
         setError(err.message || "Failed to load request details.");
@@ -238,7 +233,7 @@ export default function DonationRequestsDetails() {
               <MessageSquare className="w-4 h-4" /> Message / Case Details
             </h3>
             <p className="text-xs text-muted-foreground bg-muted/40 p-4 border border-border/60 rounded-xl leading-relaxed italic">
-              "{request.requestMessage}"
+              &ldquo;{request.requestMessage}&rdquo;
             </p>
           </div>
         )}

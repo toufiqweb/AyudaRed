@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { getUserByEmail } from "@/lib/api/users";
 import { useUserServerSession } from "@/lib/core/sessionSever";
 import ProfileForm from "./ProfileForm";

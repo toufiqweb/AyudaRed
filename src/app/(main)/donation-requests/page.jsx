@@ -1,16 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import {
-  Heart,
-  MapPin,
-  Calendar,
-  Clock,
-  Eye,
-  Loader2,
-} from "lucide-react";
+import { Heart, MapPin, Calendar, Clock, Eye, Loader2 } from "lucide-react";
 import Pagination from "@/components/ui/Pagination";
+import { getPendingDonationRequests } from "@/lib/api/requests";
 
 export default function DonationRequestsPage() {
   const [requests, setRequests] = useState([]);
@@ -21,19 +15,11 @@ export default function DonationRequestsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const fetchPendingRequests = async () => {
+  const fetchPendingRequests = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/donation-requests?page=${currentPage}&size=${itemsPerPage}`,
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to load blood donation requests.");
-      }
-
-      const data = await res.json();
+      const data = await getPendingDonationRequests(currentPage, itemsPerPage);
       if (data.success) {
         setRequests(data.requests || []);
         setTotalPages(data.pagination?.totalPages || 1);
@@ -43,11 +29,14 @@ export default function DonationRequestsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
-    fetchPendingRequests();
-  }, [currentPage, itemsPerPage]);
+    const timer = setTimeout(() => {
+      fetchPendingRequests();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [fetchPendingRequests]);
 
   const renderPageNumbers = () => {
     const pages = [];

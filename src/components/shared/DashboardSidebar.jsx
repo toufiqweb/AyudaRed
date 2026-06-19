@@ -24,7 +24,10 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
   const { user } = useUserClientSession();
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // 1. Define base links shared across all authenticated roles

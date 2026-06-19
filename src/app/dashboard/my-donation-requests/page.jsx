@@ -64,7 +64,10 @@ export default function MyDonationRequestsPage() {
   }, [statusFilter, currentPage]);
 
   useEffect(() => {
-    fetchDonationRequests();
+    const timer = setTimeout(() => {
+      fetchDonationRequests();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchDonationRequests]);
 
   const handleUpdateStatus = async (id, nextStatus) => {

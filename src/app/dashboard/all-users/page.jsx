@@ -100,10 +100,10 @@ export default function AllUsersPage() {
       {/* Configuration Control Card Section Heading */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
             All Users Accounts 👤
           </h1>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground font-body">
             Manage system memberships, assign global roles, and govern account
             permissions flags
           </p>
@@ -138,16 +138,16 @@ export default function AllUsersPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-primary opacity-80" />
-            <p className="text-xs text-muted-foreground animate-pulse">
+            <p className="text-xs text-muted-foreground animate-pulse font-body">
               Loading identity datasets...
             </p>
           </div>
         ) : users.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-            <h3 className="text-sm font-semibold text-foreground">
+            <h3 className="text-sm font-semibold text-foreground font-heading">
               No Accounts Matches Present
             </h3>
-            <p className="text-xs text-muted-foreground max-w-xs mt-1">
+            <p className="text-xs text-muted-foreground max-w-xs mt-1 font-body">
               There are no user accounts profiles recorded fitting your chosen
               lookup properties.
             </p>
@@ -185,7 +185,7 @@ export default function AllUsersPage() {
                             className="object-cover"
                           />
                         </div>
-                        <p className="font-semibold text-foreground truncate max-w-[160px]">
+                        <p className="font-semibold text-foreground truncate max-w-[160px] font-body">
                           {profile.name}
                         </p>
                       </div>

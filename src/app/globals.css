@@ -3,6 +3,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -28,7 +31,7 @@
     --background: #fcfcfc;
     --foreground: #0d0d0d;
 
-    --primary: #dc2626; /* Vibrant crimson base */
+    --primary: #b21e1e; /* Vibrant crimson base */
     --primary-foreground: #ffffff;
 
     --secondary: #f4f4f5;
@@ -52,7 +55,7 @@
     --foreground: #f4f4f5;
 
     /* Blood Red Brand Color - Punchy crimson from the charts and buttons */
-    --primary: #e11d48;
+    --primary: #ae1919;
     --primary-foreground: #ffffff;
 
     /* Cards / Surfaces - Lighter charcoal for the distinct dashboard card panels */
@@ -87,6 +90,51 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
+    font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .section-title,
+  [class*="text-4xl"],
+  [class*="text-5xl"],
+  [class*="text-6xl"] {
+    font-family: var(--font-serif);
+  }
+
+  h1,
+  h2 {
+    font-weight: 700; /* bold */
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600; /* semi-bold */
+  }
+
+  p,
+  span,
+  label,
+  button,
+  input,
+  textarea,
+  a {
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-serif);
+  }
+  .font-body {
+    font-family: var(--font-sans);
   }
 }

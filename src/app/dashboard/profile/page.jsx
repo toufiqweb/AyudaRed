@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { getUserByEmail } from "@/lib/api/users";
 import { useUserServerSession } from "@/lib/core/sessionSever";
-import ProfileForm from "./ProfileForm";
+import ProfilePage from "./ProfileForm"; // Points to your newly updated premium page layout
 
-const ProfilePage = async () => {
+const ProfileServerPage = async () => {
   let user = null;
   let userData = null;
   let error = null;
@@ -12,24 +11,38 @@ const ProfilePage = async () => {
     user = await useUserServerSession();
   } catch (err) {
     console.error("Failed to get session:", err);
-    error = "Failed to load session.";
+    error = "Failed to synchronize server session secure tokens.";
   }
 
+  /* ================= PREMIUM ERROR STATE ================= */
   if (error) {
     return (
-      <div className="container mx-auto pt-20 p-6 max-w-2xl">
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl">
-          {error}
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-6">
+        <div className="w-full max-w-md p-5 text-sm text-danger bg-danger/10 border border-danger/20 rounded-2xl shadow-sm text-center">
+          <p className="font-semibold mb-1 font-body">Session Handshake Error</p>
+          <span className="opacity-80">{error}</span>
         </div>
       </div>
     );
   }
 
+  /* ================= PREMIUM AUTHENTICATION GUARD STATE ================= */
   if (!user) {
     return (
-      <div className="container mx-auto pt-20 p-6 max-w-2xl">
-        <div className="p-4 text-sm text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-xl">
-          You are not logged in. Please sign in to view your profile.
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-6">
+        <div className="w-full max-w-md p-6 bg-secondary border border-border/60 rounded-2xl shadow-xl text-center space-y-3">
+          <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-black text-lg">
+            !
+          </div>
+          <div className="space-y-1">
+            <h3 className="font-bold text-base tracking-tight font-heading">
+              Authentication Required
+            </h3>
+            <p className="text-xs text-foreground/60 font-body">
+              You are not logged in. Please sign in to view your personalized
+              platform metrics.
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -41,21 +54,31 @@ const ProfilePage = async () => {
     console.error("Failed to fetch database user data:", err);
   }
 
-  // Combine Better-Auth baseline session with your strict MongoDB fields layout
+  // Baseline data merging with optimized structural formatting
   const initialProfile = {
     name: userData?.name || user.name || "",
     email: userData?.email || user.email || "",
     image: userData?.image || user.image || "",
-    bloodGroup: userData?.bloodGroup || "", // Explicitly maps your "A+" key format
-    district: userData?.district || "", // Explicitly maps your "Cumilla" string
-    upazila: userData?.upazila || "", // Explicitly maps your "Nangalkot" string
+    bloodGroup: userData?.bloodGroup || "A+",
+    district: userData?.district || "Cumilla",
+    upazila: userData?.upazila || "Nangalkot",
+    createdAt: userData?.createdAt
+      ? new Date(userData.createdAt).toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : "Jan 28, 2026", // Dynamic localized string conversion matching your image mockup dates
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-2xl">
-      <ProfileForm initialData={initialProfile} />
-    </div>
+    <main className="w-full min-h-screen bg-background">
+      {/* Container wrapper configured wide to give the grid framework adequate room to expand */}
+      <div className="mx-auto max-w-7xl transition-all duration-300">
+        <ProfilePage initialData={initialProfile} />
+      </div>
+    </main>
   );
 };
 
-export default ProfilePage;
+export default ProfileServerPage;

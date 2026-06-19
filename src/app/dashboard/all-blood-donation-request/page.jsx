@@ -22,11 +22,11 @@ import {
   adminDeleteDonationRequest,
 } from "@/lib/actions/admin";
 import { getAllDonationRequests, getCurrentUserRole } from "@/lib/api/admin";
-import { useToast, ToastContainer } from "@/components/ui/Toast";
+import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 
 export default function AllBloodDonationRequestsPage() {
-  const { toasts, showToast, removeToast } = useToast();
+  const toast = useToast();
   const [userRole, setUserRole] = useState("volunteer");
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -97,15 +97,14 @@ export default function AllBloodDonationRequestsPage() {
     setOpenMenuId(null);
     try {
       await managementUpdateStatus(id, status);
-      showToast(
+      toast.success(
         status === "done"
-          ? "Marked as Done successfully! ✅"
+          ? "Request marked as done."
           : "Donation canceled.",
-        "success",
       );
       fetchAllRequests();
     } catch (err) {
-      showToast(err.message || "Failed to update status.", "error");
+      toast.error(err.message || "Failed to update status.");
     } finally {
       setActionLoadingId(null);
     }
@@ -115,11 +114,11 @@ export default function AllBloodDonationRequestsPage() {
     if (!targetId) return;
     try {
       await adminDeleteDonationRequest(targetId);
-      showToast("Donation request deleted.", "success");
+      toast.success("Donation request deleted.");
       setDeleteModalOpen(false);
       fetchAllRequests();
     } catch (err) {
-      showToast(err.message || "Failed to delete.", "error");
+      toast.error(err.message || "Failed to delete.");
     }
   };
 
@@ -202,10 +201,10 @@ export default function AllBloodDonationRequestsPage() {
         {/* Title Header Card */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
               All Blood Donation Requests 🩸
             </h1>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground font-body">
               {userRole === "admin"
                 ? "Full administrative access to govern and modify all users' blood requests."
                 : "Volunteer monitoring dashboard. Authorized to view and update request status flags only."}
@@ -243,13 +242,13 @@ export default function AllBloodDonationRequestsPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-3">
               <Loader2 className="w-8 h-8 animate-spin text-rose-500 opacity-80" />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground font-body">
                 Fetching complete request directories...
               </p>
             </div>
           ) : requests.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-              <h3 className="text-sm font-semibold text-foreground">
+              <h3 className="text-sm font-semibold text-foreground font-heading">
                 No Donation Requests Found
               </h3>
             </div>
@@ -296,11 +295,11 @@ export default function AllBloodDonationRequestsPage() {
 
                       <td className="px-6 py-4">
                         <div className="space-y-0.5 text-xs text-muted-foreground">
-                          <p className="flex items-center gap-1 text-foreground/80 font-medium">
+                          <p className="flex items-center gap-1 text-foreground/80 font-medium font-body">
                             <Calendar className="w-3.5 h-3.5 opacity-60" />{" "}
                             {request.donationDate}
                           </p>
-                          <p className="flex items-center gap-1 pl-4.5">
+                          <p className="flex items-center gap-1 pl-4.5 font-body">
                             <Clock className="w-3.5 h-3.5 opacity-40" />{" "}
                             {request.donationTime}
                           </p>
@@ -316,10 +315,10 @@ export default function AllBloodDonationRequestsPage() {
                         {request.donationStatus === "inprogress" &&
                         request.donorName ? (
                           <div>
-                            <p className="font-medium text-foreground">
+                            <p className="font-medium text-foreground font-body">
                               {request.donorName}
                             </p>
-                            <p className="text-muted-foreground text-[11px]">
+                            <p className="text-muted-foreground text-[11px] font-body">
                               {request.donorEmail}
                             </p>
                           </div>
@@ -443,11 +442,11 @@ export default function AllBloodDonationRequestsPage() {
           <div className="bg-background border border-border rounded-2xl max-w-sm w-full p-5 shadow-xl animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center gap-2.5 text-rose-600 mb-2.5">
               <AlertTriangle className="w-5 h-5" />
-              <h3 className="font-bold text-foreground">
+              <h3 className="font-bold text-foreground font-heading">
                 Confirm Permanent Erase
               </h3>
             </div>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs text-muted-foreground leading-relaxed font-body">
               Are you sure you want to delete this donation request? This action
               cannot be undone.
             </p>
@@ -469,7 +468,7 @@ export default function AllBloodDonationRequestsPage() {
         </div>
       )}
 
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      {/* Global toast provider handles the container now */}
     </div>
   );
 }

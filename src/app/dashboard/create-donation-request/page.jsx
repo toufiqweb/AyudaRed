@@ -45,8 +45,8 @@ const CreateDonationRequestPage = async () => {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
         <div className="p-5 border border-rose-200 bg-rose-50 text-rose-700 rounded-2xl space-y-2 shadow-sm">
-          <h2 className="text-base font-bold">Account Restricted 🚫</h2>
-          <p className="text-sm opacity-90">
+          <h2 className="text-base font-bold font-heading">Account Restricted 🚫</h2>
+          <p className="text-sm opacity-90 font-body">
             Your account status is currently marked as inactive or blocked. You
             are restricted from posting new donation requests.
           </p>

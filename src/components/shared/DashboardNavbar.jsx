@@ -75,14 +75,14 @@ const DashboardNavbar = ({ onMenuClick }) => {
   ];
 
   return (
-    <header className="bg-background border-b border-border w-full h-16 sticky top-0 z-40 flex items-center px-4 sm:px-6 lg:px-8 justify-between">
+    <header className="bg-background border-b border-border w-full h-16 sticky top-0 z-40 flex items-center px-4 sm:px-6 lg:px-8 justify-between font-sans">
       {/* Left Section: Sidebar Toggle & Search Bar */}
       <div className="flex items-center space-x-4 flex-1 max-w-xl">
-        {/* Mobile Sidebar Menu Button (Pass onMenuClick from parent layout if needed) */}
+        {/* Mobile Sidebar Menu Button */}
         <button
           onClick={onMenuClick}
           type="button"
-          className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground md:hidden transition-colors"
+          className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground md:hidden transition-colors font-sans"
           aria-label="Open sidebar"
         >
           <Menu className="w-5 h-5" />
@@ -96,21 +96,21 @@ const DashboardNavbar = ({ onMenuClick }) => {
           <input
             type="search"
             placeholder="Search dashboard, analytics, users..."
-            className="w-full pl-9 pr-4 py-1.5 bg-muted/50 border border-border rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+            className="w-full pl-9 pr-4 py-1.5 bg-muted/50 border border-border rounded-lg text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all font-sans"
           />
         </div>
       </div>
 
       {/* Right Section: Action Utilities & User Identity */}
       <div className="flex items-center space-x-4">
-        {/* Quick Action Quick Button (Optional feature common in Dashboards) */}
-        <button className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-md shadow-sm transition-all space-x-1">
+        {/* Quick Action Quick Button */}
+        <button className="hidden md:inline-flex items-center justify-center px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary hover:opacity-90 rounded-md shadow-sm transition-all space-x-1 font-sans">
           <Plus className="w-3.5 h-3.5" />
           <span>New Project</span>
         </button>
 
         {/* Help Center Icon */}
-        <button className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors hidden sm:inline-flex">
+        <button className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors hidden sm:inline-flex font-sans">
           <HelpCircle className="w-5 h-5" />
         </button>
 
@@ -118,7 +118,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
         <div className="relative" ref={notifyRef}>
           <button
             onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-            className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors relative"
+            className="p-2 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors relative font-sans"
             aria-label="View notifications"
           >
             <Bell className="w-5 h-5" />
@@ -128,10 +128,10 @@ const DashboardNavbar = ({ onMenuClick }) => {
           {isNotificationsOpen && (
             <div className="absolute right-0 mt-2 w-80 bg-background border border-border rounded-lg shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="px-4 py-1.5 border-b border-border flex justify-between items-center">
-                <span className="font-semibold text-sm text-foreground">
+                <span className="font-semibold text-sm text-foreground font-heading">
                   Notifications
                 </span>
-                <button className="text-xs text-primary hover:underline">
+                <button className="text-xs text-primary hover:underline font-sans">
                   Mark all read
                 </button>
               </div>
@@ -141,10 +141,10 @@ const DashboardNavbar = ({ onMenuClick }) => {
                     key={n.id}
                     className={`px-4 py-3 hover:bg-muted/50 border-b border-border/50 last:border-0 transition-colors cursor-pointer ${n.unread ? "bg-muted/20" : ""}`}
                   >
-                    <p className="text-xs text-foreground/90 leading-normal">
+                    <p className="text-xs text-foreground/90 leading-normal font-body">
                       {n.text}
                     </p>
-                    <span className="text-[10px] text-muted-foreground block mt-1">
+                    <span className="text-[10px] text-muted-foreground block mt-1 font-sans">
                       {n.time}
                     </span>
                   </div>
@@ -162,7 +162,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
-              className="flex items-center space-x-2 p-1.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-all focus:outline-none"
+              className="flex items-center space-x-2 p-1.5 rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-all focus:outline-none font-sans"
             >
               <div className="w-8 h-8 rounded-full bg-muted border border-border overflow-hidden shrink-0">
                 {user.image ? (
@@ -176,24 +176,23 @@ const DashboardNavbar = ({ onMenuClick }) => {
                 )}
               </div>
               <div className="hidden md:flex flex-col text-left text-xs max-w-[100px]">
-                <span className="font-medium text-foreground truncate">
+                <span className="font-medium text-foreground truncate font-sans">
                   {user.name || "Account"}
                 </span>
-                <span className="text-muted-foreground text-[10px] truncate">
+                <span className="text-muted-foreground text-[10px] truncate font-sans">
                   {user.role || "Member"}
                 </span>
               </div>
               <ChevronDown className="w-4 h-4 hidden md:block text-muted-foreground" />
             </button>
 
-            {/* Profile Menu Dropdown */}
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-52 bg-background border border-border rounded-lg shadow-lg py-1 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                 <div className="px-4 py-2 border-b border-border md:hidden">
-                  <p className="text-sm font-medium text-foreground truncate">
+                  <p className="text-sm font-semibold text-foreground truncate font-heading">
                     {user.name}
                   </p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="text-xs text-muted-foreground truncate font-body">
                     {user.email}
                   </p>
                 </div>
@@ -201,7 +200,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
                 <Link
                   href="/dashboard/settings"
                   onClick={() => setIsProfileOpen(false)}
-                  className="flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                  className="flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors font-sans"
                 >
                   <Settings className="w-4 h-4 mr-2.5 text-muted-foreground" />
                   Account Settings
@@ -209,7 +208,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
                 <Link
                   href="/help"
                   onClick={() => setIsProfileOpen(false)}
-                  className="flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors"
+                  className="flex items-center px-4 py-2.5 text-sm text-foreground/80 hover:bg-muted hover:text-primary transition-colors font-sans"
                 >
                   <HelpCircle className="w-4 h-4 mr-2.5 text-muted-foreground" />
                   Support Forum
@@ -220,7 +219,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
                     setIsProfileOpen(false);
                     handleLogout();
                   }}
-                  className="w-full flex items-center px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors border-t border-border mt-1 text-left"
+                  className="w-full flex items-center px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors border-t border-border mt-1 text-left font-sans"
                 >
                   <LogOut className="w-4 h-4 mr-2.5" />
                   Sign Out

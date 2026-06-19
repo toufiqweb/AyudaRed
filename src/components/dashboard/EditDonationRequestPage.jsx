@@ -14,7 +14,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
-import { useToast, ToastContainer } from "@/components/ui/Toast";
+import { useToast } from "@/components/ui/Toast";
 import { upazilas, districtsList } from "@/lib/geoData";
 import { getDonationRequestById } from "@/lib/api/requests";
 import { updateDonationRequest } from "@/lib/actions/requests";
@@ -24,7 +24,7 @@ export default function EditDonationRequestPage() {
   const params = useParams();
   const id = params?.id;
 
-  const { toasts, showToast, removeToast } = useToast();
+  const toast = useToast();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -66,14 +66,14 @@ export default function EditDonationRequestPage() {
           });
         }
       } catch (err) {
-        showToast(err.message || "Failed to fetch request details.", "error");
+        toast.error(err.message || "Failed to fetch request details.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchRequestDetails();
-  }, [id, showToast]);
+  }, [id, toast]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -95,7 +95,7 @@ export default function EditDonationRequestPage() {
     try {
       const response = await updateDonationRequest(id, formData);
       if (response.success) {
-        showToast("Donation request updated successfully! 🎉", "success");
+        toast.success("Donation request updated successfully! 🎉");
         setTimeout(() => {
           router.push("/dashboard/my-donation-requests");
           router.refresh();
@@ -106,7 +106,7 @@ export default function EditDonationRequestPage() {
         );
       }
     } catch (err) {
-      showToast(err.message || "Failed to update donation request.", "error");
+      toast.error(err.message || "Failed to update donation request.");
     } finally {
       setSubmitting(false);
     }
@@ -348,7 +348,7 @@ export default function EditDonationRequestPage() {
         </div>
       </form>
 
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      {/* Global toast provider handles the container now */}
     </div>
   );
 }

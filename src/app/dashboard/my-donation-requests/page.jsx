@@ -21,11 +21,11 @@ import {
   deleteDonationRequest,
 } from "@/lib/actions/requests";
 import { getUserDonationRequests } from "@/lib/api/requests";
-import { useToast, ToastContainer } from "@/components/ui/Toast";
+import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 
 export default function MyDonationRequestsPage() {
-  const { toasts, showToast, removeToast } = useToast();
+  const toast = useToast();
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,15 +75,14 @@ export default function MyDonationRequestsPage() {
     setOpenMenuId(null);
     try {
       await updateDonationRequestStatus(id, nextStatus);
-      showToast(
+      toast.success(
         nextStatus === "done"
-          ? "Request marked as Done successfully! ✅"
+          ? "Request marked as Done! ✅"
           : "Donation canceled successfully.",
-        "success"
       );
       fetchDonationRequests();
     } catch (err) {
-      showToast(err.message || "Failed to update status.", "error");
+      toast.error(err.message || "Failed to update status.");
     } finally {
       setActionLoading(null);
     }
@@ -100,11 +99,11 @@ export default function MyDonationRequestsPage() {
     setActionLoading(targetRequestId);
     try {
       await deleteDonationRequest(targetRequestId);
-      showToast("Donation request deleted successfully.", "success");
+      toast.success("Donation request deleted successfully.");
       fetchDonationRequests();
       setDeleteModalOpen(false);
     } catch (err) {
-      showToast(err.message || "Failed to delete request.", "error");
+      toast.error(err.message || "Failed to delete request.");
     } finally {
       setActionLoading(null);
       setTargetRequestId(null);
@@ -130,10 +129,10 @@ export default function MyDonationRequestsPage() {
       {/* Header + Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
             My Donation Requests 🩸
           </h1>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted-foreground font-body">
             Manage and track your emergency blood requests timeline
           </p>
         </div>
@@ -162,13 +161,13 @@ export default function MyDonationRequestsPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-primary opacity-80" />
-            <p className="text-xs text-muted-foreground animate-pulse">Loading donation records...</p>
+            <p className="text-xs text-muted-foreground animate-pulse font-body">Loading donation records...</p>
           </div>
         ) : requests.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center px-4">
             <Heart className="w-10 h-10 text-muted-foreground/30 mb-3" />
-            <h3 className="text-sm font-semibold text-foreground">No Request Records Found</h3>
-            <p className="text-xs text-muted-foreground max-w-xs mt-1">
+            <h3 className="text-sm font-semibold text-foreground font-heading">No Request Records Found</h3>
+            <p className="text-xs text-muted-foreground max-w-xs mt-1 font-body">
               No requests match the selected filter.
             </p>
           </div>
@@ -190,9 +189,9 @@ export default function MyDonationRequestsPage() {
                 {requests.map((request) => (
                   <tr key={request._id} className="hover:bg-muted/20 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-foreground">{request.recipientName}</p>
+                      <p className="font-semibold text-foreground font-body">{request.recipientName}</p>
                       {request.requestMessage && (
-                        <p className="text-[11px] text-muted-foreground max-w-[160px] truncate mt-0.5">
+                        <p className="text-[11px] text-muted-foreground max-w-[160px] truncate mt-0.5 font-body">
                           {request.requestMessage}
                         </p>
                       )}
@@ -200,11 +199,11 @@ export default function MyDonationRequestsPage() {
 
                     <td className="px-6 py-4">
                       <div className="space-y-0.5 text-xs text-foreground/90">
-                        <p className="font-medium flex items-center gap-1">
+                        <p className="font-medium flex items-center gap-1 font-body">
                           <MapPin className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                           {request.hospitalName}
                         </p>
-                        <p className="text-muted-foreground pl-[18px]">
+                        <p className="text-muted-foreground pl-[18px] font-body">
                           {request.recipientUpazila}, {request.recipientDistrict}
                         </p>
                       </div>
@@ -219,10 +218,10 @@ export default function MyDonationRequestsPage() {
 
                     <td className="px-6 py-4">
                       <div className="space-y-0.5 text-xs text-muted-foreground">
-                        <p className="flex items-center gap-1 text-foreground/80 font-medium">
+                        <p className="flex items-center gap-1 text-foreground/80 font-medium font-body">
                           <Calendar className="w-3.5 h-3.5 opacity-60" /> {request.donationDate}
                         </p>
-                        <p className="flex items-center gap-1 pl-[18px]">
+                        <p className="flex items-center gap-1 pl-[18px] font-body">
                           <Clock className="w-3.5 h-3.5 opacity-40" /> {request.donationTime}
                         </p>
                       </div>
@@ -233,8 +232,8 @@ export default function MyDonationRequestsPage() {
                     <td className="px-6 py-4 text-xs">
                       {request.donationStatus === "inprogress" && request.donorName ? (
                         <div>
-                          <p className="font-medium text-foreground">{request.donorName}</p>
-                          <p className="text-muted-foreground text-[11px]">{request.donorEmail}</p>
+                          <p className="font-medium text-foreground font-body">{request.donorName}</p>
+                          <p className="text-muted-foreground text-[11px] font-body">{request.donorEmail}</p>
                         </div>
                       ) : (
                         <span className="text-muted-foreground/50 italic">—</span>
@@ -336,9 +335,9 @@ export default function MyDonationRequestsPage() {
               <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-foreground">Confirm Deletion</h3>
+              <h3 className="text-base font-bold text-foreground font-heading">Confirm Deletion</h3>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed font-body">
               Are you sure you want to permanently delete this donation request? This action cannot be reverted.
             </p>
             <div className="flex items-center justify-end gap-2 mt-5 border-t border-border pt-4">
@@ -360,7 +359,7 @@ export default function MyDonationRequestsPage() {
         </div>
       )}
 
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      {/* Global toast provider handles the container now */}
     </div>
   );
 }

@@ -23,10 +23,10 @@ import {
   deleteDonationRequest,
 } from "@/lib/actions/requests";
 import { getUserDonationRequests } from "@/lib/api/requests";
-import { useToast, ToastContainer } from "@/components/ui/Toast";
+import { useToast } from "../ui/Toast";
 
 export default function DonorDashboard({ user }) {
-  const { toasts, showToast, removeToast } = useToast();
+  const toast = useToast();
   const router = useRouter();
 
   const [requests, setRequests] = useState([]);
@@ -70,15 +70,14 @@ export default function DonorDashboard({ user }) {
     setOpenMenuId(null);
     try {
       await updateDonationRequestStatus(id, nextStatus);
-      showToast(
+      toast.success(
         nextStatus === "done"
           ? "Request marked as Done! ✅"
-          : "Donation cancelled successfully.",
-        "success"
+          : "Donation cancelled successfully."
       );
       fetchRecentRequests();
     } catch (err) {
-      showToast(err.message || "Failed to update status.", "error");
+      toast.error(err.message || "Failed to update status.");
     } finally {
       setActionLoading(null);
     }
@@ -95,11 +94,11 @@ export default function DonorDashboard({ user }) {
     setActionLoading(targetRequestId);
     try {
       await deleteDonationRequest(targetRequestId);
-      showToast("Request deleted successfully.", "success");
+      toast.success("Request deleted successfully.");
       fetchRecentRequests();
       setDeleteModalOpen(false);
     } catch (err) {
-      showToast(err.message || "Failed to delete.", "error");
+      toast.error(err.message || "Failed to delete.");
     } finally {
       setActionLoading(null);
       setTargetRequestId(null);
@@ -114,7 +113,9 @@ export default function DonorDashboard({ user }) {
       canceled: "bg-stone-50 text-stone-600 border-stone-200",
     };
     return (
-      <span className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${config[status] || "bg-muted"}`}>
+      <span
+        className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${config[status] || "bg-muted"}`}
+      >
         {status}
       </span>
     );
@@ -158,7 +159,10 @@ export default function DonorDashboard({ user }) {
                 </thead>
                 <tbody className="divide-y divide-border text-sm">
                   {requests.map((request) => (
-                    <tr key={request._id} className="hover:bg-muted/20 transition">
+                    <tr
+                      key={request._id}
+                      className="hover:bg-muted/20 transition"
+                    >
                       <td className="px-5 py-4 font-medium text-foreground">
                         {request.recipientName}
                       </td>
@@ -167,7 +171,8 @@ export default function DonorDashboard({ user }) {
                         <div className="flex items-center gap-1 text-xs">
                           <MapPin className="w-3.5 h-3.5 shrink-0 opacity-60 text-primary" />
                           <span>
-                            {request.recipientUpazila}, {request.recipientDistrict}
+                            {request.recipientUpazila},{" "}
+                            {request.recipientDistrict}
                           </span>
                         </div>
                       </td>
@@ -195,13 +200,20 @@ export default function DonorDashboard({ user }) {
                       </td>
 
                       <td className="px-5 py-4 text-xs max-w-[140px]">
-                        {request.donationStatus === "inprogress" && request.donorName ? (
+                        {request.donationStatus === "inprogress" &&
+                        request.donorName ? (
                           <div className="space-y-0.5 text-muted-foreground">
-                            <p className="font-semibold text-foreground truncate">{request.donorName}</p>
-                            <p className="text-[11px] opacity-80 truncate">{request.donorEmail}</p>
+                            <p className="font-semibold text-foreground truncate">
+                              {request.donorName}
+                            </p>
+                            <p className="text-[11px] opacity-80 truncate">
+                              {request.donorEmail}
+                            </p>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground/40 italic">—</span>
+                          <span className="text-muted-foreground/40 italic">
+                            —
+                          </span>
                         )}
                       </td>
 
@@ -210,7 +222,9 @@ export default function DonorDashboard({ user }) {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setOpenMenuId((prev) => prev === request._id ? null : request._id);
+                            setOpenMenuId((prev) =>
+                              prev === request._id ? null : request._id,
+                            );
                           }}
                           disabled={actionLoading === request._id}
                           className="p-1.5 rounded-lg border border-transparent hover:bg-muted text-muted-foreground transition focus:outline-none inline-flex items-center justify-center disabled:opacity-40"
@@ -232,14 +246,16 @@ export default function DonorDashboard({ user }) {
                               onClick={() => setOpenMenuId(null)}
                               className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
                             >
-                              <Eye className="w-3.5 h-3.5 text-muted-foreground" /> View Details
+                              <Eye className="w-3.5 h-3.5 text-muted-foreground" />{" "}
+                              View Details
                             </Link>
                             <Link
                               href={`/dashboard/donation-requests/edit/${request._id}`}
                               onClick={() => setOpenMenuId(null)}
                               className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
                             >
-                              <Edit className="w-3.5 h-3.5 text-blue-500" /> Edit Request
+                              <Edit className="w-3.5 h-3.5 text-blue-500" />{" "}
+                              Edit Request
                             </Link>
                             <button
                               onClick={() => openDeleteModal(request._id)}
@@ -251,16 +267,22 @@ export default function DonorDashboard({ user }) {
                             {request.donationStatus === "inprogress" && (
                               <>
                                 <button
-                                  onClick={() => handleUpdateStatus(request._id, "done")}
+                                  onClick={() =>
+                                    handleUpdateStatus(request._id, "done")
+                                  }
                                   className="w-full flex items-center gap-2 px-3 py-2 text-xs text-emerald-700 hover:bg-emerald-50 transition border-t border-border/40"
                                 >
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Mark as Done
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />{" "}
+                                  Mark as Done
                                 </button>
                                 <button
-                                  onClick={() => handleUpdateStatus(request._id, "canceled")}
+                                  onClick={() =>
+                                    handleUpdateStatus(request._id, "canceled")
+                                  }
                                   className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-600 hover:bg-stone-50 transition"
                                 >
-                                  <XCircle className="w-3.5 h-3.5 text-stone-500" /> Cancel Donation
+                                  <XCircle className="w-3.5 h-3.5 text-stone-500" />{" "}
+                                  Cancel Donation
                                 </button>
                               </>
                             )}
@@ -295,10 +317,13 @@ export default function DonorDashboard({ user }) {
               <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-foreground">Confirm Deletion</h3>
+              <h3 className="text-base font-bold text-foreground">
+                Confirm Deletion
+              </h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Are you sure you want to permanently delete this donation request? This cannot be undone.
+              Are you sure you want to permanently delete this donation request?
+              This cannot be undone.
             </p>
             <div className="flex items-center justify-end gap-2 mt-5 border-t border-border pt-4">
               <button
@@ -312,14 +337,18 @@ export default function DonorDashboard({ user }) {
                 disabled={actionLoading !== null}
                 className="px-4 py-2 text-sm font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition disabled:opacity-50 min-w-[120px] flex items-center justify-center"
               >
-                {actionLoading !== null ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm Delete"}
+                {actionLoading !== null ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  "Confirm Delete"
+                )}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      <ToastContainer toasts={toasts} removeToast={removeToast} />
+      {/* Global toast provider handles the container now */}
     </div>
   );
 }

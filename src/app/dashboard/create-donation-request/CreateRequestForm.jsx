@@ -79,10 +79,10 @@ export default function CreateRequestForm({ user }) {
   return (
     <div className="bg-background border border-border rounded-2xl shadow-sm p-8 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground font-heading">
           Create Donation Request 🆕
         </h1>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground font-body">
           Post a new request case to find available donors
         </p>
       </div>

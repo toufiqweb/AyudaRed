@@ -3,6 +3,7 @@ import { getPendingDonationRequests } from "@/lib/api/requests";
 import PendingRequestCard from "@/components/ui/PendingRequestCard";
 import RefreshButton from "@/components/ui/RefreshButton";
 import UrlPagination from "@/components/ui/UrlPagination";
+import DonationRequestsFilters from "@/components/ui/DonationRequestsFilters";
 
 export const dynamic = "force-dynamic";
 
@@ -12,15 +13,27 @@ export default async function DonationRequestsPage({ searchParams }) {
   const currentPage = parseInt(params?.page || "1", 10);
   const itemsPerPage = 9;
 
+  const search = params?.search || "";
+  const district = params?.district || "";
+  const upazila = params?.upazila || "";
+  const bloodGroup = params?.bloodGroup || "";
+
   let requests = [];
   let totalPages = 1;
+  let totalRequests = 0;
   let error = "";
 
   try {
-    const data = await getPendingDonationRequests(currentPage, itemsPerPage);
+    const data = await getPendingDonationRequests(currentPage, itemsPerPage, {
+      search,
+      district,
+      upazila,
+      bloodGroup,
+    });
     if (data.success) {
       requests = data.requests || [];
       totalPages = data.pagination?.totalPages || 1;
+      totalRequests = data.pagination?.totalRequests || 0;
     }
   } catch (err) {
     error = err.message || "Something went wrong fetching live feed.";
@@ -47,12 +60,20 @@ export default async function DonationRequestsPage({ searchParams }) {
               {requests.length > 0 && (
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold bg-muted border border-border text-muted-foreground font-sans">
                   <LayoutGrid className="w-3.5 h-3.5 text-primary" />
-                  {requests.length} Requests Live
+                  {totalRequests} Requests Live
                 </span>
               )}
               <RefreshButton />
             </div>
           </div>
+
+          {/* Donation Requests Filters Panel */}
+          <DonationRequestsFilters
+            initialSearch={search}
+            initialDistrict={district}
+            initialUpazila={upazila}
+            initialBloodGroup={bloodGroup}
+          />
 
           {/* Clean SaaS Centered Error Handling Alert */}
           {error && (

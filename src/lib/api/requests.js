@@ -25,9 +25,18 @@ export const getDonationRequestById = async (id) => {
   return protectedServerFetch(`/api/donation-requests/${id}`, token);
 };
 
-// GET: Fetch public pending donation requests with pagination
-export const getPendingDonationRequests = async (currentPage, itemsPerPage) => {
-  return serverFetch(
-    `/api/donation-requests?page=${currentPage}&size=${itemsPerPage}`,
-  );
+// GET: Fetch public pending donation requests with pagination & filters
+export const getPendingDonationRequests = async (currentPage, itemsPerPage, filters = {}) => {
+  const { district = "", upazila = "", bloodGroup = "", search = "" } = filters;
+
+  const queryParams = new URLSearchParams({
+    page: currentPage,
+    size: itemsPerPage,
+    ...(district && { district }),
+    ...(upazila && { upazila }),
+    ...(bloodGroup && { bloodGroup }),
+    ...(search && { search }),
+  }).toString();
+
+  return serverFetch(`/api/donation-requests?${queryParams}`);
 };

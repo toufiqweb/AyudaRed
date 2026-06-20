@@ -1,62 +1,71 @@
-import { Heart, FileQuestion, ArrowLeft, Home } from "lucide-react";
+import {
+  Heart,
+  FileQuestion,
+  ArrowLeft,
+  Home,
+  AlertCircle,
+} from "lucide-react";
 import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[85vh] w-full bg-background px-4 text-center">
+    <div className="flex flex-col items-center justify-center min-h-[85vh] w-full bg-background px-4 text-center font-sans select-none">
       <div className="max-w-md space-y-6 flex flex-col items-center">
-        {/* ইলাস্ট্রেশন/আইকন জোন */}
+        {/* Structural Vector Indicator Cluster */}
         <div className="relative w-32 h-32 flex items-center justify-center">
-          {/* ব্যাকগ্রাউন্ড পালস শেড */}
-          <span className="absolute inline-flex h-24 w-24 rounded-full bg-muted animate-pulse duration-1000" />
+          {/* Background Structural Ambient Shade */}
+          <span className="absolute inline-flex h-24 w-24 rounded-full bg-secondary animate-pulse duration-1000" />
 
-          {/* মেইন ৪MD/হার্টব্রেক আইকন */}
-          <div className="relative bg-background border border-border p-6 rounded-3xl shadow-xl shadow-foreground/5 z-10">
-            <FileQuestion className="w-12 h-12 text-muted-foreground animate-bounce duration-1000" />
+          {/* Primary Alert Context Vector Node */}
+          <div className="relative bg-background border border-border/80 p-6 rounded-2xl shadow-xl shadow-foreground/5 z-10">
+            <FileQuestion className="w-12 h-12 text-secondary-foreground/40 animate-bounce duration-1000" />
           </div>
 
-          {/* ছোট্ট ব্লাড ড্রপলেট/হার্ট আইকন যা রিলেটেবল ফিল দিবে */}
-          <div className="absolute bottom-2 right-2 bg-rose-50 border border-rose-100 p-2 rounded-full shadow-md z-20">
-            <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
+          {/* Core Branding Sub-Node Overlay */}
+          <div className="absolute bottom-2 right-2 bg-secondary border border-border p-2 rounded-xl shadow-md z-20">
+            <Heart className="w-4 h-4 text-primary fill-primary" />
           </div>
         </div>
 
-        {/* টেক্সট মেসেজ */}
+        {/* Messaging Logs Panel */}
         <div className="space-y-2">
-          <h1 className="text-4xl font-black tracking-tight text-foreground">
+          <h1 className="text-5xl font-black tracking-tighter text-foreground font-heading">
             404
           </h1>
-          <h2 className="text-lg font-bold text-foreground">
-            Page Not Found 🩸
+          <h2 className="text-sm font-bold uppercase tracking-wider text-primary flex items-center justify-center gap-1.5 font-sans">
+            <AlertCircle className="w-4 h-4 stroke-[2.5]" />
+            <span>Page Not Found</span>
           </h2>
-          <p className="text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed font-medium">
-            We couldn&apos;t find the page or the specific blood donation request you
-            were looking for. It might have been deleted, completed, or the link
-            is broken.
+          <p className="text-xs text-secondary-foreground/60 max-w-sm mx-auto leading-relaxed font-medium font-body">
+            We couldn&apos;t locate the route or the explicit database entry you
+            were querying. The resource might be archived, purged, or the system
+            link integrity is broken.
           </p>
         </div>
 
-        {/* নেভিগেশন অ্যাকশন বাটনসমূহ */}
+        {/* Platform Core Navigation Pipeline */}
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full pt-2">
-          {/* আগের পেজে ফিরে যাওয়ার বাটন */}
+          {/* Primary Action Element: Dashboard Directory Redirection */}
           <Link
             href="/dashboard/donation-requests"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-rose-600 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full hover:bg-rose-700 transition shadow-sm focus:outline-none"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl hover:bg-primary/90 transition-all active:scale-[0.98] shadow-sm"
           >
-            <ArrowLeft className="w-4 h-4" /> Go back to Dashboard
+            <ArrowLeft className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>Return to Dashboard</span>
           </Link>
 
-          {/* হোমপেজে যাওয়ার বাটন */}
+          {/* Secondary Action Element: Platform Root Directory Redirection */}
           <Link
             href="/"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full border border-border bg-muted/40 hover:bg-muted text-xs sm:text-sm font-semibold text-slate-600 transition"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-border bg-secondary/40 hover:bg-secondary text-xs font-bold uppercase tracking-wider text-foreground transition-all active:scale-[0.98]"
           >
-            <Home className="w-4 h-4" /> Home Page
+            <Home className="w-3.5 h-3.5" />
+            <span>Home Base</span>
           </Link>
         </div>
 
-        {/* ফুটার মেসেজ */}
-        <p className="text-[10px] uppercase tracking-widest text-muted-foreground/50 font-bold pt-6 select-none">
+        {/* Platform Copyright Identity Context */}
+        <p className="text-[10px] uppercase tracking-widest text-secondary-foreground/40 font-bold pt-6 font-sans">
           Lifeline Network © 2026
         </p>
       </div>

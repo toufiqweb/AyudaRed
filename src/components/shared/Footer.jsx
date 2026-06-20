@@ -49,7 +49,7 @@ const Footer = () => {
               href="/"
               className="text-2xl font-bold tracking-tight text-foreground hover:opacity-90 transition font-heading"
             >
-              Baz<span className="text-primary font-heading">aro</span>
+              Ayuda<span className="text-primary font-heading">Red</span>
             </Link>
             <p className="text-sm text-foreground/70 max-w-sm leading-relaxed font-body">
               A modern decentralized space built for buyers and sellers to

@@ -54,17 +54,17 @@ export default function FeatureGrid() {
   ];
 
   return (
-    <section className="bg-background text-foreground py-24 px-4 sm:px-6 lg:px-8 w-full transition-colors duration-300">
+    <section className="section-container bg-background text-foreground">
       <div className="mx-auto max-w-6xl">
         {/* 1. Centered Header Stack Aligned with image_48ad88.png */}
-        <div className="text-center space-y-3 mb-20">
-          <span className="text-xs font-bold tracking-widest uppercase text-primary">
+        <div className="section-header">
+          <span className="section-badge">
             Platform Capabilities
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-foreground max-w-2xl mx-auto leading-tight font-heading">
+          <h2 className="section-title">
             Advancing the lifecycle of safe blood donation
           </h2>
-          <p className="text-sm sm:text-base text-gray-400 font-normal max-w-2xl mx-auto leading-relaxed font-body">
+          <p className="section-subtitle">
             In critical medical scenarios where minutes matter, our system
             bridges communication gaps between voluntary donors and clinical
             coordinators smoothly.
@@ -81,16 +81,16 @@ export default function FeatureGrid() {
                 className="flex flex-col items-center space-y-4 group"
               >
                 {/* Minimalist Micro Icon Marker wrapper */}
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary border border-border/80 text-gray-400 group-hover:text-primary group-hover:border-primary/40 transition-all duration-200 shadow-xs">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary border border-border/80 text-muted-custom group-hover:text-primary group-hover:border-primary/40 transition-all duration-200 shadow-xs">
                   <IconComponent className="w-4 h-4 stroke-[1.5]" />
                 </div>
 
                 {/* Content Layout Element block */}
                 <div className="space-y-2">
-                  <h3 className="text-base font-bold tracking-tight text-foreground group-hover:text-primary transition-colors duration-200 font-heading">
+                  <h3 className="card-title group-hover:text-primary transition-colors duration-200">
                     {feature.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-400 font-normal leading-relaxed max-w-xs mx-auto font-body">
+                  <p className="card-description max-w-xs mx-auto">
                     {feature.description}
                   </p>
                 </div>

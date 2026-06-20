@@ -67,7 +67,7 @@ const Navbar = () => {
               >
                 <Droplet className="w-5 h-5 sm:w-6 sm:h-6 text-primary fill-primary shrink-0 transform rotate-180" />
                 <span className="font-semibold text-base sm:text-lg tracking-tight font-heading">
-                  BloodLink
+                  Ayuda<span className="text-primary font-heading">Red</span>
                 </span>
               </Link>
             </div>

@@ -33,21 +33,21 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="bg-background text-foreground py-24 px-4 sm:px-6 lg:px-8 w-full transition-colors duration-300 relative overflow-hidden">
+    <section className="section-container bg-background text-foreground">
       <div className="mx-auto max-w-7xl text-center">
-        {/* 1. Header Typography Module Aligned with image_48b5a1.png */}
-        <div className="flex flex-col items-center justify-center space-y-3 mb-20">
+        {/* 1. Header Typography Module */}
+        <div className="section-header">
           {/* Decorative Top Accent Block */}
-          <div className="flex items-center gap-1 opacity-50 text-primary mb-1">
+          <div className="flex items-center justify-center gap-1 opacity-50 text-primary mb-1">
             <span className="text-xs">✦</span>
             <span className="text-sm">✦</span>
             <span className="text-xs">✦</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground font-heading">
+          <h2 className="section-title">
             How Our Platform Works
           </h2>
-          <p className="text-sm sm:text-base text-gray-400 font-normal max-w-xl leading-relaxed font-body">
+          <p className="section-subtitle">
             Connecting life savers with those in critical need through an
             automated, highly efficient step-by-step donation ecosystem.
           </p>
@@ -63,7 +63,7 @@ export default function HowItWorks() {
                 className="flex flex-col items-center text-center relative group z-10"
               >
                 {/* Modern Step Indicator Badge */}
-                <div className="mb-3 text-xs font-bold text-gray-400 opacity-80 tracking-widest">
+                <div className="mb-3 text-xs font-bold text-muted-custom tracking-widest">
                   STEP {step.id}
                 </div>
 
@@ -73,17 +73,17 @@ export default function HowItWorks() {
                   <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/5 transition-colors duration-300" />
 
                   {/* Graphic Content Inner Pill */}
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted text-gray-400 group-hover:text-primary group-hover:bg-background transition-colors duration-200 shadow-inner">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted text-foreground/50 group-hover:text-primary group-hover:bg-background transition-colors duration-200 shadow-inner">
                     <IconComponent className="w-6 h-6 stroke-[1.5]" />
                   </div>
                 </div>
 
                 {/* 3. Textual Component Meta Layout */}
                 <div className="mt-6 space-y-2 max-w-[240px]">
-                  <h3 className="text-lg font-bold tracking-tight text-foreground group-hover:text-primary transition-colors font-heading">
+                  <h3 className="card-title group-hover:text-primary transition-colors">
                     {step.title}
                   </h3>
-                  <p className="text-xs sm:text-sm font-normal text-gray-400 leading-relaxed font-body">
+                  <p className="card-description">
                     {step.description}
                   </p>
                 </div>

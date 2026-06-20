@@ -1,5 +1,8 @@
-import { ArrowRight, Search, Heart, FileText, Activity } from "lucide-react";
+"use client";
+
+import { ArrowRight, Search, Heart, FileText, Activity, ShieldCheck, Clock, Users } from "lucide-react";
 import Link from "next/link";
+import Marquee from "react-fast-marquee";
 
 export default function Banner() {
   return (
@@ -34,31 +37,65 @@ export default function Banner() {
         </p>
 
         {/* Trust Section Logos Row */}
-        <div className="mt-12 flex items-center justify-center gap-8 sm:gap-14 flex-wrap text-foreground/80">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-foreground text-background rounded-full p-1.5">
-              <Heart className="w-4 h-4 fill-current" />
+        <div 
+          className="mt-12 w-full max-w-4xl mx-auto overflow-hidden relative py-3"
+          style={{ 
+            maskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)',
+            WebkitMaskImage: 'linear-gradient(to right, transparent, white 15%, white 85%, transparent)'
+          }}
+        >
+          <Marquee speed={40} pauseOnHover={true} play={true}>
+            <div className="flex items-center justify-around gap-16 pr-16 text-foreground/80">
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <Heart className="w-4 h-4 fill-current" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  Blood Donors
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <FileText className="w-4 h-4 fill-current" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  Donation Requests
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <Activity className="w-4 h-4" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  Lives Saved
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  Verified Platform
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  24/7 Emergency Support
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <div className="bg-foreground text-background rounded-full p-1.5">
+                  <Users className="w-4 h-4" />
+                </div>
+                <span className="text-base sm:text-lg font-bold tracking-tight whitespace-nowrap">
+                  Active Community
+                </span>
+              </div>
             </div>
-            <span className="text-base sm:text-lg font-bold tracking-tight">
-              Blood Donors
-            </span>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <div className="bg-foreground text-background rounded-full p-1.5">
-              <FileText className="w-4 h-4 fill-current" />
-            </div>
-            <span className="text-base sm:text-lg font-bold tracking-tight">
-              Donation Requests
-            </span>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <div className="bg-foreground text-background rounded-full p-1.5">
-              <Activity className="w-4 h-4" />
-            </div>
-            <span className="text-base sm:text-lg font-bold tracking-tight">
-              Lives Saved
-            </span>
-          </div>
+          </Marquee>
         </div>
 
         {/* Action Buttons Layout */}

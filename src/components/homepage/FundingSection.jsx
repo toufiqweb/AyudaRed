@@ -9,22 +9,22 @@ import {
 
 export default function FundingSection() {
   return (
-    <section className="relative overflow-hidden bg-background py-24">
+    <section className="section-container bg-background">
       {/* Background Glow */}
       <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[140px]" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-7xl">
         {/* Heading */}
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+        <div className="section-header">
+          <span className="section-badge">
             Community Funding Program
           </span>
 
-          <h2 className="mt-6 text-4xl md:text-5xl font-heading font-bold text-foreground">
+          <h2 className="section-title">
             Powering Lifesaving Blood Donations
           </h2>
 
-          <p className="mt-6 text-base md:text-lg text-gray-400 font-body leading-relaxed">
+          <p className="section-subtitle">
             Every contribution helps us connect donors, support emergency
             requests, improve healthcare accessibility, and save more lives
             across communities.
@@ -33,40 +33,40 @@ export default function FundingSection() {
 
         {/* Stats */}
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          <div className="rounded-3xl border border-border bg-secondary/60 backdrop-blur-xl p-7">
+          <div className="card-container">
             <DollarSign className="h-10 w-10 text-primary" />
             <h3 className="mt-4 text-3xl font-bold text-foreground">$128K+</h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 card-description">
               Funds raised to support blood donation campaigns.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-border bg-secondary/60 backdrop-blur-xl p-7">
+          <div className="card-container">
             <Users className="h-10 w-10 text-primary" />
             <h3 className="mt-4 text-3xl font-bold text-foreground">12,500+</h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 card-description">
               Registered donors actively helping communities.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-border bg-secondary/60 backdrop-blur-xl p-7">
+          <div className="card-container">
             <Activity className="h-10 w-10 text-primary" />
             <h3 className="mt-4 text-3xl font-bold text-foreground">8,900+</h3>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 card-description">
               Successful donation requests completed.
             </p>
           </div>
         </div>
 
         {/* Progress Card */}
-        <div className="mt-8 rounded-3xl border border-border bg-secondary/70 backdrop-blur-xl p-8">
+        <div className="mt-8 card-container">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h3 className="text-2xl font-heading font-semibold text-foreground">
                 Monthly Funding Goal
               </h3>
 
-              <p className="mt-2 text-gray-400">
+              <p className="mt-2 card-description">
                 Help us reach this month's target and expand emergency blood
                 support services nationwide.
               </p>
@@ -74,7 +74,7 @@ export default function FundingSection() {
 
             <div className="min-w-[250px]">
               <div className="mb-3 flex items-center justify-between">
-                <span className="text-sm text-gray-400">Raised $38,400</span>
+                <span className="text-sm text-muted-custom">Raised $38,400</span>
 
                 <span className="text-sm font-medium text-primary">76%</span>
               </div>
@@ -102,7 +102,7 @@ export default function FundingSection() {
 
         {/* Trust Line */}
         <div className="mt-12 text-center">
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-custom">
             Trusted by hospitals, volunteers, donors, and healthcare
             organizations across the country.
           </p>

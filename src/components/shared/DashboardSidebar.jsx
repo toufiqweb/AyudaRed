@@ -147,7 +147,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
           >
             <Droplet className="w-5 h-5 text-primary fill-primary" />
             <span>
-              Blood<span className="text-primary font-heading">Life</span>
+              Ayuda<span className="text-primary font-heading">Red</span>
             </span>
           </Link>
           {/* Close drawer icon button (Mobile only) */}

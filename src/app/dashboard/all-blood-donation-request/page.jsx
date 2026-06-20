@@ -1,22 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Link from "next/link";
-import {
-  Heart,
-  MapPin,
-  Calendar,
-  Clock,
-  Eye,
-  Edit,
-  Trash2,
-  MoreVertical,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Loader2,
-  Filter,
-} from "lucide-react";
+import { AlertTriangle, Loader2, Filter } from "lucide-react";
 import {
   managementUpdateStatus,
   adminDeleteDonationRequest,
@@ -24,7 +9,7 @@ import {
 import { getAllDonationRequests, getCurrentUserRole } from "@/lib/api/admin";
 import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
-import DonationRequestsTable from "@/components/ui/DonationRequestsTable";
+import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
 
 export default function AllBloodDonationRequestsPage() {
   const toast = useToast();

@@ -30,13 +30,12 @@ export default function AllUsersPage() {
   const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 10;
 
-  // Global click tracker securely intercepts backdrop clicks to close drop menus
+  // Global click tracker securely closes drop menus
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (event.target.closest(".user-actions-container")) {
-        return;
+      if (!event.target.closest(".user-menu-trigger")) {
+        setOpenMenuId(null);
       }
-      setOpenMenuId(null);
     };
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
@@ -60,10 +59,7 @@ export default function AllUsersPage() {
   }, [statusFilter, currentPage]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchUsers();
-    }, 0);
-    return () => clearTimeout(timer);
+    fetchUsers();
   }, [fetchUsers]);
 
   const handleUpdateUser = async (userId, payload) => {
@@ -81,14 +77,12 @@ export default function AllUsersPage() {
     }
   };
 
-  // Helper styles maps for statuses
   const getStatusStyle = (status) => {
     return status === "blocked"
       ? "bg-rose-50 text-rose-700 border-rose-200"
       : "bg-emerald-50 text-emerald-700 border-emerald-200";
   };
 
-  // Helper styles maps for system authority scopes
   const getRoleStyle = (role) => {
     const config = {
       admin: "bg-purple-50 text-purple-700 border-purple-200 font-bold",
@@ -100,7 +94,7 @@ export default function AllUsersPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-2">
-      {/* Configuration Control Card Section Heading */}
+      {/* Top Header Card */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
@@ -112,7 +106,6 @@ export default function AllUsersPage() {
           </p>
         </div>
 
-        {/* Filters Selectors Row */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
           <Filter className="w-4 h-4 text-muted-foreground opacity-70" />
           <select
@@ -136,8 +129,8 @@ export default function AllUsersPage() {
         </div>
       )}
 
-      {/* Main Structural Roster Datagrid Workspace */}
-      <div className="bg-background border border-border rounded-2xl shadow-sm overflow-hidden">
+      {/* Main Table Container (overflow-visible নিশ্চিত করা হয়েছে) */}
+      <div className="bg-background border border-border rounded-2xl shadow-sm overflow-visible">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-primary opacity-80" />
@@ -156,169 +149,175 @@ export default function AllUsersPage() {
             </p>
           </div>
         ) : (
+          /* এখানে এক্সট্রা কোনো প্যাডিং (pb-28) রাখা হয়নি, যার ফলে নিচের বাড়তি গ্যাপটি আর থাকবে না */
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
                 <tr className="bg-muted/40 border-b border-border text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
                   <th className="px-6 py-3.5">User Identity Profile</th>
                   <th className="px-6 py-3.5">Email Address</th>
                   <th className="px-6 py-3.5">Role Level</th>
                   <th className="px-6 py-3.5">Account Status</th>
-                  <th className="px-6 py-3.5 text-right">Actions Governance</th>
+                  <th className="px-6 py-3.5 text-right w-[120px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60 text-sm">
-                {users.map((profile) => (
-                  <tr
-                    key={profile._id}
-                    className="hover:bg-muted/10 transition-colors"
-                  >
-                    {/* Identity Metadata Cell */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="relative w-9 h-9 rounded-full bg-muted overflow-hidden border border-border/60 shrink-0">
-                          <Image
-                            src={
-                              profile.avatar ||
-                              profile.image ||
-                              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop"
-                            }
-                            alt={profile.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <p className="font-semibold text-foreground truncate max-w-[160px] font-body">
-                          {profile.name}
-                        </p>
-                      </div>
-                    </td>
+                {users.map((profile, index) => {
+                  // চেক করা হচ্ছে এটি টেবিলের একদম শেষ ২টি রো (Rows)-র মধ্যে একটি কিনা
+                  const isLastRow =
+                    index >= users.length - 2 && users.length > 2;
 
-                    {/* Email Tracking Address lines */}
-                    <td className="px-6 py-4 text-muted-foreground font-medium text-xs">
-                      {profile.email}
-                    </td>
-
-                    {/* Authority Scope Badge Indicator */}
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-2 py-0.5 border rounded text-xs capitalize ${getRoleStyle(profile.role)}`}
-                      >
-                        {profile.role || "donor"}
-                      </span>
-                    </td>
-
-                    {/* Operational Account Status parameters */}
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-2.5 py-0.5 border rounded-full text-xs capitalize font-medium ${getStatusStyle(profile.status)}`}
-                      >
-                        {profile.status || "active"}
-                      </span>
-                    </td>
-
-                    {/* Context Action Toggles Three Dot Layout */}
-                    <td className="px-6 py-4 text-right relative user-actions-container">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setOpenMenuId(
-                            openMenuId === profile._id ? null : profile._id,
-                          );
-                        }}
-                        disabled={actionLoadingId === profile._id}
-                        className={`p-1.5 rounded-lg border transition ${
-                          openMenuId === profile._id
-                            ? "bg-muted border-border text-foreground"
-                            : "border-transparent hover:bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        {actionLoadingId === profile._id ? (
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <MoreVertical className="w-4 h-4" />
-                        )}
-                      </button>
-
-                      {/* Dropdown Options Frame */}
-                      {openMenuId === profile._id && (
-                        <div className="absolute right-6 top-11 w-52 bg-background border border-border rounded-xl shadow-lg z-20 py-1 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150 text-left">
-                          {/* --- 1. ACCOUNT STATUS SWITCHES (Block / Unblock) --- */}
-                          {profile.status !== "blocked" ? (
-                            <button
-                              onClick={() =>
-                                handleUpdateUser(profile._id, {
-                                  status: "blocked",
-                                })
+                  return (
+                    <tr
+                      key={profile._id}
+                      className="hover:bg-muted/10 transition-colors"
+                    >
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-9 h-9 rounded-full bg-muted overflow-hidden border border-border/60 shrink-0">
+                            <Image
+                              src={
+                                profile.avatar ||
+                                profile.image ||
+                                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=100&auto=format&fit=crop"
                               }
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50/50 transition"
-                            >
-                              <Ban className="w-3.5 h-3.5" />
-                              Block User Account
-                            </button>
+                              alt={profile.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <p className="font-semibold text-foreground truncate max-w-[160px] font-body">
+                            {profile.name}
+                          </p>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-4 text-muted-foreground font-medium text-xs">
+                        {profile.email}
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <span
+                          className={`px-2 py-0.5 border rounded text-xs capitalize ${getRoleStyle(profile.role)}`}
+                        >
+                          {profile.role || "donor"}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4">
+                        <span
+                          className={`px-2.5 py-0.5 border rounded-full text-xs capitalize font-medium ${getStatusStyle(profile.status)}`}
+                        >
+                          {profile.status || "active"}
+                        </span>
+                      </td>
+
+                      <td className="px-6 py-4 text-right relative user-menu-trigger">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuId(
+                              openMenuId === profile._id ? null : profile._id,
+                            );
+                          }}
+                          disabled={actionLoadingId === profile._id}
+                          className={`p-1.5 rounded-lg border transition ${
+                            openMenuId === profile._id
+                              ? "bg-muted border-border text-foreground"
+                              : "border-transparent hover:bg-muted text-muted-foreground"
+                          }`}
+                        >
+                          {actionLoadingId === profile._id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
                           ) : (
-                            <button
-                              onClick={() =>
-                                handleUpdateUser(profile._id, {
-                                  status: "active",
-                                })
-                              }
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-emerald-600 hover:bg-emerald-50/50 transition"
-                            >
-                              <Unlock className="w-3.5 h-3.5" />
-                              Activate/Unblock User
-                            </button>
+                            <MoreVertical className="w-4 h-4" />
                           )}
+                        </button>
 
-                          {/* --- 2. ROLE GOVERNANCE ACTIONS (Dynamic Inter-changing) --- */}
+                        {openMenuId === profile._id && (
+                          <div
+                            /* ডাইনামিক পজিশনিং ক্লাস: শেষ রোর জন্য 'bottom-full mb-1', অন্য সব রোর জন্য 'top-full mt-1' */
+                            className={`absolute right-6 w-52 bg-background border border-border rounded-xl shadow-lg z-30 py-1 overflow-hidden text-left animate-in fade-in duration-150 ${
+                              isLastRow
+                                ? "bottom-full mb-1 origin-bottom slide-in-from-bottom-1"
+                                : "top-full mt-1 origin-top slide-in-from-top-1"
+                            }`}
+                          >
+                            {profile.status !== "blocked" ? (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(profile._id, {
+                                    status: "blocked",
+                                  })
+                                }
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-600 hover:bg-rose-50/50 transition"
+                              >
+                                <Ban className="w-3.5 h-3.5" />
+                                Block User Account
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(profile._id, {
+                                    status: "active",
+                                  })
+                                }
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-emerald-600 hover:bg-emerald-50/50 transition"
+                              >
+                                <Unlock className="w-3.5 h-3.5" />
+                                Activate/Unblock User
+                              </button>
+                            )}
 
-                          {/* Make Donor: Current user is Admin or Volunteer */}
-                          {profile.role !== "donor" && (
-                            <button
-                              onClick={() =>
-                                handleUpdateUser(profile._id, { role: "donor" })
-                              }
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
-                            >
-                              <UserCheck className="w-3.5 h-3.5 text-stone-500" />
-                              Demote to Donor
-                            </button>
-                          )}
+                            {profile.role !== "donor" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(profile._id, {
+                                    role: "donor",
+                                  })
+                                }
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
+                              >
+                                <UserCheck className="w-3.5 h-3.5 text-stone-500" />
+                                Demote to Donor
+                              </button>
+                            )}
 
-                          {/* Make Volunteer: Current user is Donor or Admin */}
-                          {profile.role !== "volunteer" && (
-                            <button
-                              onClick={() =>
-                                handleUpdateUser(profile._id, {
-                                  role: "volunteer",
-                                })
-                              }
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
-                            >
-                              <UserCheck className="w-3.5 h-3.5 text-blue-500" />
-                              {profile.role === "admin"
-                                ? "Change to Volunteer"
-                                : "Promote to Volunteer"}
-                            </button>
-                          )}
+                            {profile.role !== "volunteer" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(profile._id, {
+                                    role: "volunteer",
+                                  })
+                                }
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
+                              >
+                                <UserCheck className="w-3.5 h-3.5 text-blue-500" />
+                                {profile.role === "admin"
+                                  ? "Change to Volunteer"
+                                  : "Promote to Volunteer"}
+                              </button>
+                            )}
 
-                          {/* Make Admin: Current user is Donor or Volunteer */}
-                          {profile.role !== "admin" && (
-                            <button
-                              onClick={() =>
-                                handleUpdateUser(profile._id, { role: "admin" })
-                              }
-                              className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
-                            >
-                              <ShieldCheck className="w-3.5 h-3.5 text-purple-500" />
-                              Elevate to Admin
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                            {profile.role !== "admin" && (
+                              <button
+                                onClick={() =>
+                                  handleUpdateUser(profile._id, {
+                                    role: "admin",
+                                  })
+                                }
+                                className="w-full flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition border-t border-border/40"
+                              >
+                                <ShieldCheck className="w-3.5 h-3.5 text-purple-500" />
+                                Elevate to Admin
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

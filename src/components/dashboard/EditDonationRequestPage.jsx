@@ -12,6 +12,7 @@ import {
   Loader2,
   Save,
   MessageSquare,
+  Building2,
 } from "lucide-react";
 import Link from "next/link";
 import { useToast } from "@/components/ui/Toast";
@@ -114,201 +115,237 @@ export default function EditDonationRequestPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh] gap-3">
-        <Loader2 className="w-9 h-9 animate-spin text-rose-500 opacity-80" />
-        <p className="text-xs text-muted-foreground tracking-wide">
-          Loading donation request data...
+      <div className="flex flex-col items-center justify-center min-h-[70vh] gap-4 bg-background text-foreground font-sans">
+        <div className="p-3 bg-secondary/50 rounded-2xl border border-border/60 shadow-sm">
+          <Loader2 className="w-8 h-8 animate-spin text-primary opacity-90" />
+        </div>
+        <p className="text-xs text-secondary-foreground/60 tracking-wider font-medium uppercase">
+          Loading parameters...
         </p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-4 sm:p-6 space-y-6 min-h-screen">
-      {/* Back Button & Header */}
-      <div className="flex items-center gap-4">
-        <Link
-          href="/dashboard/my-donation-requests"
-          className="p-2 border border-border bg-background rounded-xl hover:bg-muted text-muted-foreground transition shadow-sm"
-        >
-          <ArrowLeft className="w-4 h-4" />
-        </Link>
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            Edit Donation Request 🩸
-          </h1>
-          <p className="text-xs text-muted-foreground">
-            Modify the specific details below to update the current live blood
-            request.
-          </p>
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 space-y-8 min-h-screen  text-foreground transition-colors duration-200">
+      {/* Top Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+        <div className="flex items-start gap-4">
+          <Link
+            href="/dashboard/my-donation-requests"
+            className="mt-1 p-2.5 border border-border bg-secondary/30 rounded-xl hover:bg-secondary text-secondary-foreground/80 transition-all duration-200 shadow-sm group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          </Link>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 px-2.5 py-0.5 rounded-md font-sans">
+              Management Portal
+            </span>
+            <h1 className="text-2xl font-extrabold tracking-tight text-foreground mt-1.5 font-heading">
+              Edit Donation Request
+            </h1>
+            <p className="text-xs text-secondary-foreground/60 font-medium font-body mt-0.5">
+              Modify operational variables and logs for this active file setup.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Main Edit Form Card */}
+      {/* Main SaaS Form Control Container */}
       <form
         onSubmit={handleSubmit}
-        className="bg-background border border-border rounded-2xl shadow-sm p-5 sm:p-6 space-y-5"
+        className="bg-secondary/20 border border-border rounded-2xl shadow-sm overflow-hidden p-6 sm:p-8 space-y-8"
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Recipient Name */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <User className="w-3.5 h-3.5 text-muted-foreground" /> Recipient
-              Name
-            </label>
-            <input
-              type="text"
-              name="recipientName"
-              required
-              value={formData.recipientName}
-              onChange={handleChange}
-              placeholder="e.g. John Doe"
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-            />
-          </div>
+        {/* Core Identification Blocks */}
+        <div className="space-y-5">
+          <h3 className="text-xs font-bold tracking-widest text-secondary-foreground/50 uppercase border-b border-border/40 pb-2 font-heading">
+            01. Patient Identity & Metrics
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Recipient Name */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <User className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Recipient Name
+              </label>
+              <input
+                type="text"
+                name="recipientName"
+                required
+                value={formData.recipientName}
+                onChange={handleChange}
+                placeholder="e.g. John Doe"
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body"
+              />
+            </div>
 
-          {/* Blood Group */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <Heart className="w-3.5 h-3.5 text-rose-500" /> Required Blood
-              Group
-            </label>
-            <select
-              name="bloodGroup"
-              required
-              value={formData.bloodGroup}
-              onChange={handleChange}
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition cursor-pointer"
-            >
-              <option value="" disabled>
-                Select Blood Group
-              </option>
-              {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map((bg) => (
-                <option key={bg} value={bg}>
-                  {bg}
+            {/* Blood Group Select */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <Heart className="w-3.5 h-3.5 text-primary" /> Required Blood
+                Group
+              </label>
+              <div className="relative">
+                <select
+                  name="bloodGroup"
+                  required
+                  value={formData.bloodGroup}
+                  onChange={handleChange}
+                  className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer appearance-none font-sans"
+                >
+                  <option value="" disabled className="bg-background">
+                    Select Blood Group
+                  </option>
+                  {["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"].map(
+                    (bg) => (
+                      <option
+                        key={bg}
+                        value={bg}
+                        className="bg-background font-semibold"
+                      >
+                        {bg}
+                      </option>
+                    ),
+                  )}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Logistics & Timelines */}
+        <div className="space-y-5">
+          <h3 className="text-xs font-bold tracking-widest text-secondary-foreground/50 uppercase border-b border-border/40 pb-2 font-heading">
+            02. Tactical Geography & Deadlines
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* District Select */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <MapPin className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Target District
+              </label>
+              <select
+                name="recipientDistrict"
+                required
+                value={formData.recipientDistrict}
+                onChange={handleDistrictChange}
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer font-body"
+              >
+                <option value="" disabled>
+                  Select Target District
                 </option>
-              ))}
-            </select>
-          </div>
+                {districtsList.map((d) => (
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* District Select */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> District
-            </label>
-            <select
-              name="recipientDistrict"
-              required
-              value={formData.recipientDistrict}
-              onChange={handleDistrictChange}
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition cursor-pointer"
-            >
-              <option value="" disabled>
-                Select District
-              </option>
-              {districtsList.map((d) => (
-                <option key={d.value} value={d.value}>
-                  {d.label}
+            {/* Upazila Select */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <MapPin className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Regional Upazila
+              </label>
+              <select
+                name="recipientUpazila"
+                required
+                value={formData.recipientUpazila}
+                onChange={handleChange}
+                disabled={!formData.recipientDistrict}
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed font-body"
+              >
+                <option value="" disabled>
+                  {!formData.recipientDistrict
+                    ? "Awaiting District Input"
+                    : "Select Regional Upazila"}
                 </option>
-              ))}
-            </select>
-          </div>
+                {availableUpazilas.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Upazila Select */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-muted-foreground" /> Upazila
-            </label>
-            <select
-              name="recipientUpazila"
-              required
-              value={formData.recipientUpazila}
-              onChange={handleChange}
-              disabled={!formData.recipientDistrict}
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition cursor-pointer disabled:opacity-50"
-            >
-              <option value="" disabled>
-                {!formData.recipientDistrict
-                  ? "Choose District First"
-                  : "Select Upazila"}
-              </option>
-              {availableUpazilas.map((u) => (
-                <option key={u} value={u}>
-                  {u}
-                </option>
-              ))}
-            </select>
-          </div>
+            {/* Donation Date */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <Calendar className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Scheduled Date
+              </label>
+              <input
+                type="date"
+                name="donationDate"
+                required
+                value={formData.donationDate}
+                onChange={handleChange}
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body"
+              />
+            </div>
 
-          {/* Donation Date */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-muted-foreground" />{" "}
-              Donation Date
-            </label>
-            <input
-              type="date"
-              name="donationDate"
-              required
-              value={formData.donationDate}
-              onChange={handleChange}
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-            />
-          </div>
+            {/* Donation Time */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <Clock className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Operational Timestamp
+              </label>
+              <input
+                type="time"
+                name="donationTime"
+                required
+                value={formData.donationTime}
+                onChange={handleChange}
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body"
+              />
+            </div>
 
-          {/* Donation Time */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-muted-foreground" /> Donation
-              Time
-            </label>
-            <input
-              type="time"
-              name="donationTime"
-              required
-              value={formData.donationTime}
-              onChange={handleChange}
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-            />
-          </div>
+            {/* Hospital Name */}
+            <div className="sm:col-span-2 space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+                <Building2 className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+                Medical Facility Destination
+              </label>
+              <input
+                type="text"
+                name="hospitalName"
+                required
+                value={formData.hospitalName}
+                onChange={handleChange}
+                placeholder="e.g. Dhaka Medical College Hospital"
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body"
+              />
+            </div>
 
-          {/* Hospital Name */}
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-semibold text-foreground">
-              Hospital Name
-            </label>
-            <input
-              type="text"
-              name="hospitalName"
-              required
-              value={formData.hospitalName}
-              onChange={handleChange}
-              placeholder="e.g. Dhaka Medical College Hospital"
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-            />
+            {/* Full Address */}
+            <div className="sm:col-span-2 space-y-2">
+              <label className="text-xs font-bold tracking-wide text-foreground/80 font-sans">
+                Geographic Target Details (Full Address)
+              </label>
+              <input
+                type="text"
+                name="fullAddress"
+                required
+                value={formData.fullAddress}
+                onChange={handleChange}
+                placeholder="e.g. Ward 5, House 24, Road 2"
+                className="w-full bg-background/50 border border-border rounded-xl px-4 py-2.5 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-body"
+              />
+            </div>
           </div>
+        </div>
 
-          {/* Full Address */}
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-semibold text-foreground">
-              Full Address Detail
-            </label>
-            <input
-              type="text"
-              name="fullAddress"
-              required
-              value={formData.fullAddress}
-              onChange={handleChange}
-              placeholder="e.g. Ward 5, House 24, Road 2"
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition"
-            />
-          </div>
-
-          {/* Request Message */}
-          <div className="sm:col-span-2 space-y-1.5">
-            <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
-              <MessageSquare className="w-3.5 h-3.5 text-muted-foreground" />{" "}
-              Why do you need blood? (Request Message)
+        {/* Case Context Details */}
+        <div className="space-y-5">
+          <h3 className="text-xs font-bold tracking-widest text-secondary-foreground/50 uppercase border-b border-border/40 pb-2 font-heading">
+            03. Operational Manifest & Briefing
+          </h3>
+          <div className="space-y-2">
+            <label className="text-xs font-bold tracking-wide text-foreground/80 flex items-center gap-2 font-sans">
+              <MessageSquare className="w-3.5 h-3.5 text-secondary-foreground/40" />{" "}
+              Case Context Log (Request Message)
             </label>
             <textarea
               name="requestMessage"
@@ -316,39 +353,37 @@ export default function EditDonationRequestPage() {
               required
               value={formData.requestMessage}
               onChange={handleChange}
-              placeholder="Provide context regarding the patient's medical situation..."
-              className="w-full bg-background border border-border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition resize-none"
+              placeholder="Provide clean internal diagnostic logs or clinical scenario overview context regarding the patient's medical emergency timeline..."
+              className="w-full bg-background/50 border border-border rounded-xl px-4 py-3 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none leading-relaxed font-body"
             />
           </div>
         </div>
 
-        {/* Action Buttons Footer */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border/60">
+        {/* Form Action Controls Footer */}
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-border/60 bg-muted/5 -mx-6 sm:-mx-8 px-6 sm:px-8 -mb-6 sm:-mb-8 py-5">
           <Link
             href="/dashboard/my-donation-requests"
-            className="px-4 py-2.5 rounded-full border border-border bg-muted/40 hover:bg-muted text-xs sm:text-sm font-semibold text-slate-600 transition"
+            className="px-5 py-2.5 rounded-xl border border-border bg-background hover:bg-secondary text-xs sm:text-sm font-semibold text-secondary-foreground/80 transition-all shadow-sm font-sans"
           >
-            Cancel
+            Cancel Changes
           </Link>
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center gap-2 bg-rose-600 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full hover:bg-rose-700 disabled:opacity-50 transition shadow-sm focus:outline-none"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl hover:opacity-90 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none transition-all shadow-sm shadow-primary/10 focus:outline-none font-sans"
           >
             {submitting ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Updating...
+                <Loader2 className="w-4 h-4 animate-spin" /> Synchronizing...
               </>
             ) : (
               <>
-                <Save className="w-4 h-4" /> Update Donation Request
+                <Save className="w-4 h-4" /> Save Manifest Updates
               </>
             )}
           </button>
         </div>
       </form>
-
-      {/* Global toast provider handles the container now */}
     </div>
   );
 }

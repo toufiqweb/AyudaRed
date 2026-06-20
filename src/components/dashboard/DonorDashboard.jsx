@@ -3,28 +3,14 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Eye,
-  Edit,
-  Trash2,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
-  Loader2,
-  Calendar,
-  Clock,
-  MapPin,
-  ChevronRight,
-  Heart,
-  MoreVertical,
-} from "lucide-react";
+import { AlertTriangle, Loader2, ChevronRight } from "lucide-react";
 import {
   updateDonationRequestStatus,
   deleteDonationRequest,
 } from "@/lib/actions/requests";
 import { getUserDonationRequests } from "@/lib/api/requests";
 import { useToast } from "../ui/Toast";
-import DonationRequestsTable from "@/components/ui/DonationRequestsTable";
+import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
 
 export default function DonorDashboard({ user }) {
   const toast = useToast();

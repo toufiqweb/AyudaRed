@@ -14,8 +14,10 @@ import {
 import { updateUser } from "@/lib/actions/admin";
 import { getAllUsers } from "@/lib/api/admin";
 import Pagination from "@/components/ui/Pagination";
+import { useToast } from "@/components/ui/Toast";
 
 export default function AllUsersPage() {
+  const toast = useToast();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -69,10 +71,11 @@ export default function AllUsersPage() {
     setOpenMenuId(null);
     try {
       await updateUser(userId, payload);
+      toast.success("User updated successfully.");
       fetchUsers();
     } catch (error) {
       console.error("Mutation failure:", error);
-      alert(error.message || "Could not execute this action.");
+      toast.error(error.message || "Could not execute this action.");
     } finally {
       setActionLoadingId(null);
     }

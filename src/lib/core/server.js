@@ -1,7 +1,12 @@
 // Server-side fetch utilities (NOT Server Actions - do not use "use server" here)
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-export const serverMutation = async (path, data, method = "POST", token = null) => {
+export const serverMutation = async (
+  path,
+  data,
+  method = "POST",
+  token = null,
+) => {
   const res = await fetch(`${baseUrl}${path}`, {
     method,
     headers: {

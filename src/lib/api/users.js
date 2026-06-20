@@ -1,5 +1,5 @@
-import { serverFetch } from "../core/server";
+import { protectedServerFetch } from "../core/server";
 
-export const getUserByEmail = async (email) => {
-  return serverFetch(`/api/users?email=${email}`);
+export const getUserByEmail = async (email, token) => {
+  return protectedServerFetch(`/api/users?email=${email}`, token);
 };

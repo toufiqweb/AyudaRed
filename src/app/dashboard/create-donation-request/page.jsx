@@ -2,6 +2,7 @@
 import { useUserServerSession } from "@/lib/core/sessionSever";
 import { getUserByEmail } from "@/lib/api/users";
 import CreateRequestForm from "./CreateRequestForm";
+import { getTokenServer } from "@/lib/core/getTokenServer";
 
 const CreateDonationRequestPage = async () => {
   let user = null;
@@ -13,7 +14,8 @@ const CreateDonationRequestPage = async () => {
 
     if (user?.email) {
       // Check the user status from your Express backend using shared API configuration
-      dbUser = await getUserByEmail(user.email);
+      const token = await getTokenServer();
+      dbUser = await getUserByEmail(user.email, token);
     }
   } catch (err) {
     console.error("Authorization check failure:", err);
@@ -45,7 +47,9 @@ const CreateDonationRequestPage = async () => {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
         <div className="p-5 border border-rose-200 bg-rose-50 text-rose-700 rounded-2xl space-y-2 shadow-sm">
-          <h2 className="text-base font-bold font-heading">Account Restricted 🚫</h2>
+          <h2 className="text-base font-bold font-heading">
+            Account Restricted 🚫
+          </h2>
           <p className="text-sm opacity-90 font-body">
             Your account status is currently marked as inactive or blocked. You
             are restricted from posting new donation requests.

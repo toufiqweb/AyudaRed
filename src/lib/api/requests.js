@@ -7,27 +7,27 @@ import { protectedServerFetch, serverFetch } from "../core/server";
 export const getUserDonationRequests = async (
   statusFilter,
   currentPage,
-  itemsPerPage
+  itemsPerPage,
 ) => {
   const token = await getTokenServer();
   if (!token) throw new Error("Unauthorized: No token found.");
 
   return protectedServerFetch(
     `/api/my-donation-requests?status=${statusFilter}&page=${currentPage}&limit=${itemsPerPage}`,
-    token
+    token,
   );
 };
 
 // GET: Fetch single donation request details by ID
 export const getDonationRequestById = async (id) => {
-  return serverFetch(`/api/donation-requests/${id}`);
+  const token = await getTokenServer();
+  if (!token) throw new Error("Unauthorized: No token found.");
+  return protectedServerFetch(`/api/donation-requests/${id}`, token);
 };
 
 // GET: Fetch public pending donation requests with pagination
 export const getPendingDonationRequests = async (currentPage, itemsPerPage) => {
   return serverFetch(
-    `/api/donation-requests?page=${currentPage}&size=${itemsPerPage}`
+    `/api/donation-requests?page=${currentPage}&size=${itemsPerPage}`,
   );
 };
-
-

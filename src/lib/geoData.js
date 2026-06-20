@@ -1,5 +1,3 @@
-// lib/geoData.js
-
 // District List
 export const districts = [
   "Dhaka",

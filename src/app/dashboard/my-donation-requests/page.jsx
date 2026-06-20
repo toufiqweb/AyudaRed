@@ -53,7 +53,11 @@ export default function MyDonationRequestsPage() {
     setLoading(true);
     setError("");
     try {
-      const result = await getUserDonationRequests(statusFilter, currentPage, itemsPerPage);
+      const result = await getUserDonationRequests(
+        statusFilter,
+        currentPage,
+        itemsPerPage,
+      );
       setRequests(result.data || []);
       setTotalPages(result.pagination?.totalPages || 1);
     } catch (err) {
@@ -118,7 +122,9 @@ export default function MyDonationRequestsPage() {
       canceled: "bg-stone-50 text-stone-600 border-stone-200",
     };
     return (
-      <span className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${styles[status] || "bg-muted text-muted-foreground"}`}>
+      <span
+        className={`px-2.5 py-1 text-xs font-semibold border rounded-full capitalize ${styles[status] || "bg-muted text-muted-foreground"}`}
+      >
         {status}
       </span>
     );
@@ -140,7 +146,10 @@ export default function MyDonationRequestsPage() {
           <Filter className="w-4 h-4 text-muted-foreground opacity-70" />
           <select
             value={statusFilter}
-            onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setCurrentPage(1);
+            }}
             className="bg-background border border-border rounded-xl px-3 py-1.5 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition cursor-pointer"
           >
             <option value="all">All Statuses</option>
@@ -153,7 +162,9 @@ export default function MyDonationRequestsPage() {
       </div>
 
       {error && (
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">{error}</div>
+        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">
+          {error}
+        </div>
       )}
 
       {/* Table */}
@@ -161,12 +172,16 @@ export default function MyDonationRequestsPage() {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-primary opacity-80" />
-            <p className="text-xs text-muted-foreground animate-pulse font-body">Loading donation records...</p>
+            <p className="text-xs text-muted-foreground animate-pulse font-body">
+              Loading donation records...
+            </p>
           </div>
         ) : requests.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center px-4">
             <Heart className="w-10 h-10 text-muted-foreground/30 mb-3" />
-            <h3 className="text-sm font-semibold text-foreground font-heading">No Request Records Found</h3>
+            <h3 className="text-sm font-semibold text-foreground font-heading">
+              No Request Records Found
+            </h3>
             <p className="text-xs text-muted-foreground max-w-xs mt-1 font-body">
               No requests match the selected filter.
             </p>
@@ -187,9 +202,14 @@ export default function MyDonationRequestsPage() {
               </thead>
               <tbody className="divide-y divide-border/60 text-sm">
                 {requests.map((request) => (
-                  <tr key={request._id} className="hover:bg-muted/20 transition-colors">
+                  <tr
+                    key={request._id}
+                    className="hover:bg-muted/20 transition-colors"
+                  >
                     <td className="px-6 py-4">
-                      <p className="font-semibold text-foreground font-body">{request.recipientName}</p>
+                      <p className="font-semibold text-foreground font-body">
+                        {request.recipientName}
+                      </p>
                       {request.requestMessage && (
                         <p className="text-[11px] text-muted-foreground max-w-[160px] truncate mt-0.5 font-body">
                           {request.requestMessage}
@@ -204,7 +224,8 @@ export default function MyDonationRequestsPage() {
                           {request.hospitalName}
                         </p>
                         <p className="text-muted-foreground pl-[18px] font-body">
-                          {request.recipientUpazila}, {request.recipientDistrict}
+                          {request.recipientUpazila},{" "}
+                          {request.recipientDistrict}
                         </p>
                       </div>
                     </td>
@@ -219,24 +240,35 @@ export default function MyDonationRequestsPage() {
                     <td className="px-6 py-4">
                       <div className="space-y-0.5 text-xs text-muted-foreground">
                         <p className="flex items-center gap-1 text-foreground/80 font-medium font-body">
-                          <Calendar className="w-3.5 h-3.5 opacity-60" /> {request.donationDate}
+                          <Calendar className="w-3.5 h-3.5 opacity-60" />{" "}
+                          {request.donationDate}
                         </p>
                         <p className="flex items-center gap-1 pl-[18px] font-body">
-                          <Clock className="w-3.5 h-3.5 opacity-40" /> {request.donationTime}
+                          <Clock className="w-3.5 h-3.5 opacity-40" />{" "}
+                          {request.donationTime}
                         </p>
                       </div>
                     </td>
 
-                    <td className="px-6 py-4">{getStatusBadge(request.donationStatus)}</td>
+                    <td className="px-6 py-4">
+                      {getStatusBadge(request.donationStatus)}
+                    </td>
 
                     <td className="px-6 py-4 text-xs">
-                      {request.donationStatus === "inprogress" && request.donorName ? (
+                      {request.donationStatus === "inprogress" &&
+                      request.donorName ? (
                         <div>
-                          <p className="font-medium text-foreground font-body">{request.donorName}</p>
-                          <p className="text-muted-foreground text-[11px] font-body">{request.donorEmail}</p>
+                          <p className="font-medium text-foreground font-body">
+                            {request.donorName}
+                          </p>
+                          <p className="text-muted-foreground text-[11px] font-body">
+                            {request.donorEmail}
+                          </p>
                         </div>
                       ) : (
-                        <span className="text-muted-foreground/50 italic">—</span>
+                        <span className="text-muted-foreground/50 italic">
+                          —
+                        </span>
                       )}
                     </td>
 
@@ -245,7 +277,9 @@ export default function MyDonationRequestsPage() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          setOpenMenuId((prev) => prev === request._id ? null : request._id);
+                          setOpenMenuId((prev) =>
+                            prev === request._id ? null : request._id,
+                          );
                         }}
                         disabled={actionLoading === request._id}
                         className="p-1.5 rounded-lg border border-transparent hover:bg-muted text-muted-foreground transition focus:outline-none inline-flex items-center justify-center disabled:opacity-40"
@@ -264,11 +298,12 @@ export default function MyDonationRequestsPage() {
                         >
                           {/* View — always visible */}
                           <Link
-                            href={`/dashboard/donation-requests/view/${request._id}`}
+                            href={`/donation-requests/${request._id}`}
                             onClick={() => setOpenMenuId(null)}
                             className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
                           >
-                            <Eye className="w-3.5 h-3.5 text-muted-foreground" /> View Details
+                            <Eye className="w-3.5 h-3.5 text-muted-foreground" />{" "}
+                            View Details
                           </Link>
 
                           {/* Edit — always visible */}
@@ -277,7 +312,8 @@ export default function MyDonationRequestsPage() {
                             onClick={() => setOpenMenuId(null)}
                             className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
                           >
-                            <Edit className="w-3.5 h-3.5 text-blue-500" /> Edit Request
+                            <Edit className="w-3.5 h-3.5 text-blue-500" /> Edit
+                            Request
                           </Link>
 
                           {/* Delete — always visible */}
@@ -292,16 +328,22 @@ export default function MyDonationRequestsPage() {
                           {request.donationStatus === "inprogress" && (
                             <>
                               <button
-                                onClick={() => handleUpdateStatus(request._id, "done")}
+                                onClick={() =>
+                                  handleUpdateStatus(request._id, "done")
+                                }
                                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-emerald-700 hover:bg-emerald-50 transition border-t border-border/40"
                               >
-                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Mark as Done
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />{" "}
+                                Mark as Done
                               </button>
                               <button
-                                onClick={() => handleUpdateStatus(request._id, "canceled")}
+                                onClick={() =>
+                                  handleUpdateStatus(request._id, "canceled")
+                                }
                                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-stone-600 hover:bg-stone-50 transition"
                               >
-                                <XCircle className="w-3.5 h-3.5 text-stone-500" /> Cancel Donation
+                                <XCircle className="w-3.5 h-3.5 text-stone-500" />{" "}
+                                Cancel Donation
                               </button>
                             </>
                           )}
@@ -335,10 +377,13 @@ export default function MyDonationRequestsPage() {
               <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <h3 className="text-base font-bold text-foreground font-heading">Confirm Deletion</h3>
+              <h3 className="text-base font-bold text-foreground font-heading">
+                Confirm Deletion
+              </h3>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed font-body">
-              Are you sure you want to permanently delete this donation request? This action cannot be reverted.
+              Are you sure you want to permanently delete this donation request?
+              This action cannot be reverted.
             </p>
             <div className="flex items-center justify-end gap-2 mt-5 border-t border-border pt-4">
               <button
@@ -352,7 +397,11 @@ export default function MyDonationRequestsPage() {
                 disabled={actionLoading !== null}
                 className="px-4 py-2 text-sm font-medium bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition shadow-sm disabled:opacity-50 min-w-[120px] flex items-center justify-center"
               >
-                {actionLoading !== null ? <Loader2 className="w-4 h-4 animate-spin" /> : "Confirm Delete"}
+                {actionLoading !== null ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  "Confirm Delete"
+                )}
               </button>
             </div>
           </div>

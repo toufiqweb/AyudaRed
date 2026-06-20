@@ -98,9 +98,7 @@ export default function AllBloodDonationRequestsPage() {
     try {
       await managementUpdateStatus(id, status);
       toast.success(
-        status === "done"
-          ? "Request marked as done."
-          : "Donation canceled.",
+        status === "done" ? "Request marked as done." : "Donation canceled.",
       );
       fetchAllRequests();
     } catch (err) {
@@ -138,7 +136,6 @@ export default function AllBloodDonationRequestsPage() {
     );
   };
 
-  // ডাইনামিক প্যাজিনেশন নাম্বার জেনারেটর (ইমেজ-১ এর ডিজাইন অনুযায়ী)
   const renderPageNumbers = () => {
     const pages = [];
     if (totalPages <= 5) {
@@ -357,7 +354,7 @@ export default function AllBloodDonationRequestsPage() {
                           >
                             {/* View Details */}
                             <Link
-                              href={`/dashboard/donation-requests/view/${request._id}`}
+                              href={`/donation-requests/${request._id}`}
                               onClick={() => setOpenMenuId(null)}
                               className="flex items-center gap-2 px-3 py-2 text-xs text-foreground hover:bg-muted transition"
                             >

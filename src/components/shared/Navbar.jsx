@@ -173,14 +173,8 @@ const Navbar = () => {
                 /* Twin Structural Buttons matching luxury SaaS aesthetic */
                 <div className="flex items-center gap-2 pr-1">
                   <Link
-                    href="/dashboard"
-                    className="px-4 py-1.5 text-xs font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-full shadow-md shadow-primary/20 transition-all duration-200"
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
                     href="/sign-in"
-                    className="px-4 py-1.5 text-xs font-semibold text-foreground bg-transparent border border-border/80 hover:bg-muted rounded-full transition-all duration-200"
+                    className="px-4 py-1.5 text-xs font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-full shadow-md shadow-primary/20 transition-all duration-200"
                   >
                     Join us
                   </Link>
@@ -289,16 +283,9 @@ const Navbar = () => {
                 ) : (
                   <div className="flex flex-col gap-3 px-3 pt-2">
                     <Link
-                      href="/dashboard"
-                      onClick={() => setIsOpen(false)}
-                      className="w-full text-center py-3 text-xs font-semibold text-primary-foreground bg-primary rounded-xl"
-                    >
-                      Dashboard
-                    </Link>
-                    <Link
                       href="/sign-in"
                       onClick={() => setIsOpen(false)}
-                      className="w-full text-center py-3 text-xs font-semibold text-foreground border border-border rounded-xl"
+                      className="w-full text-center py-3 text-xs font-semibold text-primary-foreground bg-primary hover:bg-primary/90 rounded-xl"
                     >
                       Join us
                     </Link>

@@ -12,10 +12,13 @@ import {
   Menu,
   HelpCircle,
   Plus,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useUserClientSession } from "@/lib/core/sessionClient";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 const DashboardNavbar = ({ onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -26,6 +29,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
   const notifyRef = useRef(null);
 
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
   const { user } = useUserClientSession();
 
   useEffect(() => {
@@ -105,6 +109,21 @@ const DashboardNavbar = ({ onMenuClick }) => {
           <Plus className="w-3.5 h-3.5 stroke-[3]" />
           <span>New Project</span>
         </button>
+
+        {/* Theme Toggle Switch */}
+        {mounted && (
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="p-2 rounded-xl text-secondary-foreground/60 hover:bg-secondary hover:text-foreground transition-all active:scale-95 font-sans border border-transparent hover:border-border/40"
+            aria-label="Toggle Theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="w-4 h-4" />
+            ) : (
+              <Moon className="w-4 h-4" />
+            )}
+          </button>
+        )}
 
         {/* Help / Support Nexus */}
         <button className="p-2 rounded-xl text-secondary-foreground/60 hover:bg-secondary hover:text-foreground transition-all active:scale-95 hidden sm:inline-flex font-sans border border-transparent hover:border-border/40">

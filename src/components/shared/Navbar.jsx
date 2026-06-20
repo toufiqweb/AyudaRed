@@ -50,7 +50,7 @@ const Navbar = () => {
   // Nav items exactly matching image_47d085.png
   const navLinks = [
     { name: "Donation Requests", href: "/donation-requests" },
-    { name: "Search Donors", href: "/search-donor" },
+    { name: "Search Donors", href: "/search-donors" },
     { name: "Funding", href: "/funding" },
   ];
 

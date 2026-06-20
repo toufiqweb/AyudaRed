@@ -74,7 +74,7 @@ export default function Banner() {
 
           {/* Secondary Action */}
           <Link
-            href="/search-donor"
+            href="/search-donors"
             className="flex items-center justify-center gap-2 w-full sm:w-auto min-w-[220px] bg-background hover:bg-muted text-foreground border border-border/80 font-semibold px-8 py-4 rounded-full transition-all active:scale-[0.98] shadow-sm"
           >
             <Search className="w-4 h-4 text-foreground/60" />

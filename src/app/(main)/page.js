@@ -4,6 +4,8 @@ import FeatureGrid from "@/components/homepage/FeatureGrid";
 import FundingSection from "@/components/homepage/FundingSection";
 import HowItWorks from "@/components/homepage/HowItWorks";
 import StatsPage from "@/components/homepage/Stats";
+import BloodDonationLanding from "@/components/homepage/BloodDonationLanding";
+import NewsletterCTA from "@/components/homepage/NewsletterCTA";
 
 export default function Home() {
   return (
@@ -12,8 +14,10 @@ export default function Home() {
       <StatsPage />
       <HowItWorks />
       <FeatureGrid />
-      <FundingSection />
       <CallToAction />
+      <FundingSection />
+      <BloodDonationLanding />
+      <NewsletterCTA />
     </div>
   );
 }

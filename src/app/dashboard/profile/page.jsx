@@ -20,7 +20,9 @@ const ProfileServerPage = async () => {
     return (
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center p-6">
         <div className="w-full max-w-md p-5 text-sm text-danger bg-danger/10 border border-danger/20 rounded-2xl shadow-sm text-center">
-          <p className="font-semibold mb-1 font-body">Session Handshake Error</p>
+          <p className="font-semibold mb-1 font-body">
+            Session Handshake Error
+          </p>
           <span className="opacity-80">{error}</span>
         </div>
       </div>
@@ -76,10 +78,13 @@ const ProfileServerPage = async () => {
   };
 
   return (
-    <main className="w-full min-h-screen bg-background">
+    <main className="w-full min-h-screen ">
       {/* Container wrapper configured wide to give the grid framework adequate room to expand */}
-      <div className="mx-auto max-w-7xl transition-all duration-300">
-        <ProfilePage key={JSON.stringify(initialProfile)} initialData={initialProfile} />
+      <div className="mx-auto w-full transition-all duration-300">
+        <ProfilePage
+          key={JSON.stringify(initialProfile)}
+          initialData={initialProfile}
+        />
       </div>
     </main>
   );

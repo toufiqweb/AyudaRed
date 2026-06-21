@@ -191,7 +191,7 @@ export default function AdminVolunteerDashboard({ user }) {
       </div>
 
       {/* ── 2. Stat Cards ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {/* Total Users */}
         <div className="bg-secondary backdrop-blur-md border border-border rounded-2xl p-6 flex items-center gap-5 transition hover:border-border/80 hover:bg-muted shadow-xs relative group">
           <div className="absolute top-0 right-0 w-16 h-16 bg-muted rounded-bl-3xl group-hover:bg-muted/80 transition-colors" />
@@ -210,20 +210,20 @@ export default function AdminVolunteerDashboard({ user }) {
           </div>
         </div>
 
-        {/* Pending Requests */}
+        {/* Total Funding */}
         <div className="bg-secondary backdrop-blur-md border border-border rounded-2xl p-6 flex items-center gap-5 transition hover:border-border/80 hover:bg-muted shadow-xs relative group">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-amber-500/5 rounded-bl-3xl group-hover:bg-amber-500/10 transition-colors" />
+          <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-bl-3xl group-hover:bg-emerald-500/10 transition-colors" />
           <div className="p-3 bg-muted text-foreground/80 rounded-xl shrink-0 border border-border shadow-inner">
-            <CreditCard className="w-5 h-5 text-amber-600 dark:text-amber-500" />
+            <CreditCard className="w-5 h-5 text-emerald-600 dark:text-emerald-500" />
           </div>
           <div>
             <p className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest font-sans">
-              Pending
+              Total Funding
             </p>
             <h3 className="text-3xl font-bold text-foreground tracking-tight mt-1 font-sans">
-              {stats?.statusDistribution?.pending != null
-                ? stats.statusDistribution.pending.toLocaleString()
-                : "—"}
+              ${stats?.totalFunding != null
+                ? stats.totalFunding.toLocaleString()
+                : "0"}
             </h3>
           </div>
         </div>
@@ -241,24 +241,6 @@ export default function AdminVolunteerDashboard({ user }) {
             <h3 className="text-3xl font-bold text-foreground tracking-tight mt-1 font-sans">
               {stats?.totalRequests != null
                 ? stats.totalRequests.toLocaleString()
-                : "—"}
-            </h3>
-          </div>
-        </div>
-
-        {/* Completed */}
-        <div className="bg-secondary backdrop-blur-md border border-border rounded-2xl p-6 flex items-center gap-5 transition hover:border-border/80 hover:bg-muted shadow-xs relative group">
-          <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-bl-3xl group-hover:bg-emerald-500/10 transition-colors" />
-          <div className="p-3 bg-muted text-foreground/80 rounded-xl shrink-0 border border-border shadow-inner">
-            <Droplet className="w-5 h-5 text-emerald-600 dark:text-emerald-500" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-foreground/60 uppercase tracking-widest font-sans">
-              Completed
-            </p>
-            <h3 className="text-3xl font-bold text-foreground tracking-tight mt-1 font-sans">
-              {stats?.statusDistribution?.done != null
-                ? stats.statusDistribution.done.toLocaleString()
                 : "—"}
             </h3>
           </div>

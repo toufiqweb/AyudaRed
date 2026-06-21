@@ -221,8 +221,8 @@ export default function AdminVolunteerDashboard({ user }) {
               Total Funding
             </p>
             <h3 className="text-3xl font-bold text-foreground tracking-tight mt-1 font-sans">
-              ${stats?.totalFunding != null
-                ? stats.totalFunding.toLocaleString()
+              ${stats?.totalFunds != null
+                ? stats.totalFunds.toLocaleString()
                 : "0"}
             </h3>
           </div>

@@ -15,6 +15,7 @@ import {
   HeartHandshake,
   Calendar,
   User,
+  CreditCard,
 } from "lucide-react";
 import { useUserClientSession } from "@/lib/core/sessionClient";
 

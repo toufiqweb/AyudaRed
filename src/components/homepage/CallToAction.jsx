@@ -178,7 +178,7 @@ export default function CallToAction() {
           variants={leftContentVariants}
           className="lg:col-span-6 text-left space-y-6 max-w-2xl"
         >
-          <span className="text-[#c63d47] dark:text-[#e0565f] font-bold text-xs uppercase tracking-widest block">
+          <span className="text-primary font-bold text-xs uppercase tracking-widest block">
             Smart Analytics
           </span>
 
@@ -192,7 +192,7 @@ export default function CallToAction() {
           </p>
 
           <div className="pt-4">
-            <button className="bg-[#c63d47] hover:bg-[#b03039] text-white font-bold text-sm px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-[0.98] inline-flex items-center gap-2">
+            <button className="bg-primary hover:bg-primary/95 text-primary-foreground font-bold text-sm px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-[0.98] inline-flex items-center gap-2">
               Smart Analytics
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -1138,7 +1138,7 @@ export default function CallToAction() {
                   className="bg-secondary border border-border/80 dark:border-border/20 rounded-2xl p-6 flex flex-col items-center text-center shadow-md hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer"
                 >
                   {/* Icon Container with Light Pink Background */}
-                  <div className="w-12 h-12 rounded-full bg-[#c63d47]/10 dark:bg-[#e0565f]/10 flex items-center justify-center text-[#c63d47] dark:text-[#e0565f] transition-colors duration-200">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-colors duration-200">
                     <IconComponent className="w-6 h-6 stroke-[1.5]" />
                   </div>
 

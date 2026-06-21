@@ -14,7 +14,7 @@ export default function BloodDonationLanding() {
           
           {/* Left Column: Typographic Details */}
           <div className="lg:col-span-6 space-y-6">
-            <span className="text-[#c63d47] dark:text-[#e0565f] font-bold text-xs uppercase tracking-widest block">
+            <span className="text-primary font-bold text-xs uppercase tracking-widest block">
               About Us
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground leading-[1.1] font-heading">
@@ -27,37 +27,37 @@ export default function BloodDonationLanding() {
             {/* Checklist */}
             <div className="grid grid-cols-2 gap-y-3 gap-x-4 pt-2">
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Lorem ipsum</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Aenean commodo</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Donec quam</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Massa quis</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Pretium quis</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
-                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-[#c63d47]/10 text-[#c63d47] shrink-0">
+                <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
                 <span>Dolor sit</span>
@@ -66,7 +66,7 @@ export default function BloodDonationLanding() {
             
             {/* CTA Button */}
             <div className="pt-4">
-              <button className="bg-[#c63d47] hover:bg-[#b03039] text-white font-bold text-sm px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
+              <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all active:scale-[0.98]">
                 Sign Up
               </button>
             </div>
@@ -102,16 +102,16 @@ export default function BloodDonationLanding() {
           </div>
 
           {/* Right Side: Smaller Crimson Card */}
-          <div className="lg:col-span-4 bg-[#c63d47] text-white shadow-xl rounded-2xl p-6 md:p-8 flex flex-col justify-center border border-[#c63d47]">
+          <div className="lg:col-span-4 bg-primary text-primary-foreground shadow-xl rounded-2xl p-6 md:p-8 flex flex-col justify-center border border-primary/20">
             <div className="flex items-center gap-4">
               <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 shrink-0">
-                <Globe className="w-6 h-6 text-white" />
+                <Globe className="w-6 h-6 text-white animate-[pulse_3s_infinite]" />
               </div>
               <div>
                 <h3 className="text-lg md:text-xl font-bold font-heading">
                   Expert Staff
                 </h3>
-                <p className="mt-1 text-white/80 text-xs md:text-sm leading-relaxed">
+                <p className="mt-1 text-white/80 text-xs md:text-sm leading-relaxed font-sans">
                   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
                 </p>
               </div>
@@ -121,13 +121,13 @@ export default function BloodDonationLanding() {
       </section>
 
       {/* ================= 3. THREE FEATURE CARDS ON CRIMSON BG ================= */}
-      <section className="bg-[#c63d47] dark:bg-[#7a2027] pt-24 md:pt-32 pb-24 px-4 transition-colors duration-300 relative -mt-16 z-10">
+      <section className="bg-primary dark:bg-primary/80 pt-24 md:pt-32 pb-24 px-4 transition-colors duration-300 relative -mt-16 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mt-4">
             
             {/* Card 1: Blood Banking */}
             <div className="bg-secondary border border-border dark:border-border/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
-              <div className="w-16 h-16 rounded-full bg-[#c63d47]/10 flex items-center justify-center text-[#c63d47] dark:bg-[#e0565f]/10 dark:text-[#e0565f] transition-all">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all">
                 <Droplet className="w-8 h-8 stroke-[1.5]" />
               </div>
               <h4 className="mt-6 text-xl font-black text-foreground font-heading">
@@ -136,7 +136,7 @@ export default function BloodDonationLanding() {
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
               </p>
-              <a href="#" className="mt-6 text-[#c63d47] dark:text-[#e0565f] font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
+              <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More
                 <span className="text-lg leading-none">&rarr;</span>
               </a>
@@ -144,7 +144,7 @@ export default function BloodDonationLanding() {
 
             {/* Card 2: Health Check */}
             <div className="bg-secondary border border-border dark:border-border/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
-              <div className="w-16 h-16 rounded-full bg-[#c63d47]/10 flex items-center justify-center text-[#c63d47] dark:bg-[#e0565f]/10 dark:text-[#e0565f] transition-all">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all">
                 <HeartPulse className="w-8 h-8 stroke-[1.5]" />
               </div>
               <h4 className="mt-6 text-xl font-black text-foreground font-heading">
@@ -153,7 +153,7 @@ export default function BloodDonationLanding() {
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
               </p>
-              <a href="#" className="mt-6 text-[#c63d47] dark:text-[#e0565f] font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
+              <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More
                 <span className="text-lg leading-none">&rarr;</span>
               </a>
@@ -161,7 +161,7 @@ export default function BloodDonationLanding() {
 
             {/* Card 3: Blood Tests */}
             <div className="bg-secondary border border-border dark:border-border/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl group">
-              <div className="w-16 h-16 rounded-full bg-[#c63d47]/10 flex items-center justify-center text-[#c63d47] dark:bg-[#e0565f]/10 dark:text-[#e0565f] transition-all">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all">
                 <ClipboardCheck className="w-8 h-8 stroke-[1.5]" />
               </div>
               <h4 className="mt-6 text-xl font-black text-foreground font-heading">
@@ -170,7 +170,7 @@ export default function BloodDonationLanding() {
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
               </p>
-              <a href="#" className="mt-6 text-[#c63d47] dark:text-[#e0565f] font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
+              <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More
                 <span className="text-lg leading-none">&rarr;</span>
               </a>

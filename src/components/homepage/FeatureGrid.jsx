@@ -36,7 +36,7 @@ export default function FeatureGrid() {
       <div className="mx-auto max-w-7xl">
         {/* Centered Header Section */}
         <div className="flex flex-col items-center justify-center text-center space-y-3 mb-16 max-w-3xl mx-auto">
-          <span className="text-[#c63d47] dark:text-[#e0565f] font-bold text-xs uppercase tracking-widest block">
+          <span className="text-primary font-bold text-xs uppercase tracking-widest block">
             Best Services
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground leading-tight font-heading">
@@ -57,7 +57,7 @@ export default function FeatureGrid() {
                 className="bg-white dark:bg-secondary border border-border/80 dark:border-border/20 rounded-2xl p-8 flex flex-col items-center text-center shadow-md hover:-translate-y-1 hover:shadow-lg transition-all duration-300 group cursor-pointer"
               >
                 {/* Icon Container with Light Pink Background */}
-                <div className="w-16 h-16 rounded-full bg-[#c63d47]/10 dark:bg-[#e0565f]/10 flex items-center justify-center text-[#c63d47] dark:text-[#e0565f] transition-all duration-200">
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary transition-all duration-200">
                   <IconComponent className="w-8 h-8 stroke-[1.5]" />
                 </div>
 
@@ -74,7 +74,7 @@ export default function FeatureGrid() {
                 {/* Learn More Action Link */}
                 <a
                   href="#"
-                  className="mt-6 text-[#c63d47] dark:text-[#e0565f] font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
+                  className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
                 >
                   {service.linkText}
                   <span className="text-lg leading-none">&rarr;</span>

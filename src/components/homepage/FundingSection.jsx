@@ -18,7 +18,7 @@ export default function FundingSection() {
           
           {/* Left Column: Progress Info */}
           <div className="lg:col-span-7 space-y-6">
-            <span className="text-[#c63d47] dark:text-[#e0565f] font-bold text-xs uppercase tracking-widest block">
+            <span className="text-primary font-bold text-xs uppercase tracking-widest block">
               Fundraising
             </span>
             
@@ -28,7 +28,7 @@ export default function FundingSection() {
 
             {/* Target values */}
             <div className="text-3xl sm:text-4xl font-extrabold font-sans text-foreground">
-              <span className="text-[#c63d47] dark:text-[#e0565f]">$ </span>
+              <span className="text-primary">$ </span>
               <span>{currentFunds.toLocaleString()}</span>
               <span className="text-muted-foreground/50 mx-2 text-2xl">/</span>
               <span className="text-muted-foreground text-2xl font-semibold">${targetFunds.toLocaleString()}</span>
@@ -45,13 +45,13 @@ export default function FundingSection() {
               <div className="flex-grow space-y-2">
                 <div className="flex items-center justify-between text-sm font-bold">
                   <span className="text-foreground/80">Donation Funded</span>
-                  <span className="text-[#c63d47] dark:text-[#e0565f]">{progressPercent}%</span>
+                  <span className="text-primary">{progressPercent}%</span>
                 </div>
                 
                 {/* Horizontal Progress Bar */}
                 <div className="h-4 w-full bg-secondary border border-border/80 rounded-full overflow-hidden relative">
                   <motion.div
-                    className="h-full bg-[#c63d47] rounded-full relative overflow-hidden"
+                    className="h-full bg-primary rounded-full relative overflow-hidden"
                     initial={{ width: "0%" }}
                     whileInView={{ width: `${progressPercent}%` }}
                     viewport={{ once: true }}
@@ -65,7 +65,7 @@ export default function FundingSection() {
 
               {/* Action Button */}
               <div className="shrink-0 flex items-end">
-                <button className="w-full sm:w-auto bg-[#c63d47] hover:bg-[#b03039] text-white font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 whitespace-nowrap">
+                <button className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-sm px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 whitespace-nowrap">
                   <Heart className="w-4 h-4 fill-current" />
                   Donate Now
                 </button>
@@ -102,7 +102,7 @@ export default function FundingSection() {
                 <div className="relative w-full h-full rounded-full overflow-hidden flex flex-col justify-end">
                   {/* Rising liquid column */}
                   <motion.div
-                    className="w-full bg-[#c63d47] rounded-t-full"
+                    className="w-full bg-primary rounded-t-full"
                     initial={{ height: "0%" }}
                     whileInView={{ height: `${progressPercent}%` }}
                     viewport={{ once: true }}
@@ -120,7 +120,7 @@ export default function FundingSection() {
                   transition={{ duration: 0.5, delay: 2.0 }}
                 >
                   {/* Connecting horizontal line */}
-                  <div className="w-8 h-[2px] bg-[#c63d47]" />
+                  <div className="w-8 h-[2px] bg-primary" />
                   
                   {/* Tooltip Card */}
                   <div className="ml-2 bg-secondary border border-border shadow-lg rounded-xl px-4 py-2.5 text-left relative backdrop-blur-sm transition-colors duration-300">
@@ -137,7 +137,7 @@ export default function FundingSection() {
 
               {/* Thermometer Bulb at bottom */}
               <div className="w-16 h-16 bg-slate-100 dark:bg-zinc-800/80 border-2 border-slate-200 dark:border-zinc-700/80 rounded-full absolute bottom-4 shadow-md flex items-center justify-center z-20">
-                <div className="w-12 h-12 bg-[#c63d47] rounded-full shadow-inner relative">
+                <div className="w-12 h-12 bg-primary rounded-full shadow-inner relative">
                   {/* Glossy highlight on bulb */}
                   <div className="absolute top-1 left-2.5 w-3.5 h-3.5 bg-white/20 rounded-full blur-[0.5px]" />
                 </div>

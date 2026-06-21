@@ -44,7 +44,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await authClient.signOut();
-    console.log("Logging out...");
+    // console.log("Logging out...");
   };
 
   // Nav items exactly matching image_47d085.png

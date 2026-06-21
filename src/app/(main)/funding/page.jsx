@@ -3,6 +3,8 @@ import { Calendar, CreditCard } from "lucide-react";
 import { getTokenServer } from "@/lib/core/getTokenServer";
 import { protectedServerFetch } from "@/lib/core/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function FundingPage() {
   let funds = [];
   let error = null;

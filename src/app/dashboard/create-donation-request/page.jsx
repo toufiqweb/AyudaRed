@@ -4,6 +4,8 @@ import { getUserByEmail } from "@/lib/api/users";
 import CreateRequestForm from "./CreateRequestForm";
 import { getTokenServer } from "@/lib/core/getTokenServer";
 
+export const dynamic = "force-dynamic";
+
 const CreateDonationRequestPage = async () => {
   let user = null;
   let dbUser = null;

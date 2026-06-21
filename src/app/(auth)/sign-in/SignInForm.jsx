@@ -13,6 +13,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/components/ui/Toast";
 
 export default function SignInForm() {
   const router = useRouter();
@@ -20,12 +21,11 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     try {
       await authClient.signIn.email({
@@ -33,10 +33,11 @@ export default function SignInForm() {
         password,
       });
 
+      toast.success("Signed in successfully!");
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
-      setError(err?.message || "Invalid email or password. Please try again.");
+      toast.error(err?.message || "Invalid email or password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +58,9 @@ export default function SignInForm() {
             className="flex items-center gap-2 text-xl font-bold font-heading tracking-tight text-foreground"
           >
             <Droplet className="w-6 h-6 text-primary fill-primary transform rotate-180" />
-            <span>BloodLink</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight font-heading">
+              Ayuda<span className="text-primary font-heading">Red</span>
+            </span>
           </Link>
         </div>
 
@@ -92,7 +95,7 @@ export default function SignInForm() {
 
         {/* Bottom: Footer / Micro-copy */}
         <div className="relative z-10 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} BloodLink Platform. All rights reserved.
+          © {new Date().getFullYear()} AyudaRed Platform. All rights reserved.
         </div>
       </div>
 
@@ -108,13 +111,6 @@ export default function SignInForm() {
               Sign in to manage your account
             </p>
           </div>
-
-          {/* Error Message Alert */}
-          {error && (
-            <div className="p-4 text-sm text-danger bg-danger/10 border border-danger/20 rounded-xl animate-in fade-in slide-in-from-top-2 duration-200">
-              {error}
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">

@@ -1,9 +1,9 @@
 import SignInForm from "./SignInForm";
 
 export const metadata = {
-  title: "Sign In | BloodLink",
+  title: "Sign In | AyudaRed",
   description:
-    "Sign in to your secure dashboard to manage blood donation requests",
+    "Sign in to access your account.",
 };
 
 export default function SignInPage() {

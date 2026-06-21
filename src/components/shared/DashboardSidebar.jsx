@@ -15,7 +15,6 @@ import {
   HeartHandshake,
   Calendar,
   User,
-  CreditCard,
 } from "lucide-react";
 import { useUserClientSession } from "@/lib/core/sessionClient";
 
@@ -115,9 +114,6 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
           }`}
         />
         {item.name}
-        {isActive && (
-          <span className="absolute right-2 w-1.5 h-1.5 rounded-full bg-primary" />
-        )}
       </Link>
     );
   };
@@ -134,7 +130,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
 
       {/* Main Sidebar Wrapper Panel */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-background border-r border-border flex flex-col h-screen transition-transform duration-300 ease-in-out font-sans lg:translate-x-0 lg:sticky lg:z-30 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-secondary/40 backdrop-blur-md border-r border-border flex flex-col h-screen transition-transform duration-300 ease-in-out font-sans lg:translate-x-0 lg:sticky lg:z-30 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* Sidebar Header Section */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-border shrink-0">
@@ -143,7 +139,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
             className="text-xl font-bold tracking-tight text-foreground flex items-center gap-1.5 font-heading"
           >
             <Droplet className="w-5 h-5 text-primary fill-primary" />
-            <span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight font-heading">
               Ayuda<span className="text-primary font-heading">Red</span>
             </span>
           </Link>

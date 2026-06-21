@@ -1,9 +1,8 @@
 import SignUpForm from "./SignUpForm";
 
 export const metadata = {
-  title: "Sign Up | BloodLink",
-  description:
-    "Create your secure account to get started and start saving lives",
+  title: "Sign Up | AyudaRed",
+  description: "Create an account to join the network.",
 };
 
 export default function SignUpPage() {

@@ -19,6 +19,7 @@ import { useUserClientSession } from "@/lib/core/sessionClient";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 const DashboardNavbar = ({ onMenuClick }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -76,7 +77,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
   ];
 
   return (
-    <header className="bg-background border-b border-border/80 w-full h-16 sticky top-0 z-40 flex items-center px-4 sm:px-6 lg:px-8 justify-between font-sans backdrop-blur-md bg-background/95">
+    <header className="bg-secondary/40 backdrop-blur-md border-b border-border/80 w-full h-16 sticky top-0 z-40 flex items-center px-4 sm:px-6 lg:px-8 justify-between font-sans">
       {/* Left Section: Sidebar Toggle & Expanded Search Node */}
       <div className="flex items-center space-x-4 flex-1 max-w-xl">
         {/* Mobile Menu Trigger */}
@@ -185,7 +186,9 @@ const DashboardNavbar = ({ onMenuClick }) => {
             >
               <div className="w-7 h-7 rounded-full bg-secondary border border-border/80 overflow-hidden shrink-0 flex items-center justify-center">
                 {user.image ? (
-                  <img
+                  <Image
+                    width={100}
+                    height={100}
                     src={user.image}
                     alt={user.name || "User Identity"}
                     className="w-full h-full object-cover"

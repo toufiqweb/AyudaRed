@@ -18,6 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageUpload } from "@/lib/imageUpload";
 import { authClient } from "@/lib/auth-client";
+import { useToast } from "@/components/ui/Toast";
 import { upazilas, districtsList } from "@/lib/geoData";
 
 export default function SignUpForm() {
@@ -25,8 +26,8 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const toast = useToast();
 
   // Cascading location state management
   const [selectedDistrict, setSelectedDistrict] = useState("");
@@ -54,7 +55,6 @@ export default function SignUpForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
 
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name");
@@ -67,7 +67,7 @@ export default function SignUpForm() {
     const profileImage = formData.get("image");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match!");
+      toast.error("Passwords do not match!");
       setLoading(false);
       return;
     }
@@ -90,10 +90,11 @@ export default function SignUpForm() {
         upazila,
       });
 
+      toast.success("Registration successful!");
       router.push("/dashboard");
       router.refresh();
     } catch (err) {
-      setError(err?.message || "Something went wrong during registration.");
+      toast.error(err?.message || "Something went wrong during registration.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -115,7 +116,9 @@ export default function SignUpForm() {
             className="flex items-center gap-2 text-xl font-bold font-heading tracking-tight text-foreground"
           >
             <Droplet className="w-6 h-6 text-primary fill-primary transform rotate-180" />
-            <span>BloodLink</span>
+            <span className="font-semibold text-base sm:text-lg tracking-tight font-heading">
+              Ayuda<span className="text-primary font-heading">Red</span>
+            </span>
           </Link>
         </div>
 
@@ -150,7 +153,7 @@ export default function SignUpForm() {
 
         {/* Bottom: Footer / Micro-copy */}
         <div className="relative z-10 text-xs text-muted-foreground">
-          © {new Date().getFullYear()} BloodLink Platform. All rights reserved.
+          © {new Date().getFullYear()} AyudaRed Platform. All rights reserved.
         </div>
       </div>
 
@@ -169,13 +172,6 @@ export default function SignUpForm() {
               Create your account to start managing requests and saving lives
             </p>
           </div>
-
-          {/* Error Message Alert */}
-          {error && (
-            <div className="p-4 text-sm text-danger bg-danger/10 border border-danger/20 rounded-xl animate-in fade-in slide-in-from-top-2 duration-200">
-              {error}
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">

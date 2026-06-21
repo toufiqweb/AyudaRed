@@ -107,7 +107,7 @@ export default function AllBloodDonationRequestsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-2 sm:p-4 min-h-screen flex flex-col justify-between select-none">
+    <div className="space-y-6 max-w-[1400px] mx-auto p-2 sm:p-4 min-h-screen flex flex-col justify-between select-none">
       <div className="space-y-6">
         {/* Title Header Card */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border/10 p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]">

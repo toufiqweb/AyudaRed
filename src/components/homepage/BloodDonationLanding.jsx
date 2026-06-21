@@ -21,7 +21,7 @@ export default function BloodDonationLanding() {
               Together We Can Make World More Health & Better
             </h1>
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+              Every drop of blood is a beacon of hope for someone in critical need. By donating blood, you become a lifesaver, supporting patients undergoing surgeries, cancer treatments, and emergency care. Join our community of voluntary donors today and make a real difference.
             </p>
             
             {/* Checklist */}
@@ -30,37 +30,37 @@ export default function BloodDonationLanding() {
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Lorem ipsum</span>
+                <span>Voluntary Donors</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Aenean commodo</span>
+                <span>Safe Transfusions</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Donec quam</span>
+                <span>Emergency Support</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Massa quis</span>
+                <span>Community Camps</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Pretium quis</span>
+                <span>Free Health Screening</span>
               </div>
               <div className="flex items-center gap-2 text-sm font-semibold text-foreground/80">
                 <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary shrink-0">
                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                 </div>
-                <span>Dolor sit</span>
+                <span>Quick Matching</span>
               </div>
             </div>
             
@@ -94,10 +94,10 @@ export default function BloodDonationLanding() {
           {/* Left Side: Wide White Card */}
           <div className="lg:col-span-8 bg-secondary border border-border shadow-xl rounded-2xl p-6 md:p-8 flex flex-col justify-center transition-colors duration-300">
             <h3 className="text-xl md:text-2xl font-black text-foreground font-heading">
-              Best Services
+              Our Lifesaving Services
             </h3>
             <p className="mt-3 text-muted-foreground text-sm leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+              We connect blood donors with hospitals, clinics, and individuals in urgent need. Our platforms ensure real-time coordination, rigorous testing protocols, and safe storage conditions for all donations.
             </p>
           </div>
 
@@ -109,10 +109,10 @@ export default function BloodDonationLanding() {
               </div>
               <div>
                 <h3 className="text-lg md:text-xl font-bold font-heading">
-                  Expert Staff
+                  Certified Care
                 </h3>
                 <p className="mt-1 text-white/80 text-xs md:text-sm leading-relaxed font-sans">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                  Our professional medical team ensures a fully sterile, safe, and comfortable donation process.
                 </p>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function BloodDonationLanding() {
                 Blood Banking
               </h4>
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
+                Advanced cooling and storage facilities ensure that blood components like plasma and platelets remain fully viable for patients.
               </p>
               <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More
@@ -151,7 +151,7 @@ export default function BloodDonationLanding() {
                 Health Check
               </h4>
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
+                Receive a free mini-physical checkup including blood pressure, hemoglobin, and vital sign checks before donating.
               </p>
               <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More
@@ -168,7 +168,7 @@ export default function BloodDonationLanding() {
                 Blood Tests
               </h4>
               <p className="mt-4 text-muted-foreground text-sm leading-relaxed flex-grow">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.
+                Rigorous testing and blood typing protocols ensure all transfusions are fully matched and completely safe for patients.
               </p>
               <a href="#" className="mt-6 text-primary font-bold text-sm tracking-wider uppercase inline-flex items-center gap-1 hover:gap-2 transition-all">
                 Learn More

@@ -56,8 +56,8 @@ export default function DonationRequestsTable({
 
   const tableHeaderClass =
     variant === "dashboard"
-      ? "bg-secondary/70 border-b border-border text-[11px] font-bold tracking-wider text-muted-foreground uppercase"
-      : "bg-muted/40 border-b border-border text-[11px] font-bold tracking-wider text-muted-foreground uppercase";
+      ? "bg-secondary/70 border-b border-border text-[10px] sm:text-[11px] font-bold tracking-normal sm:tracking-wider text-muted-foreground uppercase"
+      : "bg-muted/40 border-b border-border text-[10px] sm:text-[11px] font-bold tracking-normal sm:tracking-wider text-muted-foreground uppercase";
 
   const rowClass =
     variant === "dashboard"
@@ -74,24 +74,24 @@ export default function DonationRequestsTable({
       <table className={tableClass}>
         <thead>
           <tr className={tableHeaderClass}>
-            <th className="px-6 py-4.5">Recipient</th>
-            <th className="px-6 py-4.5">Location</th>
+            <th className="px-3 sm:px-6 py-3 sm:py-4.5">Recipient</th>
+            <th className="px-3 sm:px-6 py-3 sm:py-4.5">Location</th>
             {variant === "dashboard" ? (
               <>
-                <th className="px-6 py-4.5">Schedule</th>
-                <th className="px-6 py-4.5 text-center">Blood Group</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4.5">Schedule</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4.5 text-center">Blood Group</th>
               </>
             ) : (
               <>
-                <th className="px-6 py-4.5">Blood Group</th>
-                <th className="px-6 py-4.5">Schedule</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4.5">Blood Group</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4.5">Schedule</th>
               </>
             )}
-            <th className="px-6 py-4.5">Status</th>
-            <th className="px-6 py-4.5">
+            <th className="px-3 sm:px-6 py-3 sm:py-4.5">Status</th>
+            <th className="px-3 sm:px-6 py-3 sm:py-4.5">
               {variant === "my-requests" ? "Donor Info" : "Assigned Donor"}
             </th>
-            <th className="px-6 py-4.5 text-right">Actions</th>
+            <th className="px-3 sm:px-6 py-3 sm:py-4.5 text-right">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/40 text-sm overflow-visible">

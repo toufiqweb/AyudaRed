@@ -35,7 +35,7 @@ export default function FundingSection() {
             </div>
 
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+              We are raising funds to support our emergency blood delivery vehicles, mobile donor camps, and state-of-the-art cold chain storage. Your contributions directly fund essential equipment and logistics that help us transport lifesaving blood to remote healthcare facilities and emergency wards. Every dollar donated makes the supply chain stronger and saves lives.
             </p>
 
             {/* Progress bar + Action Button Row */}

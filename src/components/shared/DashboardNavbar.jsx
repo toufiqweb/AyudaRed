@@ -83,7 +83,7 @@ const DashboardNavbar = ({ onMenuClick }) => {
         <button
           onClick={onMenuClick}
           type="button"
-          className="p-2 -ml-2 rounded-xl text-secondary-foreground/60 hover:bg-secondary hover:text-foreground md:hidden transition-all active:scale-95"
+          className="p-2 -ml-2 rounded-xl text-secondary-foreground/60 hover:bg-secondary hover:text-foreground lg:hidden transition-all active:scale-95"
           aria-label="Open sidebar"
         >
           <Menu className="w-5 h-5" />

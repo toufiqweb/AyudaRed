@@ -127,7 +127,7 @@ export default function EditDonationRequestPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 space-y-8 min-h-screen  text-foreground transition-colors duration-200">
+    <div className="max-w-[1400px] mx-auto p-4 sm:p-6 space-y-8 min-h-screen  text-foreground transition-colors duration-200">
       {/* Top Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div className="flex items-start gap-4">

@@ -17,7 +17,7 @@ const DashboardOverViewPage = async () => {
   // Error State Layout
   if (error) {
     return (
-      <div className="container mx-auto p-6 max-w-6xl bg-background text-foreground">
+      <div className="container mx-auto p-6 max-w-[1400px] bg-background text-foreground">
         <div className="p-4 text-sm text-danger bg-danger/10 border border-danger/20 rounded-xl font-medium">
           {error}
         </div>
@@ -28,7 +28,7 @@ const DashboardOverViewPage = async () => {
   // Unauthenticated State Layout
   if (!user) {
     return (
-      <div className="container mx-auto p-6 max-w-6xl bg-background text-foreground">
+      <div className="container mx-auto p-6 max-w-[1400px] bg-background text-foreground">
         <div className="p-4 text-sm text-amber-500 bg-amber-500/10 border border-amber-500/20 rounded-xl font-medium">
           Please sign in to access your control panel dashboard view.
         </div>
@@ -37,7 +37,7 @@ const DashboardOverViewPage = async () => {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 space-y-8 max-w-6xl text-foreground select-none">
+    <div className="container mx-auto p-4 sm:p-6 space-y-8 max-w-[1400px] text-foreground select-none">
       {/* ================= PREMIUM HERO WELCOME SECTION ================= */}
       <div className="relative rounded-2xl p-6 sm:p-8 bg-secondary/40 border border-border/80 shadow-xl overflow-hidden">
         {/* Micro-Grid Pattern For Subtle High-Tech Aesthetic */}

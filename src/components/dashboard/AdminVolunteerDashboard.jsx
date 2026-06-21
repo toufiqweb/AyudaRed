@@ -476,12 +476,12 @@ export default function AdminVolunteerDashboard({ user }) {
             <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
               <table className="w-full text-left text-xs border-collapse min-w-[500px]">
                 <thead>
-                  <tr className="border-b border-border text-foreground/60 font-semibold tracking-wider uppercase text-[10px]">
-                    <th className="pb-3.5 font-semibold">Recipient</th>
-                    <th className="pb-3.5 font-semibold">Blood Group</th>
-                    <th className="pb-3.5 font-semibold">Location</th>
-                    <th className="pb-3.5 font-semibold">Date</th>
-                    <th className="pb-3.5 font-semibold text-right pr-2">
+                  <tr className="border-b border-border text-foreground/60 font-semibold tracking-normal sm:tracking-wider uppercase text-[10px]">
+                    <th className="pb-3.5 px-2 sm:px-3 font-semibold">Recipient</th>
+                    <th className="pb-3.5 px-2 sm:px-3 font-semibold">Blood Group</th>
+                    <th className="pb-3.5 px-2 sm:px-3 font-semibold">Location</th>
+                    <th className="pb-3.5 px-2 sm:px-3 font-semibold">Date</th>
+                    <th className="pb-3.5 px-2 sm:px-3 font-semibold text-right pr-2">
                       Status
                     </th>
                   </tr>

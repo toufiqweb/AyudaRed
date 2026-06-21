@@ -35,17 +35,7 @@ export default function ProfilePage({ initialData }) {
     upazila: initialData?.upazila || "Nangalkot",
   });
 
-  useEffect(() => {
-    if (initialData) {
-      setFormData({
-        name: initialData.name || "",
-        bloodGroup: initialData.bloodGroup || "A+",
-        district: initialData.district || "Cumilla",
-        upazila: initialData.upazila || "Nangalkot",
-      });
-      setImagePreview(initialData.image || "");
-    }
-  }, [initialData]);
+
 
   const availableUpazilas =
     formData.district && upazilas[formData.district]
@@ -115,7 +105,7 @@ export default function ProfilePage({ initialData }) {
     <div className="min-h-screen bg-background text-foreground transition-colors duration-200">
       {/* Premium Hero Header Section */}
       <div className="relative h-64 w-full  border-b border-border/50 overflow-hidden">
-        <div className="max-w-6xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-end pb-8">
+        <div className="max-w-[1400px] mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-end pb-8">
           <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between w-full gap-6 z-10">
             {/* Avatar & Meta Info Block */}
             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-5 text-center sm:text-left">
@@ -158,8 +148,8 @@ export default function ProfilePage({ initialData }) {
                   <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground font-heading">
                     {formData.name || initialData?.name || "User Name"}
                   </h1>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-                    <BadgeCheck className="w-3.5 h-3.5" /> Verified Lifesaver
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-primary/10 text-primary border border-primary/20 capitalize">
+                    <BadgeCheck className="w-3.5 h-3.5" /> {initialData?.role || "Verified Lifesaver"}
                   </span>
                 </div>
                 <div className="flex items-center gap-4 text-xs text-foreground/60 justify-center sm:justify-start">
@@ -167,9 +157,9 @@ export default function ProfilePage({ initialData }) {
                     <Clock className="w-3.5 h-3.5 text-primary" />
                     Joined {initialData?.createdAt || "Recently"}
                   </p>
-                  <p className="flex items-center gap-1.5 font-body">
+                  <p className="flex items-center gap-1.5 font-body capitalize">
                     <Shield className="w-3.5 h-3.5 text-primary" />
-                    ID: BloodLink-Member
+                    Status: {initialData?.status || "Active"}
                   </p>
                 </div>
               </div>
@@ -216,7 +206,7 @@ export default function ProfilePage({ initialData }) {
       </div>
 
       {/* Main Content Layout Block */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Workspace Matrix Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Summary Sidebar Panel */}

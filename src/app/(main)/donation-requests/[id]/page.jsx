@@ -13,13 +13,13 @@ import {
   Activity,
 } from "lucide-react";
 import { getDonationRequestById } from "@/lib/api/requests";
-import { useUserServerSession } from "@/lib/core/sessionSever";
+import { useUserServerSession as getUserServerSession } from "@/lib/core/sessionSever";
 import DonationConfirmModal from "@/components/ui/DonationConfirmModal";
 
 export default async function DonationRequestsDetails({ params }) {
   const { id } = await params;
 
-  const user = await useUserServerSession();
+  const user = await getUserServerSession();
 
   let request = null;
   let error = "";

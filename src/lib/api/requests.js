@@ -18,6 +18,14 @@ export const getUserDonationRequests = async (
   );
 };
 
+// GET: Fetch dashboard stats for a specific donor
+export const getDonorDashboardStats = async () => {
+  const token = await getTokenServer();
+  if (!token) throw new Error("Unauthorized: No token found.");
+
+  return protectedServerFetch("/api/donor/dashboard-stats", token);
+};
+
 // GET: Fetch single donation request details by ID
 export const getDonationRequestById = async (id) => {
   const token = await getTokenServer();

@@ -126,18 +126,14 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
       {/* Mobile Sidebar Overlay Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
           onClick={onClose}
         />
       )}
 
       {/* Main Sidebar Wrapper Panel */}
       <aside
-        className={`
-        fixed top-0 bottom-0 left-0 z-50 w-64 bg-background border-r border-border flex flex-col h-screen transition-transform duration-300 ease-in-out font-sans
-        md:translate-x-0 md:sticky md:z-30
-        ${isOpen ? "translate-x-0" : "-translate-x-full"}
-      `}
+        className={`fixed top-0 bottom-0 left-0 z-50 w-64 bg-background border-r border-border flex flex-col h-screen transition-transform duration-300 ease-in-out font-sans lg:translate-x-0 lg:sticky lg:z-30 ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* Sidebar Header Section */}
         <div className="h-16 px-6 flex items-center justify-between border-b border-border shrink-0">
@@ -153,7 +149,7 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
           {/* Close drawer icon button (Mobile only) */}
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md md:hidden text-muted-foreground hover:bg-muted hover:text-foreground transition-colors font-sans"
+            className="p-1.5 rounded-md lg:hidden text-muted-foreground hover:bg-muted hover:text-foreground transition-colors font-sans"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />

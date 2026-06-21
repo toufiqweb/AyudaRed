@@ -3,20 +3,50 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Loader2, ChevronRight } from "lucide-react";
+import { AlertTriangle, Loader2, ChevronRight, HeartPulse, ClipboardList, Activity } from "lucide-react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 import {
   updateDonationRequestStatus,
   deleteDonationRequest,
 } from "@/lib/actions/requests";
-import { getUserDonationRequests } from "@/lib/api/requests";
+import { getUserDonationRequests, getDonorDashboardStats } from "@/lib/api/requests";
 import { useToast } from "../ui/Toast";
 import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
+
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background/90 backdrop-blur-md border border-border rounded-xl px-3 py-2.5 shadow-2xl text-xs ring-1 ring-black/5 dark:ring-white/5">
+        <p className="text-foreground/60 font-medium mb-1">{label}</p>
+        <p className="font-bold text-primary flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          {payload[0].value}{" "}
+          <span className="font-normal text-foreground/80">requests</span>
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function DonorDashboard({ user }) {
   const toast = useToast();
   const router = useRouter();
 
   const [requests, setRequests] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [chartView, setChartView] = useState("daily");
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -32,12 +62,16 @@ export default function DonorDashboard({ user }) {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const fetchRecentRequests = useCallback(async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
-      const result = await getUserDonationRequests("all", 1, 3);
-      if (result.success) setRequests(result.data || []);
+      const [requestsResult, statsResult] = await Promise.all([
+        getUserDonationRequests("all", 1, 3),
+        getDonorDashboardStats()
+      ]);
+      if (requestsResult.success) setRequests(requestsResult.data || []);
+      if (statsResult?.success) setStats(statsResult);
     } catch (err) {
-      console.error("Error loading recent requests:", err);
+      console.error("Error loading dashboard data:", err);
     } finally {
       setLoading(false);
     }
@@ -46,11 +80,11 @@ export default function DonorDashboard({ user }) {
   useEffect(() => {
     if (user?.email) {
       const timer = setTimeout(() => {
-        fetchRecentRequests();
+        fetchDashboardData();
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [user?.email, fetchRecentRequests]);
+  }, [user?.email, fetchDashboardData]);
 
   const handleUpdateStatus = async (id, nextStatus) => {
     setActionLoading(id);
@@ -62,7 +96,7 @@ export default function DonorDashboard({ user }) {
           ? "Request marked as Done! ✅"
           : "Donation cancelled successfully.",
       );
-      fetchRecentRequests();
+      fetchDashboardData();
     } catch (err) {
       toast.error(err.message || "Failed to update status.");
     } finally {
@@ -82,7 +116,7 @@ export default function DonorDashboard({ user }) {
     try {
       await deleteDonationRequest(targetRequestId);
       toast.success("Request deleted successfully.");
-      fetchRecentRequests();
+      fetchDashboardData();
       setDeleteModalOpen(false);
     } catch (err) {
       toast.error(err.message || "Failed to delete.");
@@ -108,6 +142,20 @@ export default function DonorDashboard({ user }) {
     );
   };
 
+  const chartData = stats?.charts?.[chartView] || [];
+  const totalDist =
+    (stats?.statusDistribution?.pending || 0) +
+    (stats?.statusDistribution?.inprogress || 0) +
+    (stats?.statusDistribution?.done || 0) +
+    (stats?.statusDistribution?.canceled || 0);
+
+  const donutData = [
+    { name: "Pending", value: stats?.statusDistribution?.pending || 0, color: "#d97706" },
+    { name: "In Progress", value: stats?.statusDistribution?.inprogress || 0, color: "#2563eb" },
+    { name: "Completed", value: stats?.statusDistribution?.done || 0, color: "#059669" },
+    { name: "Canceled", value: stats?.statusDistribution?.canceled || 0, color: "#71717a" },
+  ];
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-24">
@@ -120,7 +168,122 @@ export default function DonorDashboard({ user }) {
   }
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-4 sm:p-6  text-foreground select-none">
+    <div className="space-y-6 max-w-[1400px] mx-auto p-4 sm:p-6  text-foreground select-none">
+      {/* ── Visual Analytics ── */}
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-5">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground font-serif">
+              My Activity Analytics
+            </h1>
+            <p className="text-xs text-foreground/60 mt-1 font-sans">
+              Personal donation history and performance metrics.
+            </p>
+          </div>
+          <button className="self-start sm:self-auto flex items-center gap-2 text-xs font-semibold text-foreground/80 border border-border bg-secondary hover:bg-muted backdrop-blur-md px-4 py-2 rounded-xl transition shadow-sm hover:text-foreground">
+            <Activity className="w-3.5 h-3.5 text-primary" /> Reports{" "}
+            <ChevronRight className="w-3.5 h-3.5 text-foreground/60" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Area Chart */}
+          <div className="lg:col-span-8 bg-secondary backdrop-blur-md border border-border rounded-2xl p-6 space-y-6 shadow-xs">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-foreground font-sans">
+                  Donation Trends
+                </h3>
+                <p className="text-[11px] text-foreground/60 mt-0.5 font-sans">
+                  Your requests over time
+                </p>
+              </div>
+              <div className="flex items-center gap-2.5 bg-background/60 border border-border px-3 py-1.5 rounded-xl">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                <select
+                  value={chartView}
+                  onChange={(e) => setChartView(e.target.value)}
+                  className="bg-transparent text-[11px] font-semibold text-foreground/80 focus:outline-none cursor-pointer pr-1 border-none appearance-none"
+                >
+                  <option value="daily" className="bg-background text-foreground/80">Daily Interval</option>
+                  <option value="weekly" className="bg-background text-foreground/80">Weekly Interval</option>
+                  <option value="monthly" className="bg-background text-foreground/80">Monthly Interval</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="min-h-[220px] w-full">
+              {chartData.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 text-foreground/40 gap-3 border border-dashed border-border rounded-xl">
+                  <HeartPulse className="w-7 h-7 opacity-20" />
+                  <p className="text-xs font-medium">No activity history found.</p>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height={220}>
+                  <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -22, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="requestsGradUser" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="var(--primary, #ae1919)" stopOpacity={0.25} />
+                        <stop offset="95%" stopColor="var(--primary, #ae1919)" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="4 4" vertical={false} stroke="var(--border)" strokeOpacity={0.5} />
+                    <XAxis dataKey="label" tickLine={false} axisLine={false} tick={{ fill: "var(--foreground)", opacity: 0.6, fontSize: 10, fontWeight: 500 }} />
+                    <YAxis allowDecimals={false} tickLine={false} axisLine={false} tick={{ fill: "var(--foreground)", opacity: 0.6, fontSize: 10, fontWeight: 500 }} />
+                    <Tooltip content={<CustomTooltip />} />
+                    <Area type="monotone" dataKey="requests" stroke="var(--primary, #ae1919)" strokeWidth={2} fillOpacity={1} fill="url(#requestsGradUser)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+
+          {/* Donut Chart */}
+          <div className="lg:col-span-4 bg-secondary backdrop-blur-md border border-border rounded-2xl p-6 flex flex-col justify-between shadow-xs">
+            <div className="pb-4">
+              <h3 className="text-sm font-bold text-foreground font-sans">
+                Status Distribution
+              </h3>
+              <p className="text-[11px] text-foreground/60 mt-0.5 font-sans">
+                Breakdown of your requests
+              </p>
+            </div>
+
+            {totalDist === 0 ? (
+              <div className="flex flex-col items-center justify-center py-14 text-foreground/40 gap-3 border border-dashed border-border rounded-xl my-auto">
+                <ClipboardList className="w-7 h-7 opacity-20" />
+                <p className="text-xs font-medium">No history found.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-12 gap-4 items-center py-2">
+                <div className="col-span-7 flex justify-center relative">
+                  <ResponsiveContainer width="100%" height={150}>
+                    <PieChart>
+                      <Pie data={donutData} cx="50%" cy="50%" innerRadius={48} outerRadius={62} paddingAngle={4} dataKey="value">
+                        {donutData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} stroke="var(--background)" strokeWidth={2} />
+                        ))}
+                      </Pie>
+                      <Tooltip contentStyle={{ background: "var(--background)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 11, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" }} itemStyle={{ color: "var(--foreground)" }} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="col-span-5 space-y-3">
+                  {donutData.map((item, index) => (
+                    <div key={index} className="flex items-start gap-2.5 text-xs">
+                      <span className="w-2 h-2 rounded-full shrink-0 mt-1" style={{ backgroundColor: item.color }} />
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-foreground/80 font-medium leading-tight truncate">{item.name}</span>
+                        <span className="text-foreground/60 text-[10px] font-bold mt-0.5">{item.value} units</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       {/* Recent Donation Requests Header Section */}
       {requests.length > 0 && (
         <div className="space-y-5">

@@ -25,7 +25,7 @@ const CreateDonationRequestPage = async () => {
   if (error) {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl">
+        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20">
           {error}
         </div>
       </div>
@@ -35,7 +35,7 @@ const CreateDonationRequestPage = async () => {
   if (!user) {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
-        <div className="p-4 text-sm text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-xl">
+        <div className="p-4 text-sm text-yellow-600 bg-yellow-50 border border-yellow-200 rounded-xl dark:bg-yellow-500/10 dark:text-yellow-400 dark:border-yellow-500/20">
           Please sign in to access the creation workspace.
         </div>
       </div>
@@ -46,7 +46,7 @@ const CreateDonationRequestPage = async () => {
   if (dbUser?.status === "blocked") {
     return (
       <div className="container mx-auto p-6 max-w-2xl">
-        <div className="p-5 border border-rose-200 bg-rose-50 text-rose-700 rounded-2xl space-y-2 shadow-sm">
+        <div className="p-5 border border-rose-200 bg-rose-50 text-rose-700 rounded-2xl space-y-2 shadow-sm dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20">
           <h2 className="text-base font-bold font-heading">
             Account Restricted 🚫
           </h2>

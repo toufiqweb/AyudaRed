@@ -79,21 +79,21 @@ export default function AllUsersPage() {
 
   const getStatusStyle = (status) => {
     return status === "blocked"
-      ? "bg-rose-50 text-rose-700 border-rose-200"
-      : "bg-emerald-50 text-emerald-700 border-emerald-200";
+      ? "bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20"
+      : "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20";
   };
 
   const getRoleStyle = (role) => {
     const config = {
-      admin: "bg-purple-50 text-purple-700 border-purple-200 font-bold",
-      volunteer: "bg-blue-50 text-blue-700 border-blue-200 font-medium",
-      donor: "bg-stone-50 text-stone-700 border-stone-200",
+      admin: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-500/20 font-bold",
+      volunteer: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20 font-medium",
+      donor: "bg-stone-50 text-stone-700 border-stone-200 dark:bg-zinc-500/10 dark:text-zinc-400 dark:border-zinc-500/20",
     };
-    return config[role] || "bg-muted text-muted-foreground";
+    return config[role] || "bg-muted text-muted-foreground border-border";
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-2">
+    <div className="space-y-6 max-w-[1400px] mx-auto p-2">
       {/* Top Header Card */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
@@ -153,12 +153,12 @@ export default function AllUsersPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[700px]">
               <thead>
-                <tr className="bg-muted/40 border-b border-border text-[11px] font-bold tracking-wider text-muted-foreground uppercase">
-                  <th className="px-6 py-3.5">User Identity Profile</th>
-                  <th className="px-6 py-3.5">Email Address</th>
-                  <th className="px-6 py-3.5">Role Level</th>
-                  <th className="px-6 py-3.5">Account Status</th>
-                  <th className="px-6 py-3.5 text-right w-[120px]">Actions</th>
+                <tr className="bg-muted/40 border-b border-border text-[10px] sm:text-[11px] font-bold tracking-normal sm:tracking-wider text-muted-foreground uppercase">
+                  <th className="px-3 sm:px-6 py-3 sm:py-3.5">User Identity Profile</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-3.5">Email Address</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-3.5">Role Level</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-3.5">Account Status</th>
+                  <th className="px-3 sm:px-6 py-3 sm:py-3.5 text-right w-[120px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60 text-sm">

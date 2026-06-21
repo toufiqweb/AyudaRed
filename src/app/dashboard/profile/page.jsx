@@ -1,5 +1,6 @@
 import { getUserByEmail } from "@/lib/api/users";
-import { useUserServerSession } from "@/lib/core/sessionSever";
+import { useUserServerSession as getUserServerSession } from "@/lib/core/sessionSever";
+import { getTokenServer } from "@/lib/core/getTokenServer";
 import ProfilePage from "./ProfileForm"; // Points to your newly updated premium page layout
 
 const ProfileServerPage = async () => {
@@ -8,7 +9,7 @@ const ProfileServerPage = async () => {
   let error = null;
 
   try {
-    user = await useUserServerSession();
+    user = await getUserServerSession();
   } catch (err) {
     console.error("Failed to get session:", err);
     error = "Failed to synchronize server session secure tokens.";
@@ -49,7 +50,8 @@ const ProfileServerPage = async () => {
   }
 
   try {
-    userData = await getUserByEmail(user.email);
+    const token = await getTokenServer();
+    userData = await getUserByEmail(user.email, token);
   } catch (err) {
     console.error("Failed to fetch database user data:", err);
   }
@@ -62,6 +64,8 @@ const ProfileServerPage = async () => {
     bloodGroup: userData?.bloodGroup || "A+",
     district: userData?.district || "Cumilla",
     upazila: userData?.upazila || "Nangalkot",
+    role: userData?.role || user?.role || "donor",
+    status: userData?.status || "active",
     createdAt: userData?.createdAt
       ? new Date(userData.createdAt).toLocaleDateString("en-US", {
           day: "numeric",
@@ -75,7 +79,7 @@ const ProfileServerPage = async () => {
     <main className="w-full min-h-screen bg-background">
       {/* Container wrapper configured wide to give the grid framework adequate room to expand */}
       <div className="mx-auto max-w-7xl transition-all duration-300">
-        <ProfilePage initialData={initialProfile} />
+        <ProfilePage key={JSON.stringify(initialProfile)} initialData={initialProfile} />
       </div>
     </main>
   );

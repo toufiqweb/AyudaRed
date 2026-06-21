@@ -102,10 +102,10 @@ export default function MyDonationRequestsPage() {
 
   const getStatusBadge = (status) => {
     const styles = {
-      pending: "bg-amber-50 text-amber-700 border-amber-200",
-      inprogress: "bg-blue-50 text-blue-700 border-blue-200",
-      done: "bg-emerald-50 text-emerald-700 border-emerald-200",
-      canceled: "bg-stone-50 text-stone-600 border-stone-200",
+      pending: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20",
+      inprogress: "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20",
+      done: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20",
+      canceled: "bg-stone-50 text-stone-600 border-stone-200 dark:bg-zinc-500/10 dark:text-zinc-400 dark:border-zinc-500/20",
     };
     return (
       <span
@@ -117,7 +117,7 @@ export default function MyDonationRequestsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto p-2">
+    <div className="space-y-6 max-w-[1400px] mx-auto p-2">
       {/* Header + Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
@@ -148,7 +148,7 @@ export default function MyDonationRequestsPage() {
       </div>
 
       {error && (
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">
+        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20">
           {error}
         </div>
       )}
@@ -201,8 +201,8 @@ export default function MyDonationRequestsPage() {
       {deleteModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-background border border-border rounded-2xl max-w-sm w-full p-6 shadow-xl animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center gap-3 text-rose-600 mb-3">
-              <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl">
+            <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400 mb-3">
+              <div className="p-2 bg-rose-50 border border-rose-100 rounded-xl dark:bg-rose-500/10 dark:border-rose-500/20">
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <h3 className="text-base font-bold text-foreground font-heading">

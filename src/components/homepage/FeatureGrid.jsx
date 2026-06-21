@@ -9,7 +9,7 @@ export default function FeatureGrid() {
       id: 1,
       title: "Blood Donation",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.",
+        "Easily register, find nearby blood drives, and donate blood to save lives in your local community.",
       icon: Droplet,
       linkText: "Learn More",
     },
@@ -17,7 +17,7 @@ export default function FeatureGrid() {
       id: 2,
       title: "Health Check",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.",
+        "Get a complimentary screening of your vital signs, blood pressure, and hemoglobin levels before every donation.",
       icon: HeartPulse,
       linkText: "Learn More",
     },
@@ -25,7 +25,7 @@ export default function FeatureGrid() {
       id: 3,
       title: "Blood Bank",
       description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.",
+        "Connect with high-standard storage hubs that maintain and process whole blood, platelets, and plasma.",
       icon: Building2,
       linkText: "Learn More",
     },
@@ -37,13 +37,13 @@ export default function FeatureGrid() {
         {/* Centered Header Section */}
         <div className="flex flex-col items-center justify-center text-center space-y-3 mb-16 max-w-3xl mx-auto">
           <span className="text-primary font-bold text-xs uppercase tracking-widest block">
-            Best Services
+            What We Do
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-foreground leading-tight font-heading">
-            Best Services
+            Our Medical Services
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-2xl">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+            We provide an integrated, safe, and efficient blood donation ecosystem, connecting voluntary donors, medical examiners, and storage banks to fulfill transfusion demands seamlessly.
           </p>
         </div>
 

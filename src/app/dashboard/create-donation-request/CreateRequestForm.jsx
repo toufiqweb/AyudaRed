@@ -88,12 +88,12 @@ export default function CreateRequestForm({ user }) {
       </div>
 
       {error && (
-        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">
+        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20">
           {error}
         </div>
       )}
       {success && (
-        <div className="p-3 text-sm text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl">
+        <div className="p-3 text-sm text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-xl dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20">
           {success}
         </div>
       )}

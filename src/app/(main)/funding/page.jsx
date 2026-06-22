@@ -3,6 +3,7 @@ import { Calendar, CreditCard } from "lucide-react";
 import { getTokenServer } from "@/lib/core/getTokenServer";
 import { protectedServerFetch } from "@/lib/core/server";
 import ErrorState from "@/components/ui/ErrorState";
+import FundingPaginationWrapper from "./FundingPaginationWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -11,16 +12,21 @@ export const metadata = {
   description: "View funding records and support our life-saving campaigns.",
 };
 
-export default async function FundingPage() {
+export default async function FundingPage({ searchParams }) {
   let funds = [];
   let error = null;
+  let pagination = { currentPage: 1, totalPages: 1 };
 
   try {
+    const params = await searchParams;
+    const page = parseInt(params?.page) || 1;
     const token = await getTokenServer();
+    
     if (token) {
-      const response = await protectedServerFetch("/api/funding", token);
+      const response = await protectedServerFetch(`/api/funding?page=${page}&limit=10`, token);
       if (response && response.success) {
         funds = response.data;
+        pagination = response.pagination || pagination;
       }
     }
   } catch (err) {
@@ -102,6 +108,13 @@ export default async function FundingPage() {
           </div>
         )}
       </div>
+
+      {!error && funds.length > 0 && (
+        <FundingPaginationWrapper 
+          currentPage={pagination.currentPage} 
+          totalPages={pagination.totalPages} 
+        />
+      )}
     </div>
   );
 }

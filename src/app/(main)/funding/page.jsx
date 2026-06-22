@@ -5,6 +5,11 @@ import { protectedServerFetch } from "@/lib/core/server";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Funding | AyudaRed",
+  description: "View funding records and support our life-saving campaigns.",
+};
+
 export default async function FundingPage() {
   let funds = [];
   let error = null;

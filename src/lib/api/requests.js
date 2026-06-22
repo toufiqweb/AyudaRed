@@ -34,7 +34,11 @@ export const getDonationRequestById = async (id) => {
 };
 
 // GET: Fetch public pending donation requests with pagination & filters
-export const getPendingDonationRequests = async (currentPage, itemsPerPage, filters = {}) => {
+export const getPendingDonationRequests = async (
+  currentPage,
+  itemsPerPage,
+  filters = {},
+) => {
   const { district = "", upazila = "", bloodGroup = "", search = "" } = filters;
 
   const queryParams = new URLSearchParams({

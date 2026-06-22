@@ -7,6 +7,11 @@ import DonationRequestsFilters from "@/components/ui/DonationRequestsFilters";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = {
+  title: "Donation Requests | AyudaRed",
+  description: "Browse and respond to urgent blood donation requests.",
+};
+
 export default async function DonationRequestsPage({ searchParams }) {
   // searchParams is a promise in Next.js 15+
   const params = await searchParams;

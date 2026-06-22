@@ -2,7 +2,8 @@
 "use client";
 import Link from "next/link";
 import { Mail, ArrowUpRight } from "lucide-react";
-import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,30 +11,30 @@ const Footer = () => {
   // Centralized footer links configuration
   const footerSections = [
     {
-      title: "Product",
+      title: "Platform",
       links: [
-        { name: "Features", href: "/features" },
-        { name: "Pricing", href: "/pricing" },
-        { name: "Marketplace", href: "/marketplace" },
-        { name: "Changelog", href: "/changelog" },
+        { name: "Search Donors", href: "/search-donors" },
+        { name: "Donation Requests", href: "/donation-requests" },
+        { name: "Community Funding", href: "/funding" },
+        { name: "Top Donors", href: "/top-donors" },
       ],
     },
     {
       title: "Resources",
       links: [
-        { name: "Documentation", href: "/docs" },
-        { name: "Help Center", href: "/help" },
-        { name: "Community", href: "/community" },
-        { name: "Status", href: "/status" },
+        { name: "How to Donate", href: "#" },
+        { name: "Eligibility", href: "#" },
+        { name: "Help Center", href: "#" },
+        { name: "Health Tips", href: "#" },
       ],
     },
     {
       title: "Company",
       links: [
-        { name: "About Us", href: "/about" },
-        { name: "Careers", href: "/careers" },
-        { name: "Blog", href: "/blog" },
-        { name: "Contact", href: "/contact" },
+        { name: "About Us", href: "#" },
+        { name: "Careers", href: "#" },
+        { name: "Blog", href: "#" },
+        { name: "Contact", href: "#" },
       ],
     },
   ];
@@ -52,8 +53,7 @@ const Footer = () => {
               Ayuda<span className="text-primary font-heading">Red</span>
             </Link>
             <p className="text-sm text-foreground/70 max-w-sm leading-relaxed font-body">
-              A modern decentralized space built for buyers and sellers to
-              connect, discover, and build commerce reliably.
+              Empowering a life-saving network. We connect generous donors with individuals in urgent need of blood, creating a community of heroes.
             </p>
 
             {/* Newsletter Mini-Form */}
@@ -108,7 +108,7 @@ const Footer = () => {
           {/* Copyright Metadata */}
           <div className="text-xs text-foreground/60 text-center sm:text-left order-2 sm:order-1">
             <p className="font-body">
-              © {currentYear} Bazaro Inc. All rights reserved.
+              © {currentYear} AyudaRed. All rights reserved.
             </p>
             <div className="mt-1 space-x-3">
               <Link
@@ -136,7 +136,7 @@ const Footer = () => {
               className="text-foreground/60 hover:text-primary transition-colors p-1 font-sans"
               aria-label="Twitter Profile"
             >
-              <FaTwitter className="w-5 h-5" />
+              <FaXTwitter className="w-5 h-5" />
             </a>
             <a
               href="https://github.com"
@@ -157,7 +157,7 @@ const Footer = () => {
               <FaLinkedin className="w-5 h-5" />
             </a>
             <a
-              href="mailto:support@bazaro.com"
+              href="mailto:support@ayudared.com"
               className="text-foreground/60 hover:text-primary transition-colors p-1 font-sans"
               aria-label="Email Support"
             >

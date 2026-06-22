@@ -14,7 +14,7 @@ export default function FundingSuccessPage() {
         </div>
         
         <h2 className="text-2xl font-bold font-serif text-foreground tracking-tight mb-2">
-          Payment Successful!
+          Contribution Successful!
         </h2>
         <p className="text-sm text-foreground/70 font-sans mb-8 leading-relaxed">
           Thank you for supporting the platform. Your funding record is being securely verified and saved. It will appear on the funding board shortly.

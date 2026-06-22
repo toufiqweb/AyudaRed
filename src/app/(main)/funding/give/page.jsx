@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, ArrowLeft, HeartHandshake } from "lucide-react";
-import { createCheckoutSessionAction } from "@/lib/actions/funding";
 
 export default function GiveFundPage() {
   const router = useRouter();
@@ -11,6 +10,7 @@ export default function GiveFundPage() {
   const [donorName, setDonorName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const initPayment = async (e) => {
     e.preventDefault();
@@ -19,21 +19,28 @@ export default function GiveFundPage() {
     setLoading(true);
     setError(null);
     try {
-      const data = await createCheckoutSessionAction({
-        donorName,
-        amount: parseFloat(amount)
+      const response = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          donorName,
+          amount: parseFloat(amount)
+        })
       });
       
+      const data = await response.json();
+      
       if (data.url) {
-        // Redirect to Stripe Hosted Checkout
         window.location.href = data.url;
       } else {
-        setError(data.message || "Failed to initialize payment.");
-        setLoading(false);
+        setError(data.message || data.error || "Failed to initialize payment.");
       }
     } catch (err) {
       console.error(err);
-      setError("An unexpected issue occurred while initializing payment. Please try again later.");
+      setError("An unexpected issue occurred while submitting the donation. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };
@@ -59,7 +66,7 @@ export default function GiveFundPage() {
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold font-serif text-foreground tracking-tight">Give Fund</h2>
           <p className="text-sm text-foreground/60 mt-1.5 font-sans">
-            Support our organization's efforts. Enter the details below to proceed to secure checkout.
+            Support our organization&apos;s efforts. Enter the details below to submit your contribution.
           </p>
         </div>
 
@@ -94,13 +101,14 @@ export default function GiveFundPage() {
           </div>
 
           {error && <div className="text-sm font-medium text-danger bg-danger/10 p-3 rounded-lg border border-danger/20">{error}</div>}
+          {success && <div className="text-sm font-medium text-emerald-500 bg-emerald-500/10 p-3 rounded-lg border border-emerald-500/20">Donation successfully recorded! Redirecting...</div>}
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || success}
             className="w-full h-11 inline-flex items-center justify-center rounded-xl bg-primary text-primary-foreground font-semibold shadow-sm hover:bg-primary/90 transition-colors disabled:opacity-50 mt-4"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Proceed to Payment"}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Submit Contribution"}
           </button>
         </form>
       </div>

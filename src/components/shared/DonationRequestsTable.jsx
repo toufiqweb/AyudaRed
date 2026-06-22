@@ -39,8 +39,10 @@ export default function DonationRequestsTable({
 
   const getStatusBadge = (status) => {
     const config = {
-      pending: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-      inprogress: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
+      pending:
+        "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+      inprogress:
+        "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
       done: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
       canceled: "bg-muted text-muted-foreground border-border",
     };
@@ -79,7 +81,9 @@ export default function DonationRequestsTable({
             {variant === "dashboard" ? (
               <>
                 <th className="px-3 sm:px-6 py-3 sm:py-4.5">Schedule</th>
-                <th className="px-3 sm:px-6 py-3 sm:py-4.5 text-center">Blood Group</th>
+                <th className="px-3 sm:px-6 py-3 sm:py-4.5 text-center">
+                  Blood Group
+                </th>
               </>
             ) : (
               <>
@@ -101,7 +105,8 @@ export default function DonationRequestsTable({
                 ? `/dashboard/donation-requests/view/${request._id}`
                 : `/donation-requests/${request._id}`;
 
-            const isLastRow = requests.length > 2 && index >= requests.length - 2;
+            const isLastRow =
+              requests.length > 2 && index >= requests.length - 2;
 
             return (
               <tr key={request._id} className={rowClass}>
@@ -142,7 +147,9 @@ export default function DonationRequestsTable({
                       />
                       <span
                         className={
-                          variant === "dashboard" ? "truncate max-w-[180px]" : ""
+                          variant === "dashboard"
+                            ? "truncate max-w-[180px]"
+                            : ""
                         }
                       >
                         {request.recipientUpazila}, {request.recipientDistrict}
@@ -178,9 +185,7 @@ export default function DonationRequestsTable({
                   <>
                     {/* Blood Group */}
                     <td className="px-6 py-4">
-                      <span
-                        className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-primary/10 text-primary border border-primary/20 shadow-xs"
-                      >
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-xs font-bold bg-primary/10 text-primary border border-primary/20 shadow-xs">
                         <Heart className="w-3 h-3 fill-primary/80 text-primary" />
                         {request.bloodGroup}
                       </span>
@@ -193,9 +198,7 @@ export default function DonationRequestsTable({
                           <Calendar className="w-3.5 h-3.5 opacity-60" />{" "}
                           {request.donationDate}
                         </p>
-                        <p
-                          className="flex items-center gap-1.5 font-body pl-5"
-                        >
+                        <p className="flex items-center gap-1.5 font-body pl-5">
                           <Clock className="w-3.5 h-3.5 opacity-40" />{" "}
                           {request.donationTime}
                         </p>
@@ -215,7 +218,9 @@ export default function DonationRequestsTable({
                   request.donorName ? (
                     <div
                       className={
-                        variant === "dashboard" ? "space-y-0.5 max-w-[160px]" : ""
+                        variant === "dashboard"
+                          ? "space-y-0.5 max-w-[160px]"
+                          : ""
                       }
                     >
                       <p className="font-bold text-foreground truncate font-body">
@@ -254,9 +259,7 @@ export default function DonationRequestsTable({
                     className="p-2 rounded-xl border border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground transition focus:outline-none inline-flex items-center justify-center disabled:opacity-40"
                   >
                     {actionLoadingId === request._id ? (
-                      <Loader2
-                        className="w-4 h-4 animate-spin text-primary"
-                      />
+                      <Loader2 className="w-4 h-4 animate-spin text-primary" />
                     ) : (
                       <MoreVertical className="w-4 h-4" />
                     )}

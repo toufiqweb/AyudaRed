@@ -96,7 +96,7 @@ export default function ProfilePage({ initialData }) {
       router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error(err?.message || "An error occurred.");
+      toast.error("An unexpected error occurred. Please try again later.");
     } finally {
       setLoading(false);
     }

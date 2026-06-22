@@ -9,6 +9,7 @@ import { getUserDonationRequests } from "@/lib/api/requests";
 import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
+import ErrorState from "@/components/ui/ErrorState";
 
 export default function MyDonationRequestsPage() {
   const toast = useToast();
@@ -47,7 +48,8 @@ export default function MyDonationRequestsPage() {
       setRequests(result.data || []);
       setTotalPages(result.pagination?.totalPages || 1);
     } catch (err) {
-      setError(err.message || "Failed to load donation requests.");
+      console.error(err);
+      setError("We encountered an issue while loading donation requests. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -72,7 +74,8 @@ export default function MyDonationRequestsPage() {
       );
       fetchDonationRequests();
     } catch (err) {
-      toast.error(err.message || "Failed to update status.");
+      console.error(err);
+      toast.error("Failed to update status. Please try again.");
     } finally {
       setActionLoading(null);
     }
@@ -93,7 +96,8 @@ export default function MyDonationRequestsPage() {
       fetchDonationRequests();
       setDeleteModalOpen(false);
     } catch (err) {
-      toast.error(err.message || "Failed to delete request.");
+      console.error(err);
+      toast.error("Failed to delete request. Please try again.");
     } finally {
       setActionLoading(null);
       setTargetRequestId(null);
@@ -148,9 +152,12 @@ export default function MyDonationRequestsPage() {
       </div>
 
       {error && (
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20">
-          {error}
-        </div>
+        <ErrorState 
+          title="Unable to load requests" 
+          message={error} 
+          onRetry={fetchDonationRequests} 
+          className="my-4"
+        />
       )}
 
       {/* Table */}

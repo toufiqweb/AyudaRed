@@ -70,7 +70,8 @@ export default function CreateRequestForm({ user }) {
         router.refresh();
       }, 1500);
     } catch (err) {
-      setError(err.message || "An unexpected error occurred.");
+      console.error(err);
+      setError("An unexpected error occurred. Please try again later.");
     } finally {
       setLoading(false);
     }

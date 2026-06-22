@@ -98,7 +98,8 @@ export default function DonorDashboard({ user }) {
       );
       fetchDashboardData();
     } catch (err) {
-      toast.error(err.message || "Failed to update status.");
+      console.error(err);
+      toast.error("Failed to update status. Please try again.");
     } finally {
       setActionLoading(null);
     }
@@ -119,7 +120,8 @@ export default function DonorDashboard({ user }) {
       fetchDashboardData();
       setDeleteModalOpen(false);
     } catch (err) {
-      toast.error(err.message || "Failed to delete.");
+      console.error(err);
+      toast.error("Failed to delete request. Please try again.");
     } finally {
       setActionLoading(null);
       setTargetRequestId(null);

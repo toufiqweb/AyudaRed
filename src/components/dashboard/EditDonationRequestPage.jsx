@@ -67,7 +67,8 @@ export default function EditDonationRequestPage() {
           });
         }
       } catch (err) {
-        toast.error(err.message || "Failed to fetch request details.");
+        console.error(err);
+        toast.error("Failed to fetch request details. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -107,7 +108,8 @@ export default function EditDonationRequestPage() {
         );
       }
     } catch (err) {
-      toast.error(err.message || "Failed to update donation request.");
+      console.error(err);
+      toast.error("An unexpected error occurred. Please try again later.");
     } finally {
       setSubmitting(false);
     }

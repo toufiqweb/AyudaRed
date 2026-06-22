@@ -10,6 +10,7 @@ import { getAllDonationRequests, getCurrentUserRole } from "@/lib/api/admin";
 import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
+import ErrorState from "@/components/ui/ErrorState";
 
 export default function AllBloodDonationRequestsPage() {
   const toast = useToast();
@@ -65,7 +66,8 @@ export default function AllBloodDonationRequestsPage() {
         setTotalPages(result.pagination?.totalPages || 1);
       }
     } catch (err) {
-      setError(err.message || "Failed to load requests dataset.");
+      console.error(err);
+      setError("We encountered an issue while loading requests data. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -88,7 +90,8 @@ export default function AllBloodDonationRequestsPage() {
       );
       fetchAllRequests();
     } catch (err) {
-      toast.error(err.message || "Failed to update status.");
+      console.error(err);
+      toast.error("Failed to update status. Please try again.");
     } finally {
       setActionLoadingId(null);
     }
@@ -102,7 +105,8 @@ export default function AllBloodDonationRequestsPage() {
       setDeleteModalOpen(false);
       fetchAllRequests();
     } catch (err) {
-      toast.error(err.message || "Failed to delete.");
+      console.error(err);
+      toast.error("Failed to delete request. Please try again.");
     }
   };
 
@@ -144,9 +148,12 @@ export default function AllBloodDonationRequestsPage() {
         </div>
 
         {error && (
-          <div className="p-4 text-xs font-semibold text-danger bg-danger/10 border border-danger/20 rounded-xl font-body">
-            {error}
-          </div>
+          <ErrorState 
+            title="Unable to load requests" 
+            message={error} 
+            onRetry={fetchAllRequests} 
+            className="mb-4"
+          />
         )}
 
         {/* Main Table Structure */}

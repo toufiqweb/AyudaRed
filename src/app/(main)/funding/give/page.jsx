@@ -32,7 +32,8 @@ export default function GiveFundPage() {
         setLoading(false);
       }
     } catch (err) {
-      setError(err.message || "Network error initializing payment.");
+      console.error(err);
+      setError("An unexpected issue occurred while initializing payment. Please try again later.");
       setLoading(false);
     }
   };

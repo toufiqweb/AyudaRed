@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Calendar, CreditCard } from "lucide-react";
 import { getTokenServer } from "@/lib/core/getTokenServer";
 import { protectedServerFetch } from "@/lib/core/server";
+import ErrorState from "@/components/ui/ErrorState";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,7 @@ export default async function FundingPage() {
     }
   } catch (err) {
     console.error("Failed to fetch funds:", err);
-    error = err.message || "Failed to fetch funds";
+    error = "We encountered an issue while loading funding records. Please try again later.";
   }
 
   return (
@@ -51,9 +52,7 @@ export default async function FundingPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none -z-10" />
 
         {error ? (
-          <div className="flex justify-center p-12 text-danger font-medium bg-danger/10 border-b border-danger/20">
-            {error}
-          </div>
+          <ErrorState title="Unable to load funds" message={error} className="border-none" />
         ) : funds.length === 0 ? (
           <div className="flex flex-col items-center justify-center p-16 text-center border-t border-border/50 border-dashed m-4 rounded-xl">
             <p className="text-foreground/40 font-medium">

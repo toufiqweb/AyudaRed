@@ -23,62 +23,171 @@ import { upazilas, districtsList } from "@/lib/geoData";
 
 export default function SignUpForm() {
   const router = useRouter();
+  const toast = useToast();
+  
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imagePreview, setImagePreview] = useState(null);
-  const toast = useToast();
-
-  // Cascading location state management
+  
+  // Controlled Inputs
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [bloodGroup, setBloodGroup] = useState("");
   const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [upazila, setUpazila] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  
   const [availableUpazilas, setAvailableUpazilas] = useState([]);
+  const [errors, setErrors] = useState({});
+
+  // Validations
+  const validateName = (val) => {
+    if (!val) return "Name is required";
+    if (val.length < 3) return "Name must be at least 3 characters";
+    if (val.length > 50) return "Please enter a valid name";
+    if (/^\d+$/.test(val)) return "Please enter a valid name";
+    return "";
+  };
+
+  const validateEmail = (val) => {
+    if (!val) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(val)) return "Please enter a valid email address";
+    return "";
+  };
+
+  const validatePassword = (val) => {
+    if (!val) return "Password is required";
+    if (val.length < 6) return "Password must be at least 6 characters";
+    if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(val)) return "Password must contain uppercase, lowercase and a number";
+    return "";
+  };
+
+  const validateConfirmPassword = (pass, confirm) => {
+    if (!confirm) return "Confirm password is required";
+    if (pass !== confirm) return "Passwords do not match";
+    return "";
+  };
+
+  const validateImage = (file) => {
+    if (!file) return "Profile image is required";
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    if (!allowedTypes.includes(file.type)) return "Only JPG, PNG and WEBP images are allowed";
+    if (file.size > 5 * 1024 * 1024) return "Image size must be less than 5MB";
+    return "";
+  };
+
+  const validateBloodGroup = (val) => val ? "" : "Please select a blood group";
+  const validateDistrict = (val) => val ? "" : "Please select a district";
+  const validateUpazila = (val) => val ? "" : "Please select an upazila";
+
+  // Change Handlers
+  const handleNameChange = (e) => {
+    const val = e.target.value;
+    setName(val);
+    if (errors.name) setErrors((p) => ({ ...p, name: validateName(val) }));
+  };
+
+  const handleEmailChange = (e) => {
+    const val = e.target.value.trim();
+    setEmail(val);
+    if (errors.email) setErrors((p) => ({ ...p, email: validateEmail(val) }));
+  };
+
+  const handlePasswordChange = (e) => {
+    const val = e.target.value;
+    setPassword(val);
+    if (errors.password) setErrors((p) => ({ ...p, password: validatePassword(val) }));
+    if (errors.confirmPassword) setErrors((p) => ({ ...p, confirmPassword: validateConfirmPassword(val, confirmPassword) }));
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const val = e.target.value;
+    setConfirmPassword(val);
+    if (errors.confirmPassword) setErrors((p) => ({ ...p, confirmPassword: validateConfirmPassword(password, val) }));
+  };
+
+  const handleBloodGroupChange = (e) => {
+    const val = e.target.value;
+    setBloodGroup(val);
+    if (errors.bloodGroup) setErrors((p) => ({ ...p, bloodGroup: validateBloodGroup(val) }));
+  };
+
+  const handleDistrictChange = (e) => {
+    const val = e.target.value;
+    setSelectedDistrict(val);
+    if (val && upazilas[val]) {
+      setAvailableUpazilas(upazilas[val]);
+    } else {
+      setAvailableUpazilas([]);
+    }
+    setUpazila(""); 
+    if (errors.district) setErrors((p) => ({ ...p, district: validateDistrict(val) }));
+  };
+
+  const handleUpazilaChange = (e) => {
+    const val = e.target.value;
+    setUpazila(val);
+    if (errors.upazila) setErrors((p) => ({ ...p, upazila: validateUpazila(val) }));
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setImageFile(file || null);
     if (file) {
       setImagePreview(URL.createObjectURL(file));
+      if (errors.image) setErrors((p) => ({ ...p, image: validateImage(file) }));
+    } else {
+      setImagePreview(null);
     }
   };
 
-  // Triggers whenever a user shifts target districts
-  const handleDistrictChange = (e) => {
-    const districtName = e.target.value;
-    setSelectedDistrict(districtName);
-
-    if (districtName && upazilas[districtName]) {
-      setAvailableUpazilas(upazilas[districtName]);
-    } else {
-      setAvailableUpazilas([]);
+  // Blur Handlers
+  const handleBlur = (field) => {
+    switch (field) {
+      case "name": setErrors((p) => ({ ...p, name: validateName(name) })); break;
+      case "email": setErrors((p) => ({ ...p, email: validateEmail(email) })); break;
+      case "password": setErrors((p) => ({ ...p, password: validatePassword(password) })); break;
+      case "confirmPassword": setErrors((p) => ({ ...p, confirmPassword: validateConfirmPassword(password, confirmPassword) })); break;
+      case "bloodGroup": setErrors((p) => ({ ...p, bloodGroup: validateBloodGroup(bloodGroup) })); break;
+      case "district": setErrors((p) => ({ ...p, district: validateDistrict(selectedDistrict) })); break;
+      case "upazila": setErrors((p) => ({ ...p, upazila: validateUpazila(upazila) })); break;
+      case "image": setErrors((p) => ({ ...p, image: validateImage(imageFile) })); break;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const confirmPassword = formData.get("confirm_password");
-    const bloodGroup = formData.get("blood_group");
-    const district = formData.get("district");
-    const upazila = formData.get("upazila");
-    const profileImage = formData.get("image");
+    const newErrors = {
+      name: validateName(name),
+      email: validateEmail(email),
+      password: validatePassword(password),
+      confirmPassword: validateConfirmPassword(password, confirmPassword),
+      bloodGroup: validateBloodGroup(bloodGroup),
+      district: validateDistrict(selectedDistrict),
+      upazila: validateUpazila(upazila),
+      image: validateImage(imageFile),
+    };
 
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      setLoading(false);
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((err) => err !== "")) {
       return;
     }
 
+    setLoading(true);
+
     try {
       let uploadedImage = null;
-      if (profileImage && profileImage.size > 0) {
-        uploadedImage = await imageUpload(profileImage);
+      if (imageFile) {
+        uploadedImage = await imageUpload(imageFile);
       }
 
-      await authClient.signUp.email({
+      const { data, error } = await authClient.signUp.email({
         email,
         password,
         name,
@@ -86,16 +195,21 @@ export default function SignUpForm() {
         role: "donor",
         status: "active",
         bloodGroup,
-        district,
+        district: selectedDistrict,
         upazila,
       });
 
-      toast.success("Registration successful!");
-      router.push("/dashboard");
-      router.refresh();
+      if (data) {
+        toast.success("Registration successful!");
+        router.push("/dashboard");
+        router.refresh();
+      }
+      if (error) {
+        toast.error("This email is already registered");
+      }
     } catch (err) {
-      toast.error(err?.message || "Something went wrong during registration.");
-      console.error(err);
+      console.error("SignUp Error:", err);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -202,8 +316,11 @@ export default function SignUpForm() {
                       name="image"
                       accept="image/*"
                       onChange={handleImageChange}
+                      onBlur={() => handleBlur("image")}
                       className="hidden"
                       disabled={loading}
+                      aria-invalid={!!errors.image}
+                      aria-describedby="image-error"
                       required
                     />
                   </label>
@@ -212,6 +329,11 @@ export default function SignUpForm() {
                   </span>
                 </div>
               </div>
+              {errors.image && (
+                <p id="image-error" className="text-red-500 text-xs mt-1">
+                  {errors.image}
+                </p>
+              )}
             </div>
 
             {/* Full Name Input */}
@@ -225,11 +347,21 @@ export default function SignUpForm() {
                   type="text"
                   name="name"
                   required
+                  value={name}
+                  onChange={handleNameChange}
+                  onBlur={() => handleBlur("name")}
+                  aria-invalid={!!errors.name}
+                  aria-describedby="name-error"
                   placeholder="John Doe"
                   className="w-full pl-11 pr-4 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                   disabled={loading}
                 />
               </div>
+              {errors.name && (
+                <p id="name-error" className="text-red-500 text-xs mt-1">
+                  {errors.name}
+                </p>
+              )}
             </div>
 
             {/* Email Input */}
@@ -243,11 +375,21 @@ export default function SignUpForm() {
                   type="email"
                   name="email"
                   required
+                  value={email}
+                  onChange={handleEmailChange}
+                  onBlur={() => handleBlur("email")}
+                  aria-invalid={!!errors.email}
+                  aria-describedby="email-error"
                   placeholder="you@example.com"
                   className="w-full pl-11 pr-4 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                   disabled={loading}
                 />
               </div>
+              {errors.email && (
+                <p id="email-error" className="text-red-500 text-xs mt-1">
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             {/* Blood Group Input */}
@@ -260,7 +402,11 @@ export default function SignUpForm() {
                 <select
                   name="blood_group"
                   required
-                  defaultValue=""
+                  value={bloodGroup}
+                  onChange={handleBloodGroupChange}
+                  onBlur={() => handleBlur("bloodGroup")}
+                  aria-invalid={!!errors.bloodGroup}
+                  aria-describedby="bloodGroup-error"
                   className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition appearance-none cursor-pointer"
                   disabled={loading}
                 >
@@ -280,6 +426,11 @@ export default function SignUpForm() {
                   ▼
                 </div>
               </div>
+              {errors.bloodGroup && (
+                <p id="bloodGroup-error" className="text-red-500 text-xs mt-1">
+                  {errors.bloodGroup}
+                </p>
+              )}
             </div>
 
             {/* Dynamic Cascading Location Selectors */}
@@ -295,6 +446,9 @@ export default function SignUpForm() {
                     required
                     value={selectedDistrict}
                     onChange={handleDistrictChange}
+                    onBlur={() => handleBlur("district")}
+                    aria-invalid={!!errors.district}
+                    aria-describedby="district-error"
                     className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition appearance-none cursor-pointer"
                     disabled={loading}
                   >
@@ -311,6 +465,11 @@ export default function SignUpForm() {
                     ▼
                   </div>
                 </div>
+                {errors.district && (
+                  <p id="district-error" className="text-red-500 text-xs mt-1">
+                    {errors.district}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -322,7 +481,11 @@ export default function SignUpForm() {
                   <select
                     name="upazila"
                     required
-                    defaultValue=""
+                    value={upazila}
+                    onChange={handleUpazilaChange}
+                    onBlur={() => handleBlur("upazila")}
+                    aria-invalid={!!errors.upazila}
+                    aria-describedby="upazila-error"
                     className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition appearance-none cursor-pointer disabled:opacity-40"
                     disabled={loading || !selectedDistrict}
                   >
@@ -343,6 +506,11 @@ export default function SignUpForm() {
                     ▼
                   </div>
                 </div>
+                {errors.upazila && (
+                  <p id="upazila-error" className="text-red-500 text-xs mt-1">
+                    {errors.upazila}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -358,6 +526,11 @@ export default function SignUpForm() {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     required
+                    value={password}
+                    onChange={handlePasswordChange}
+                    onBlur={() => handleBlur("password")}
+                    aria-invalid={!!errors.password}
+                    aria-describedby="password-error"
                     placeholder="••••••••"
                     className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                     disabled={loading}
@@ -375,6 +548,11 @@ export default function SignUpForm() {
                     )}
                   </button>
                 </div>
+                {errors.password && (
+                  <p id="password-error" className="text-red-500 text-xs mt-1">
+                    {errors.password}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -387,6 +565,11 @@ export default function SignUpForm() {
                     type={showConfirmPassword ? "text" : "password"}
                     name="confirm_password"
                     required
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
+                    onBlur={() => handleBlur("confirmPassword")}
+                    aria-invalid={!!errors.confirmPassword}
+                    aria-describedby="confirmPassword-error"
                     placeholder="••••••••"
                     className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                     disabled={loading}
@@ -404,6 +587,11 @@ export default function SignUpForm() {
                     )}
                   </button>
                 </div>
+                {errors.confirmPassword && (
+                  <p id="confirmPassword-error" className="text-red-500 text-xs mt-1">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
             </div>
 

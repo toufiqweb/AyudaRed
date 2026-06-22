@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Search, MapPin, Droplet, User, Loader2 } from "lucide-react";
 import { upazilas, districtsList } from "@/lib/geoData";
 import { searchDonors } from "@/lib/api/users";
+import ErrorState from "@/components/ui/ErrorState";
 
 export default function SearchDonorsClient() {
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,8 @@ export default function SearchDonorsClient() {
 
       setDonors(result.data || []);
     } catch (err) {
-      setError(err.message || "Something went wrong while searching donors.");
+      console.error(err);
+      setError("We encountered an issue while searching donors. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -177,7 +179,14 @@ export default function SearchDonorsClient() {
 
         {/* Results Section */}
         <div className="space-y-6">
-          {!hasSearched ? (
+          {error ? (
+            <ErrorState 
+              title="Search Failed" 
+              message={error} 
+              onRetry={handleSearch} 
+              className="py-12"
+            />
+          ) : !hasSearched ? (
             <div className="text-center py-16 opacity-60">
               <User className="w-16 h-16 mx-auto mb-4 text-muted-foreground/30" />
               <p className="text-lg font-medium">

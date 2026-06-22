@@ -15,6 +15,7 @@ import {
 import { getDonationRequestById } from "@/lib/api/requests";
 import { useUserServerSession as getUserServerSession } from "@/lib/core/sessionSever";
 import DonationConfirmModal from "@/components/ui/DonationConfirmModal";
+import ErrorState from "@/components/ui/ErrorState";
 
 export default async function DonationRequestsDetails({ params }) {
   const { id } = await params;
@@ -27,15 +28,14 @@ export default async function DonationRequestsDetails({ params }) {
   try {
     request = await getDonationRequestById(id);
   } catch (err) {
-    error = err.message || "Failed to load request details.";
+    console.error(err);
+    error = "We encountered an issue while loading the request details. Please try again later.";
   }
 
   if (error || !request) {
     return (
-      <div className="max-w-md mx-auto p-5 mt-16 text-center bg-danger/10 border border-danger/20 rounded-2xl font-sans">
-        <p className="text-sm text-danger font-semibold">
-          {error || "Request not found"}
-        </p>
+      <div className="max-w-md mx-auto mt-16 font-sans">
+        <ErrorState title="Unable to load request" message={error || "Request not found"} />
       </div>
     );
   }

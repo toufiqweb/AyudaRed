@@ -21,23 +21,78 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
   const toast = useToast();
+
+  const validateEmail = (value) => {
+    if (!value) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) return "Please enter a valid email address";
+    return "";
+  };
+
+  const validatePassword = (value) => {
+    if (!value) return "Password is required";
+    return "";
+  };
+
+  const handleEmailChange = (e) => {
+    const val = e.target.value.trim();
+    setEmail(val);
+    if (errors.email) {
+      setErrors((prev) => ({ ...prev, email: validateEmail(val) }));
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const val = e.target.value;
+    setPassword(val);
+    if (errors.password) {
+      setErrors((prev) => ({ ...prev, password: validatePassword(val) }));
+    }
+  };
+
+  const handleEmailBlur = () => {
+    setErrors((prev) => ({ ...prev, email: validateEmail(email) }));
+  };
+
+  const handlePasswordBlur = () => {
+    setErrors((prev) => ({ ...prev, password: validatePassword(password) }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+    
+    if (emailError || passwordError) {
+      setErrors({ email: emailError, password: passwordError });
+      return;
+    }
+    
     setLoading(true);
 
     try {
-      await authClient.signIn.email({
+      const { data, error } = await authClient.signIn.email({
         email,
         password,
       });
 
-      toast.success("Signed in successfully!");
-      router.push("/dashboard");
-      router.refresh();
+      if (data) {
+        toast.success("Signed in successfully!");
+        router.push("/dashboard");
+        router.refresh();
+      }
+      if (error) {
+        toast.error("Invalid email or password. Please try again.");
+      }
     } catch (err) {
-      toast.error(err?.message || "Invalid email or password. Please try again.");
+      console.error("SignIn Error:", err);
+      toast.error("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -125,12 +180,20 @@ export default function SignInForm() {
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
+                  onBlur={handleEmailBlur}
+                  aria-invalid={!!errors.email}
+                  aria-describedby="email-error"
                   placeholder="you@example.com"
                   className="w-full pl-11 pr-4 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                   disabled={loading}
                 />
               </div>
+              {errors.email && (
+                <p id="email-error" className="text-red-500 text-xs mt-1">
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             {/* Password Input */}
@@ -152,7 +215,10 @@ export default function SignInForm() {
                   type={showPassword ? "text" : "password"}
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
+                  onBlur={handlePasswordBlur}
+                  aria-invalid={!!errors.password}
+                  aria-describedby="password-error"
                   placeholder="••••••••"
                   className="w-full pl-11 pr-10 py-3 bg-secondary border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                   disabled={loading}
@@ -170,6 +236,11 @@ export default function SignInForm() {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <p id="password-error" className="text-red-500 text-xs mt-1">
+                  {errors.password}
+                </p>
+              )}
             </div>
 
             {/* Submit Button */}

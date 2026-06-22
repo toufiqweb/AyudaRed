@@ -40,7 +40,7 @@ export default function DonationConfirmModal({ requestId, user }) {
       }
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "An error occurred. Please try again.");
+      toast.error("An unexpected error occurred. Please try again later.");
     } finally {
       setSubmitLoading(false);
     }

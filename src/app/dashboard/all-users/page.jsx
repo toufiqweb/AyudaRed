@@ -15,6 +15,7 @@ import { updateUser } from "@/lib/actions/admin";
 import { getAllUsers } from "@/lib/api/admin";
 import Pagination from "@/components/ui/Pagination";
 import { useToast } from "@/components/ui/Toast";
+import ErrorState from "@/components/ui/ErrorState";
 
 export default function AllUsersPage() {
   const toast = useToast();
@@ -49,9 +50,8 @@ export default function AllUsersPage() {
       setUsers(result.data || []);
       setTotalPages(result.pagination?.totalPages || 1);
     } catch (err) {
-      setError(
-        err.message || "An error occurred fetching user management lines.",
-      );
+      console.error(err);
+      setError("We encountered an issue while loading user data. Please try again later.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -71,7 +71,7 @@ export default function AllUsersPage() {
       fetchUsers();
     } catch (error) {
       console.error("Mutation failure:", error);
-      toast.error(error.message || "Could not execute this action.");
+      toast.error("An error occurred while updating the user. Please try again.");
     } finally {
       setActionLoadingId(null);
     }
@@ -124,9 +124,12 @@ export default function AllUsersPage() {
       </div>
 
       {error && (
-        <div className="p-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">
-          {error}
-        </div>
+        <ErrorState 
+          title="Unable to load users" 
+          message={error} 
+          onRetry={fetchUsers} 
+          className="mb-4"
+        />
       )}
 
       {/* Main Table Container (overflow-visible নিশ্চিত করা হয়েছে) */}

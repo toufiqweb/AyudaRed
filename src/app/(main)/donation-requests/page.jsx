@@ -4,6 +4,7 @@ import PendingRequestCard from "@/components/ui/PendingRequestCard";
 import RefreshButton from "@/components/ui/RefreshButton";
 import UrlPagination from "@/components/ui/UrlPagination";
 import DonationRequestsFilters from "@/components/ui/DonationRequestsFilters";
+import ErrorState from "@/components/ui/ErrorState";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +42,8 @@ export default async function DonationRequestsPage({ searchParams }) {
       totalRequests = data.pagination?.totalRequests || 0;
     }
   } catch (err) {
-    error = err.message || "Something went wrong fetching live feed.";
+    console.error(err);
+    error = "We encountered an issue while loading donation requests. Please try again later.";
   }
 
   return (
@@ -82,10 +84,7 @@ export default async function DonationRequestsPage({ searchParams }) {
 
           {/* Clean SaaS Centered Error Handling Alert */}
           {error && (
-            <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 flex items-center justify-center gap-2 max-w-xl mx-auto text-left font-sans">
-              <AlertCircle className="w-4 h-4 text-destructive shrink-0" />
-              <p className="text-sm font-medium text-destructive">{error}</p>
-            </div>
+            <ErrorState title="Unable to load requests" message={error} className="mb-4" />
           )}
 
           {/* Main High-Fidelity Cards Display Grid */}

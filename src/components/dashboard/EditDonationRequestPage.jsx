@@ -19,8 +19,10 @@ import { useToast } from "@/components/ui/Toast";
 import { upazilas, districtsList } from "@/lib/geoData";
 import { getDonationRequestById } from "@/lib/api/requests";
 import { updateDonationRequest } from "@/lib/actions/requests";
+import { useUserClientSession } from "@/lib/core/sessionClient";
 
 export default function EditDonationRequestPage() {
+  const { user } = useUserClientSession();
   const router = useRouter();
   const params = useParams();
   const id = params?.id;
@@ -98,10 +100,13 @@ export default function EditDonationRequestPage() {
       const response = await updateDonationRequest(id, formData);
       if (response.success) {
         toast.success("Donation request updated successfully! 🎉");
-        setTimeout(() => {
-          router.push("/dashboard/my-donation-requests");
-          router.refresh();
-        }, 1500);
+
+        const returnPath =
+          user?.role === "admin"
+            ? "/dashboard/all-blood-donation-request"
+            : "/dashboard/my-donation-requests";
+        router.push(returnPath);
+        router.refresh();
       } else {
         throw new Error(
           response.message || "Failed to update donation request.",
@@ -109,7 +114,7 @@ export default function EditDonationRequestPage() {
       }
     } catch (err) {
       console.error(err);
-      toast.error("An unexpected error occurred. Please try again later.");
+      toast.error("Please try again later.");
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +139,11 @@ export default function EditDonationRequestPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
         <div className="flex items-start gap-4">
           <Link
-            href="/dashboard/my-donation-requests"
+            href={
+              user?.role === "admin"
+                ? "/dashboard/all-blood-donation-request"
+                : "/dashboard/my-donation-requests"
+            }
             className="mt-1 p-2.5 border border-border bg-secondary/30 rounded-xl hover:bg-secondary text-secondary-foreground/80 transition-all duration-200 shadow-sm group"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
@@ -364,7 +373,11 @@ export default function EditDonationRequestPage() {
         {/* Form Action Controls Footer */}
         <div className="flex items-center justify-end gap-3 pt-6 border-t border-border/60 bg-muted/5 -mx-6 sm:-mx-8 px-6 sm:px-8 -mb-6 sm:-mb-8 py-5">
           <Link
-            href="/dashboard/my-donation-requests"
+            href={
+              user?.role === "admin"
+                ? "/dashboard/all-blood-donation-request"
+                : "/dashboard/my-donation-requests"
+            }
             className="px-5 py-2.5 rounded-xl border border-border bg-background hover:bg-secondary text-xs sm:text-sm font-semibold text-secondary-foreground/80 transition-all shadow-sm font-sans"
           >
             Cancel Changes

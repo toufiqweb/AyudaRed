@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
 import ErrorState from "@/components/ui/ErrorState";
+import RoleGuard from "@/components/shared/RoleGuard";
 
 export default function AllBloodDonationRequestsPage() {
   const toast = useToast();
@@ -111,9 +112,10 @@ export default function AllBloodDonationRequestsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-[1400px] mx-auto p-2 sm:p-4 min-h-screen flex flex-col justify-between select-none">
-      <div className="space-y-6">
-        {/* Title Header Card */}
+    <RoleGuard allowedRoles={["admin", "volunteer"]}>
+      <div className="space-y-6 max-w-[1400px] mx-auto p-2 sm:p-4 min-h-screen flex flex-col justify-between select-none">
+        <div className="space-y-6">
+          {/* Title Header Card */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border/10 p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.02)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)]">
           <div>
             <h1 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
@@ -232,5 +234,6 @@ export default function AllBloodDonationRequestsPage() {
         </div>
       )}
     </div>
+    </RoleGuard>
   );
 }

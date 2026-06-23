@@ -3,6 +3,7 @@ import { useUserServerSession } from "@/lib/core/sessionSever";
 import { getUserByEmail } from "@/lib/api/users";
 import CreateRequestForm from "./CreateRequestForm";
 import { getTokenServer } from "@/lib/core/getTokenServer";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -42,6 +43,10 @@ const CreateDonationRequestPage = async () => {
         </div>
       </div>
     );
+  }
+
+  if (user.role !== "donor") {
+    redirect("/unauthorized");
   }
 
   // 💡 Blocked users cannot create donation requests

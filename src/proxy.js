@@ -8,20 +8,58 @@ export async function proxy(request) {
     headers: await headers(),
   });
 
-  // current page path
-
+  const pathname = request.nextUrl.pathname;
   const user = session?.user;
+
   if (!user) {
     const fullPath = request.nextUrl.pathname + request.nextUrl.search;
     const loginUrl = new URL("/sign-in", request.url);
     loginUrl.searchParams.set("redirect", fullPath);
     return NextResponse.redirect(loginUrl);
   }
+
+  const role = user.role;
+
+  // Admin Only Routes
+  if (pathname.startsWith("/dashboard/all-users") || pathname.startsWith("/dashboard/admin")) {
+    if (role !== "admin") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
+
+  // Volunteer Only Routes
+  if (pathname.startsWith("/dashboard/volunteer")) {
+    if (role !== "volunteer") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
+
+  // Admin + Volunteer Shared Routes
+  if (pathname.startsWith("/dashboard/all-blood-donation-request")) {
+    if (role !== "admin" && role !== "volunteer") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
+
+  // Donor Only Routes
+  if (
+    pathname.startsWith("/dashboard/create-donation-request") ||
+    pathname.startsWith("/dashboard/my-donation-requests") ||
+    pathname.startsWith("/dashboard/donor")
+  ) {
+    if (role !== "donor") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
+
+  // Shared Edit Routes (Donor + Admin)
+  if (pathname.startsWith("/dashboard/donation-requests/edit")) {
+    if (role !== "donor" && role !== "admin") {
+      return NextResponse.redirect(new URL("/unauthorized", request.url));
+    }
+  }
 }
 
-// Alternatively, you can use a default export:
-// export default function proxy(request) { ... }
-
 export const config = {
-  matcher: ["/donation-requests/:id", "/dashboard", "/funding"],
+  matcher: ["/dashboard/:path*", "/donation-requests/:id", "/funding"],
 };

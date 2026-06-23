@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/Toast";
 import Pagination from "@/components/ui/Pagination";
 import DonationRequestsTable from "@/components/shared/DonationRequestsTable";
 import ErrorState from "@/components/ui/ErrorState";
+import RoleGuard from "@/components/shared/RoleGuard";
 
 export default function MyDonationRequestsPage() {
   const toast = useToast();
@@ -121,8 +122,9 @@ export default function MyDonationRequestsPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-[1400px] mx-auto p-2">
-      {/* Header + Filter */}
+    <RoleGuard allowedRoles={["donor"]}>
+      <div className="space-y-6 max-w-[1400px] mx-auto p-2">
+        {/* Header + Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2 font-heading">
@@ -245,5 +247,6 @@ export default function MyDonationRequestsPage() {
 
       {/* Global toast provider handles the container now */}
     </div>
+    </RoleGuard>
   );
 }

@@ -29,13 +29,17 @@ export default async function DonationRequestsDetails({ params }) {
     request = await getDonationRequestById(id);
   } catch (err) {
     console.error(err);
-    error = "We encountered an issue while loading the request details. Please try again later.";
+    error =
+      "We encountered an issue while loading the request details. Please try again later.";
   }
 
   if (error || !request) {
     return (
       <div className="max-w-md mx-auto mt-16 font-sans">
-        <ErrorState title="Unable to load request" message={error || "Request not found"} />
+        <ErrorState
+          title="Unable to load request"
+          message={error || "Request not found"}
+        />
       </div>
     );
   }
@@ -78,7 +82,7 @@ export default async function DonationRequestsDetails({ params }) {
           <span
             className={`px-4 py-1.5 border rounded-xl text-xs font-bold uppercase tracking-wider font-sans ${activeStatusClass}`}
           >
-            System Status: {request.donationStatus}
+            Status: {request.donationStatus}
           </span>
         </div>
       </div>

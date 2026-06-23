@@ -3,8 +3,11 @@
 import { ArrowRight, Search, Heart, FileText, Activity, ShieldCheck, Clock, Users } from "lucide-react";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
+import { useSession } from "@/lib/auth-client";
 
 export default function Banner() {
+  const { data: session } = useSession();
+
   return (
     <div className="relative min-h-screen w-full bg-background text-foreground overflow-hidden select-none flex flex-col justify-center items-center pt-24 pb-20">
       {/* 1. Subtle Radial Background Gradient */}
@@ -102,7 +105,7 @@ export default function Banner() {
         <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto">
           {/* Primary Call to Action */}
           <Link
-            href="/sign-in"
+            href={session ? "/dashboard" : "/sign-in"}
             className="group flex items-center justify-center gap-2 w-full sm:w-auto min-w-[220px] bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all shadow-[0_8px_30px_rgb(0,0,0,0.12)] active:scale-[0.98]"
           >
             <span className="text-base tracking-wide">Become a Donor</span>

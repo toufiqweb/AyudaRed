@@ -1,7 +1,40 @@
+"use client";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, ArrowLeft } from "lucide-react";
+import { CheckCircle2, ArrowLeft, Loader2 } from "lucide-react";
 
-export default function FundingSuccessPage() {
+function SuccessContent() {
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const [status, setStatus] = useState("verifying");
+
+  useEffect(() => {
+    if (sessionId) {
+      fetch("/api/verify-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId }),
+      })
+      .then(res => res.json())
+      .then((data) => {
+        if (data.success) {
+           setStatus("verified");
+        } else {
+           setStatus("failed");
+        }
+      })
+      .catch((err) => {
+        console.error("Verification error:", err);
+        setStatus("failed");
+      });
+    } else {
+      setStatus("failed");
+    }
+  }, [sessionId]);
+
   return (
     <div className="container mx-auto p-4 sm:p-6 max-w-[1400px] flex items-center justify-center min-h-[60vh]">
       <div className="max-w-md w-full bg-secondary/40 backdrop-blur-md border border-border rounded-2xl p-8 sm:p-10 shadow-xl text-center relative overflow-hidden">
@@ -9,7 +42,13 @@ export default function FundingSuccessPage() {
         
         <div className="flex justify-center mb-6">
           <div className="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center border border-emerald-500/20 shadow-inner">
-            <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+            {status === "verifying" ? (
+               <Loader2 className="w-10 h-10 text-emerald-500 animate-spin" />
+            ) : status === "verified" ? (
+               <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+            ) : (
+               <CheckCircle2 className="w-10 h-10 text-emerald-500/50" />
+            )}
           </div>
         </div>
         
@@ -17,7 +56,11 @@ export default function FundingSuccessPage() {
           Contribution Successful!
         </h2>
         <p className="text-sm text-foreground/70 font-sans mb-8 leading-relaxed">
-          Thank you for supporting the platform. Your funding record is being securely verified and saved. It will appear on the funding board shortly.
+          {status === "verifying" 
+            ? "Verifying and securing your funding record..." 
+            : status === "verified"
+            ? "Your funding record has been securely saved and will appear on the funding board shortly!"
+            : "Thank you for your support. Your payment was successful!"}
         </p>
 
         <Link 
@@ -29,5 +72,13 @@ export default function FundingSuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function FundingSuccessPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center"><Loader2 className="animate-spin w-8 h-8 text-primary" /></div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }

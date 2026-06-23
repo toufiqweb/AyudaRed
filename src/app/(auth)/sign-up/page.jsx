@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import SignUpForm from "./SignUpForm";
 
 export const metadata = {
@@ -8,7 +9,9 @@ export const metadata = {
 export default function SignUpPage() {
   return (
     <main className="min-h-screen w-full bg-background relative overflow-x-hidden">
-      <SignUpForm />
+      <Suspense fallback={null}>
+        <SignUpForm />
+      </Suspense>
     </main>
   );
 }

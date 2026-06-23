@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client"; // Adjust path to your better-auth client instance
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Eye,
   EyeOff,
@@ -17,6 +17,8 @@ import { useToast } from "@/components/ui/Toast";
 
 export default function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect") || "/dashboard";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -65,15 +67,15 @@ export default function SignInForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
-    
+
     if (emailError || passwordError) {
       setErrors({ email: emailError, password: passwordError });
       return;
     }
-    
+
     setLoading(true);
 
     try {
@@ -84,7 +86,7 @@ export default function SignInForm() {
 
       if (data) {
         toast.success("Signed in successfully!");
-        router.push("/dashboard");
+        router.push(redirectUrl);
         router.refresh();
       }
       if (error) {
@@ -264,7 +266,7 @@ export default function SignInForm() {
           <p className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link
-              href="/sign-up"
+              href={searchParams.get("redirect") ? `/sign-up?redirect=${encodeURIComponent(searchParams.get("redirect"))}` : "/sign-up"}
               className="text-primary hover:underline font-semibold transition"
             >
               Sign up

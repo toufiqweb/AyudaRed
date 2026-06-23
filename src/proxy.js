@@ -12,9 +12,9 @@ export async function proxy(request) {
 
   const user = session?.user;
   if (!user) {
-    const pathname = request.nextUrl.pathname;
+    const fullPath = request.nextUrl.pathname + request.nextUrl.search;
     const loginUrl = new URL("/sign-in", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    loginUrl.searchParams.set("redirect", fullPath);
     return NextResponse.redirect(loginUrl);
   }
 }

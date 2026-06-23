@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Eye,
   EyeOff,
@@ -23,6 +23,8 @@ import { upazilas, districtsList } from "@/lib/geoData";
 
 export default function SignUpForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect") || "/dashboard";
   const toast = useToast();
   
   const [showPassword, setShowPassword] = useState(false);
@@ -201,7 +203,7 @@ export default function SignUpForm() {
 
       if (data) {
         toast.success("Registration successful!");
-        router.push("/dashboard");
+        router.push(redirectUrl);
         router.refresh();
       }
       if (error) {
@@ -616,7 +618,7 @@ export default function SignUpForm() {
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link
-              href="/sign-in"
+              href={searchParams.get("redirect") ? `/sign-in?redirect=${encodeURIComponent(searchParams.get("redirect"))}` : "/sign-in"}
               className="text-primary hover:underline font-semibold transition"
             >
               Sign in

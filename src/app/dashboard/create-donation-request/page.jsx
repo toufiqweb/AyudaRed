@@ -45,7 +45,7 @@ const CreateDonationRequestPage = async () => {
     );
   }
 
-  if (user.role !== "donor") {
+  if (user.role !== "donor" && user.role !== "admin") {
     redirect("/unauthorized");
   }
 

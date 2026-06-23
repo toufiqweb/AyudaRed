@@ -122,7 +122,7 @@ export default function MyDonationRequestsPage() {
   };
 
   return (
-    <RoleGuard allowedRoles={["donor"]}>
+    <RoleGuard allowedRoles={["donor", "admin"]}>
       <div className="space-y-6 max-w-[1400px] mx-auto p-2">
         {/* Header + Filter */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-background border border-border p-5 rounded-2xl shadow-sm">

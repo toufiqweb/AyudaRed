@@ -41,13 +41,13 @@ export async function proxy(request) {
     }
   }
 
-  // Donor Only Routes
+  // Donor + Admin Routes (Donor functionalities)
   if (
     pathname.startsWith("/dashboard/create-donation-request") ||
     pathname.startsWith("/dashboard/my-donation-requests") ||
     pathname.startsWith("/dashboard/donor")
   ) {
-    if (role !== "donor") {
+    if (role !== "donor" && role !== "admin") {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
   }

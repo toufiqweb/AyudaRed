@@ -70,6 +70,16 @@ const DashboardSidebar = ({ isOpen, onClose }) => {
     ],
     admin: [
       {
+        name: "Create Request",
+        href: "/dashboard/create-donation-request",
+        icon: PlusCircle,
+      },
+      {
+        name: "My Donation Requests",
+        href: "/dashboard/my-donation-requests",
+        icon: ClipboardList,
+      },
+      {
         name: "Manage Users",
         href: "/dashboard/all-users",
         icon: Users,

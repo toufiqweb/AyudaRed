@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import {
   Loader2,
@@ -25,6 +26,8 @@ export default function AllUsersPage() {
   const [error, setError] = useState("");
   const [openMenuId, setOpenMenuId] = useState(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0, bottom: undefined });
 
   // Filtering and Pagination States
   const [statusFilter, setStatusFilter] = useState("all");
@@ -34,14 +37,54 @@ export default function AllUsersPage() {
 
   // Global click tracker securely closes drop menus
   useEffect(() => {
+    setMounted(true);
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".user-menu-trigger")) {
+      if (!event.target.closest(".user-menu-trigger") && !event.target.closest(".dropdown-menu-content")) {
         setOpenMenuId(null);
       }
     };
+    
+    const handleScroll = (e) => {
+      if (openMenuId && !e.target.closest(".dropdown-menu-content")) {
+        setOpenMenuId(null);
+      }
+    };
+
     document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+    window.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("resize", () => setOpenMenuId(null));
+    
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("resize", () => setOpenMenuId(null));
+    };
+  }, [openMenuId]);
+
+  const handleMenuClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (openMenuId === id) {
+      setOpenMenuId(null);
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    
+    const spaceBelow = windowHeight - rect.bottom;
+    const isBottom = spaceBelow > 220; // Ensure enough space for the menu
+
+    setMenuPosition({
+      top: isBottom ? rect.bottom + 8 : undefined,
+      bottom: !isBottom ? windowHeight - rect.top + 8 : undefined,
+      right: windowWidth - rect.right,
+    });
+
+    setOpenMenuId(id);
+  };
 
   const fetchUsers = useCallback(async () => {
     setLoading(true);
@@ -219,12 +262,7 @@ export default function AllUsersPage() {
 
                       <td className="px-6 py-4 text-right relative user-menu-trigger">
                         <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setOpenMenuId(
-                              openMenuId === profile._id ? null : profile._id,
-                            );
-                          }}
+                          onClick={(e) => handleMenuClick(e, profile._id)}
                           disabled={actionLoadingId === profile._id}
                           className={`p-1.5 rounded-lg border transition ${
                             openMenuId === profile._id
@@ -239,14 +277,19 @@ export default function AllUsersPage() {
                           )}
                         </button>
 
-                        {openMenuId === profile._id && (
+                        {mounted && openMenuId === profile._id && createPortal(
                           <div
-                            /* ডাইনামিক পজিশনিং ক্লাস: শেষ রোর জন্য 'bottom-full mb-1', অন্য সব রোর জন্য 'top-full mt-1' */
-                            className={`absolute right-6 w-52 bg-background border border-border rounded-xl shadow-lg z-30 py-1 overflow-hidden text-left animate-in fade-in duration-150 ${
-                              isLastRow
-                                ? "bottom-full mb-1 origin-bottom slide-in-from-bottom-1"
-                                : "top-full mt-1 origin-top slide-in-from-top-1"
+                            onClick={(e) => e.stopPropagation()}
+                            className={`dropdown-menu-content fixed w-52 bg-background border border-border rounded-xl shadow-lg z-50 py-1 overflow-hidden text-left animate-in fade-in duration-150 ${
+                              menuPosition.bottom !== undefined
+                                ? "origin-bottom-right"
+                                : "origin-top-right"
                             }`}
+                            style={{
+                              top: menuPosition.top !== undefined ? `${menuPosition.top}px` : undefined,
+                              bottom: menuPosition.bottom !== undefined ? `${menuPosition.bottom}px` : undefined,
+                              right: `${menuPosition.right}px`
+                            }}
                           >
                             {profile.status !== "blocked" ? (
                               <button
@@ -317,7 +360,8 @@ export default function AllUsersPage() {
                                 Elevate to Admin
                               </button>
                             )}
-                          </div>
+                          </div>,
+                          document.body
                         )}
                       </td>
                     </tr>

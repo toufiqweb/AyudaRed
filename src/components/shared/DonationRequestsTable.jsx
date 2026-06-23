@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import {
   Eye,
@@ -25,17 +26,59 @@ export default function DonationRequestsTable({
   variant = "default",
 }) {
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [mounted, setMounted] = useState(false);
+  const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0, bottom: undefined });
 
-  // Close dropdown on outside click
+  // Handle outside click and scroll
   useEffect(() => {
+    setMounted(true);
     const handleClickOutside = (e) => {
-      if (!e.target.closest(".menu-trigger-container")) {
+      if (!e.target.closest(".menu-trigger-container") && !e.target.closest(".dropdown-menu-content")) {
         setOpenMenuId(null);
       }
     };
+    
+    const handleScroll = (e) => {
+      if (openMenuId && !e.target.closest(".dropdown-menu-content")) {
+        setOpenMenuId(null);
+      }
+    };
+
     document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+    window.addEventListener("scroll", handleScroll, true);
+    window.addEventListener("resize", () => setOpenMenuId(null));
+    
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+      window.removeEventListener("resize", () => setOpenMenuId(null));
+    };
+  }, [openMenuId]);
+
+  const handleMenuClick = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (openMenuId === id) {
+      setOpenMenuId(null);
+      return;
+    }
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    
+    const spaceBelow = windowHeight - rect.bottom;
+    const isBottom = spaceBelow > 220; // Ensure enough space for the menu
+
+    setMenuPosition({
+      top: isBottom ? rect.bottom + 8 : undefined,
+      bottom: !isBottom ? windowHeight - rect.top + 8 : undefined,
+      right: windowWidth - rect.right,
+    });
+
+    setOpenMenuId(id);
+  };
 
   const getStatusBadge = (status) => {
     const config = {
@@ -248,13 +291,7 @@ export default function DonationRequestsTable({
                 {/* Actions Dropdown */}
                 <td className="px-6 py-4 text-right relative menu-trigger-container overflow-visible">
                   <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setOpenMenuId((prev) =>
-                        prev === request._id ? null : request._id,
-                      );
-                    }}
+                    onClick={(e) => handleMenuClick(e, request._id)}
                     disabled={actionLoadingId === request._id}
                     className="p-2 rounded-xl border border-transparent hover:bg-muted hover:border-border/50 text-muted-foreground hover:text-foreground transition focus:outline-none inline-flex items-center justify-center disabled:opacity-40"
                   >
@@ -265,15 +302,15 @@ export default function DonationRequestsTable({
                     )}
                   </button>
 
-                  {openMenuId === request._id && (
+                  {mounted && openMenuId === request._id && createPortal(
                     <div
                       onClick={(e) => e.stopPropagation()}
-                      className={`absolute right-6 w-52 border border-border rounded-xl shadow-2xl z-50 py-1.5 text-left transition-all duration-150 bg-background
-                        ${
-                          isLastRow
-                            ? "bottom-full mb-2 origin-bottom-right animate-in fade-in zoom-in-95"
-                            : "top-full mt-2 origin-top-right animate-in fade-in zoom-in-95"
-                        }`}
+                      className={`dropdown-menu-content fixed w-52 border border-border rounded-xl shadow-2xl z-50 py-1.5 text-left transition-all duration-150 bg-background animate-in fade-in zoom-in-95 ${menuPosition.bottom !== undefined ? "origin-bottom-right" : "origin-top-right"}`}
+                      style={{
+                        top: menuPosition.top !== undefined ? `${menuPosition.top}px` : undefined,
+                        bottom: menuPosition.bottom !== undefined ? `${menuPosition.bottom}px` : undefined,
+                        right: `${menuPosition.right}px`
+                      }}
                     >
                       {/* View Details */}
                       <Link
@@ -336,7 +373,8 @@ export default function DonationRequestsTable({
                           </button>
                         </>
                       )}
-                    </div>
+                    </div>,
+                    document.body
                   )}
                 </td>
               </tr>

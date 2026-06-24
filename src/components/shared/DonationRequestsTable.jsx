@@ -143,10 +143,7 @@ export default function DonationRequestsTable({
         </thead>
         <tbody className="divide-y divide-border/40 text-sm overflow-visible">
           {requests.map((request, index) => {
-            const detailUrl =
-              variant === "dashboard"
-                ? `/dashboard/donation-requests/view/${request._id}`
-                : `/donation-requests/${request._id}`;
+            const detailUrl = `/donation-requests/${request._id}`;
 
             const isLastRow =
               requests.length > 2 && index >= requests.length - 2;

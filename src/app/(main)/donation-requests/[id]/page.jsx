@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   AlertCircle,
   Activity,
+  Info,
+  ShieldAlert,
 } from "lucide-react";
 import { getDonationRequestById } from "@/lib/api/requests";
 import { useUserServerSession as getUserServerSession } from "@/lib/core/sessionSever";
@@ -207,6 +209,69 @@ export default async function DonationRequestsDetails({ params }) {
 
         {/* RIGHT COLUMN: DISPATCH SIDEBAR, CONTACTS & STATIC POLICIES */}
         <div className="space-y-6">
+          {/* DISPATCH ACTION CAPTURE CONTAINER */}
+          <div className="bg-secondary/30 border border-primary/20 p-5 rounded-2xl shadow-sm bg-gradient-to-b from-secondary/30 to-primary/5">
+            {request.donationStatus === "pending" ? (
+              user?.email === request.requesterEmail ? (
+                <div className="space-y-3">
+                  <div className="bg-primary/5 border border-primary/20 p-4 rounded-xl flex items-start gap-3">
+                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground font-heading">Your Request</h4>
+                      <p className="text-xs text-secondary-foreground/80 mt-1 leading-relaxed font-body">
+                        You cannot donate to your own blood donation request. Please wait for a donor to accept this request.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : user?.role === "admin" || user?.role === "volunteer" ? (
+                <div className="space-y-3">
+                  <div className="bg-secondary/40 border border-border p-4 rounded-xl flex items-start gap-3">
+                    <ShieldAlert className="w-5 h-5 text-secondary-foreground/60 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground font-heading capitalize">{user.role} Account</h4>
+                      <p className="text-xs text-secondary-foreground/80 mt-1 leading-relaxed font-body">
+                        You are currently logged in as a{user.role === 'admin' ? 'n' : ''} {user.role}. Blood donation is only available for donor accounts.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : user?.role === "donor" ? (
+                <div className="space-y-3">
+                  <p className="text-[11px] text-secondary-foreground/60 font-medium font-sans text-center">
+                    This deployment file remains unclaimed. Ready for fulfillment
+                    operations?
+                  </p>
+                  <DonationConfirmModal requestId={request._id} user={user} />
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="bg-secondary/40 border border-border p-4 rounded-xl flex items-start gap-3">
+                    <Info className="w-5 h-5 text-secondary-foreground/60 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="text-sm font-bold text-foreground font-heading">Login Required</h4>
+                      <p className="text-xs text-secondary-foreground/80 mt-1 leading-relaxed font-body">
+                        Please log in as a donor to accept this donation request.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            ) : (
+              <div className="text-xs text-secondary-foreground/70 font-medium flex items-start gap-3 border border-border bg-background p-4 rounded-xl font-sans leading-relaxed">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                <div>
+                  <span className="block font-bold text-foreground uppercase tracking-wider text-[9px] text-secondary-foreground/40 mb-0.5">
+                    Allocation Notice
+                  </span>
+                  This request token is locked and currently being handled by{" "}
+                  <span className="text-primary font-semibold">
+                    {request.donorName || "another volunteer operator"}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
           {/* USER CONTACT CARD */}
           <div className="bg-secondary/30 border border-border p-6 rounded-2xl shadow-sm space-y-4">
             <h3 className="text-xs font-bold tracking-wider text-secondary-foreground/50 uppercase font-heading border-b border-border/40 pb-2">
@@ -279,32 +344,6 @@ export default async function DonationRequestsDetails({ params }) {
               from clinical operational updates, medical liabilities, or
               scheduling anomalies.
             </p>
-          </div>
-
-          {/* DISPATCH ACTION CAPTURE CONTAINER */}
-          <div className="bg-secondary/30 border border-primary/20 p-5 rounded-2xl shadow-sm bg-gradient-to-b from-secondary/30 to-primary/5">
-            {request.donationStatus === "pending" ? (
-              <div className="space-y-3">
-                <p className="text-[11px] text-secondary-foreground/60 font-medium font-sans text-center">
-                  This deployment file remains unclaimed. Ready for fulfillment
-                  operations?
-                </p>
-                <DonationConfirmModal requestId={request._id} user={user} />
-              </div>
-            ) : (
-              <div className="text-xs text-secondary-foreground/70 font-medium flex items-start gap-3 border border-border bg-background p-4 rounded-xl font-sans leading-relaxed">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block font-bold text-foreground uppercase tracking-wider text-[9px] text-secondary-foreground/40 mb-0.5">
-                    Allocation Notice
-                  </span>
-                  This request token is locked and currently being handled by{" "}
-                  <span className="text-primary font-semibold">
-                    {request.donorName || "another volunteer operator"}
-                  </span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

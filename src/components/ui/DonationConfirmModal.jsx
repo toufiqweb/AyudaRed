@@ -53,7 +53,7 @@ export default function DonationConfirmModal({ requestId, user }) {
         onClick={() => setIsOpen(true)}
         className="w-full justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center gap-2 focus:outline-none font-sans"
       >
-        <Heart className="w-4 h-4 fill-current" /> Initialize Dispatch Protocol
+        <Heart className="w-4 h-4 fill-current" /> Donate Now
       </button>
 
       {/* OVERLAY AND MODAL ARCHITECTURE */}

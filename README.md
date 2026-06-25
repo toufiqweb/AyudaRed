@@ -9,7 +9,7 @@
 
 AyudaRed is a highly responsive, high-fidelity platform engineered to bridge the critical gap between blood donors and recipients in immediate need. It provides an intuitive, robust, and fast user interface that empowers volunteers, administrators, and donors to orchestrate blood donations efficiently without losing crucial time. Built with a stunning modern design aesthetic, it removes friction from the registration, request, and deployment process of community blood sourcing.
 
-**Live URL:** [AyudaRed](https://ayudared.vercel.app) *(Update with your actual URL)*  
+**Live URL:** [AyudaRed](https://ayudared.vercel.app)
 **Backend Repository:** [AyudaRed Server API](https://github.com/toufiqweb/AyudaRed-Server)
 
 ## ✨ Key Features
